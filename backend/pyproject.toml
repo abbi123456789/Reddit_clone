@@ -1,0 +1,13 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "bcrypt>=5.0.0",
+    "litestar[jwt]>=2.20.0",
+    "piccolo[postgres]>=1.31.0",
+    "python-dotenv>=1.2.1",
+    "uvicorn>=0.40.0",
+]
