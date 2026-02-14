@@ -1,7 +1,14 @@
 from litestar import Litestar
 from litestar.openapi.config import OpenAPIConfig
+from litestar.config.cors import CORSConfig
 
 from accounts.controllers import jwt_auth, UserController
+
+cors_config = CORSConfig(
+    allow_origins=['http://localhost:5173'],
+    allow_credentials=True,
+)
+
 
 openapi_config = OpenAPIConfig(
     title="My API",
@@ -11,5 +18,7 @@ openapi_config = OpenAPIConfig(
 app = Litestar(
     route_handlers=[UserController],
     on_app_init=[jwt_auth.on_app_init],
-    openapi_config=openapi_config
+    openapi_config=openapi_config,
+    cors_config = cors_config,
+    debug = True
 )
