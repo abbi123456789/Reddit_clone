@@ -43,13 +43,15 @@ class UserController(Controller):
         expires = datetime.datetime.now() + datetime.timedelta(seconds=ACCESS_TOKEN_TTL)
         access_token = Token(exp=expires, sub=str(user.id)).encode(secret=TOKEN_SECRET, algorithm='HS256')
         refresh_token = create_refresh_token(str(user.id))
+        #The reason why we are forming a dictionary manually is litestar cannot serialize User orm type.
+        user = {'id':user.id, 'email':user.email, 'username':user.username, 'is_admin':user.is_admin, 'created_at':user.created_at}
         response = Response({'user':user, 'access_token':access_token})
         response.set_cookie('refresh_token', refresh_token, max_age=REFRESH_TOKEN_TTL, httponly=True, samesite='lax')
         return response
     
     @post('/login')
     async def login(self, data:LoginSchema)->Response:
-        user = await User.select(User.id, User.username, User.email, User.password, User.is_admin).where((User.email == data.email) | (User.username == data.email))
+        user = await User.select(User.id, User.username, User.email, User.password, User.is_admin, User.created_at).where((User.email == data.email) | (User.username == data.email))
 
         if not user:
             raise HTTPException(detail='Invalid username/password', status_code=400)
