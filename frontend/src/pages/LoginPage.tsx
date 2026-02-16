@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { doLogin } from "../services/account";
+import '../styles/login.css'
 
 const Login = ()=>{
     const [identifier, setIdentifier] = useState<string>('')
@@ -17,8 +18,9 @@ const Login = ()=>{
     }
 
     return (
+        <div className="login-wrapper">
         <div className="login-page">
-            <form noValidate className="login-form">
+            <form className="login-form">
                 <div className="form-field">
                     <label htmlFor="identifier">Username/Email <span className="required-field">*</span></label>
                     <input 
@@ -33,7 +35,7 @@ const Login = ()=>{
                 </div>
 
                 <div className="form-field">
-                    <label htmlFor="password">Password <span className="required-filed">*</span></label>
+                    <label htmlFor="password">Password <span className="required-field">*</span></label>
                     <input 
                         type="password" 
                         id="password" 
@@ -47,6 +49,7 @@ const Login = ()=>{
 
                 <button onClick={handleLogin} className="btn-primary">Login</button>
             </form>
+        </div>
         </div>
     )
 }

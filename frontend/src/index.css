@@ -13,3 +13,12 @@ html{
 body{
     overflow: hidden;
 }
+
+input{
+    font-size: 16px;
+    padding: 5px;
+}
+
+.required-field{
+    color: red;
+}

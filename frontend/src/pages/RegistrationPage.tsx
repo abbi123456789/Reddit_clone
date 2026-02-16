@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { doRegister } from "../services/account";
+import '../styles/register.css'
 
 const Registration = ()=>{
     const [username, setUsername] = useState<string>('')
@@ -17,8 +18,9 @@ const Registration = ()=>{
     }
 
     return (
+        <div className="login-wrapper">
         <div className="login-page">
-            <form noValidate className="login-form">
+            <form className="login-form">
                 <div className="form-field">
                     <label htmlFor="username">Username <span className="required-field">*</span></label>
                     <input 
@@ -71,6 +73,7 @@ const Registration = ()=>{
 
                 <button onClick={handleRegister} className="btn-primary">Register</button>
             </form>
+        </div>
         </div>
     )
 }
