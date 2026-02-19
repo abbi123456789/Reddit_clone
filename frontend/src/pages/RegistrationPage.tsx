@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { doRegister } from "../services/account";
-import '../styles/register.css'
+import '../styles/login.css'
 
 const Registration = ()=>{
     const [username, setUsername] = useState<string>('')

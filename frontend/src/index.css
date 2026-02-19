@@ -22,3 +22,7 @@ input{
 .required-field{
     color: red;
 }
+
+.bi-reddit{
+    color: orangered;
+}
