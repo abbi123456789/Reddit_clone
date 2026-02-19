@@ -1,0 +1,54 @@
+.navbar{
+    height: 60px;
+    display: flex;
+    font-size: 1.8rem;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+    padding: 10px;
+}
+
+.navbar .action-buttons .bi{
+    font-size: 2.2rem;
+}
+
+.project-name{
+    color: orangered;
+    font-weight: bolder;
+    font-size: 4rem;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.search-bar{
+    flex-grow: 1;
+    display: flex;
+    max-width: 700px;
+    font-size: 3rem;
+    padding: 4px;
+    border: 2px solid orangered;
+    border-radius: 30px;
+}
+.search-bar input{
+    flex-grow: 1;
+    border: none;
+    outline: none;
+}
+
+.action-buttons{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.advertisment-icon:hover, .chat-icon:hover, .create-post-icon:hover, .notification-icon:hover, .profile-icon:hover{
+    background-color: lightgrey;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+}
+
+.create-post-icon{
+    display: flex;
+    gap: 5px;
+    font-size: inherit;
+}
