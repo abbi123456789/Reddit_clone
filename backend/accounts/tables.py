@@ -1,5 +1,5 @@
 from piccolo.table import Table
-from piccolo.columns import Varchar, Timestamptz, Boolean, Email, Text, Integer
+from piccolo.columns import Varchar, Timestamptz, Boolean, Email, Text, Integer, M2M, LazyTableReference
 import datetime
 
 def utcnow():
@@ -15,3 +15,7 @@ class User(Table, tablename='users'):
     karma = Integer(default=0)
     created_at = Timestamptz()
     updated_at = Timestamptz(auto_update=utcnow)
+
+    banned_from_communities = M2M(LazyTableReference('BannedCommunityMembers', module_path='community.tables'))
+    joined_communites = M2M(LazyTableReference('JoinedCommunityMembers', module_path='community.tables'))
+    moded_communities = M2M(LazyTableReference('CommunityModerators', module_path='community.tables'))
