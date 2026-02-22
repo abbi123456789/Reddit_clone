@@ -82,7 +82,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Anyone can view, post and comment to this community.</p>
             </div>
           </div>
-          <input type="radio" id="public" name="visibility" onClick={(setVisibility('public'))}></input>
+          <input type="radio" id="public" name="visibility" onClick={()=>setVisibility('public')}></input>
         </div>
         <div className="restricted-visibility">
           <div>
@@ -92,7 +92,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Anyone can view, but only approved users can contribute.</p>
             </div>
           </div>
-          <input type="radio" id="restricted" name="visibility" onClick={setVisibility('restricted')}></input>
+          <input type="radio" id="restricted" name="visibility" onClick={()=>setVisibility('restricted')}></input>
         </div>
         <div className="private-visibility">
           <div>
@@ -102,7 +102,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Only approved users can view and contribute.</p>
             </div>
           </div>
-          <input type="radio" id="private" name="visibility" onClick={setVisibility('private')}></input>
+          <input type="radio" id="private" name="visibility" onClick={()=>setVisibility('private')}></input>
         </div>
       </div>
 
@@ -115,7 +115,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Users must be over 18 to view and contribute.</p>
             </div>
           </div>
-          <input type="checkbox" value={nsfw} onChange={setNsfw(prev)=>!prev} />
+          <input type="checkbox" checked={nsfw} onChange={()=>setNsfw((prev)=>!prev)} />
         </div>
       </div>
 
@@ -154,10 +154,10 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
           <div className="display-details">
             <div className="display-name">
               <i className="bi bi-reddit"></i>
-              <p className="name">r/{name ? name.length > 0 : 'communityname'}</p>
+              <p className="name">r/{name.length > 0 ? name : 'communityname'}</p>
             </div>
             <div className="display-description">
-              <p className="description">{description ? description.length > 0 : 'Your community description'}</p>
+              <p className="description">{description.length > 0 ? description : 'Your community description'}</p>
             </div>
           </div>
         </div>
