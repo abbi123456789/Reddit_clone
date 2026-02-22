@@ -1,6 +1,11 @@
 import '../styles/sidebar.css'
 
-const Sidebar = ()=>{
+type SidebarProps = {
+    showModal: boolean
+    handleModalToggle: () => void
+}
+
+const Sidebar = ({showModal, handleModalToggle}:SidebarProps)=>{
     return (
         <aside className="sidebar">
             <div className="post-options">
@@ -20,7 +25,7 @@ const Sidebar = ()=>{
                     <i className="bi bi-boxes"></i>
                     <span>Explore</span>
                 </div>
-                <div className="start-community">
+                <div className="start-community" onClick={() => handleModalToggle()}>
                     <i className="bi bi-plus-lg"></i>
                     <span>Start a Community</span>
                 </div>

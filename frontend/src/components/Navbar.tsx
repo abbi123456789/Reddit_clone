@@ -1,6 +1,11 @@
 import '../styles/navbar.css'
 
-const Navbar = ()=>{
+type NavbarProps = {
+    showModal: boolean
+    handleModalToggle: () => void
+}
+
+const Navbar = ({showModal, handleModalToggle}:NavbarProps)=>{
     return (
         <nav className="navbar">
             <div className="project-name">
@@ -17,7 +22,7 @@ const Navbar = ()=>{
                 <div className="chat-icon">
                     <i className="bi bi-chat-dots"></i>
                 </div>
-                <div className="create-post-icon">
+                <div className="create-post-icon" onClick={()=>handleModalToggle()}>
                     <i className="bi bi-plus-square"></i>
                     <p>create</p>
                 </div>

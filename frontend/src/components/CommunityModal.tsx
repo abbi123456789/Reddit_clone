@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { communityCategories } from "../services/communityCategories"
+import '../styles/communitymodal.css'
 
 
 type AboutCommunityProps = {
@@ -25,6 +26,10 @@ type CommunityDetailsProps = {
   handleSubmit: () => void
 }
 
+type CommunityModalFormProps = {
+  handleModalToggle: () => void
+}
+
 
 const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCommunityProps) => {
   const handleSelect = (category: string) => {
@@ -32,12 +37,9 @@ const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCo
   }
 
   return (
-    <div className="about-community-step">
+    <section className="about-community-step">
       <div className="heading">
-        <p>What will be your community about</p>
-      </div>
-
-      <div className="description">
+        <span>What will be your community about</span>
         <p>Choose a topic to help redditors discover your community</p>
       </div>
 
@@ -51,7 +53,7 @@ const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCo
         ))}
       </div>
 
-      <div className="navigation-buttons">
+      <div className="action-buttons">
         <button className="cancel-button" onClick={handleCancel}>
           Cancel
         </button>
@@ -59,13 +61,13 @@ const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCo
           Next
         </button>
       </div>
-    </div>
+    </section>
   )
 }
 
 const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, handleNext}: CommunityVisibilityProps)=>{
   return (
-    <section>
+    <section className="community-visibility-step">
       <div className="heading">
         <span>What kind of a community is this ?</span>
         <p>Decide who can you view and contribute in your community. Only public communities show up in search.
@@ -133,7 +135,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
 
 const CommunityDetails = ({name, description, setName, setDescription, handlePrevious, handleSubmit}: CommunityDetailsProps)=>{
   return (
-    <section>
+    <section className="community-details-step">
       <div className="heading">
         <span>Tell us about your community</span>
         <p>A name and description helps people understand what your community is all about.</p>
@@ -141,12 +143,8 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
 
       <div className="community-details">
         <div className="name-description">
-          <div>
             <input type="text" placeholder="Community name" value={name} onChange={(e)=>setName(e.target.value)} required/>
-          </div>
-          <div>
-            <input type="text" placeholder="Description" value={description} onChange={(e)=>setDescription(e.target.value)} required />
-          </div>
+            <textarea placeholder="Description" value={description} onChange={(e)=>setDescription(e.target.value)} required />
         </div>
 
         <div className="display-card">
@@ -161,23 +159,21 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
             </div>
           </div>
         </div>
-
-        <div className="action-buttons">
+      </div>
+      <div className="action-buttons">
         <button className="previous-button" onClick={handlePrevious}>
           Previous
         </button>
         <button className="submit-button" onClick={handleSubmit}>
-          Next
+          Submit
         </button>
-        </div>
       </div>
     </section>
   )
 }
 
-const CommunityModalForm = () => {
+const CommunityModalForm = ({handleModalToggle}:CommunityModalFormProps) => {
   const [currentTab, setCurrentTab] = useState<"about" | "visibility" | "details">("about")
-  const [showModal, setShowModal] = useState<boolean>(false)
 
   const [communityAbout, setCommunityAbout] = useState<string>('')
   const [visibility, setVisibility] = useState<"public" | "private" | "restricted">("public")
@@ -194,9 +190,7 @@ const CommunityModalForm = () => {
   }
 
   const handlePrevious = () => {
-    if (currentTab === "about") {
-      setShowModal(false)
-    } else if (currentTab === "visibility") {
+    if (currentTab === "visibility") {
       setCurrentTab("about")
     } else if (currentTab === "details") {
       setCurrentTab("visibility")
@@ -204,12 +198,12 @@ const CommunityModalForm = () => {
   }
 
   const handleCancel = () => {
-    setShowModal(false)
+    handleModalToggle()
   }
 
   const handleSubmit = () => {
     console.log('submitted')
-    setShowModal(false)
+    handleModalToggle()
   }
 
   return (

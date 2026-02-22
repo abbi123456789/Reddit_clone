@@ -1,13 +1,20 @@
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
+import CommunityModalForm from "../components/CommunityModal"
 
-const HomePage = ()=>{
+type HomePageProps = {
+    showModal: boolean
+    handleModalToggle: () => void
+}
+
+const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
     return (
         <main className="home-container">
-            <Navbar />
+            <Navbar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
             <div className="main-content">
-                <Sidebar />
+                <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
             </div>
+            {showModal && <CommunityModalForm handleModalToggle={handleModalToggle} />}
         </main>
     )
 }
