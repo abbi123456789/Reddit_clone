@@ -13,7 +13,7 @@ const Login = ()=>{
         const data = await doLogin({identifier, password})
         if(data){
             localStorage.setItem('accessToken', data.access_token)
-            localStorage.setItem('user', data.user)
+            localStorage.setItem('user', JSON.stringify(data.user))
         }
     }
 

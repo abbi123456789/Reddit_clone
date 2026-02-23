@@ -8,8 +8,8 @@ from piccolo.columns.column_types import Varchar
 from piccolo.columns.defaults.timestamptz import TimestamptzNow
 from piccolo.columns.indexes import IndexMethod
 
-ID = "2026-02-09T08:39:48:894000"
-VERSION = "1.30.0"
+ID = "2026-02-23T15:08:21:171344"
+VERSION = "1.31.0"
 DESCRIPTION = ""
 
 
