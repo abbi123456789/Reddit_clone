@@ -6,8 +6,6 @@ from litestar.response import Response
 
 from typing import Any
 import datetime
-import bcrypt
-import asyncio
 
 from .tables import User
 from .schema import RegisterSchema, LoginSchema, UserSchema
