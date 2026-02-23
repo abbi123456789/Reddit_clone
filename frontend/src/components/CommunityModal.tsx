@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { communityCategories } from "../services/communityCategories"
+import { createCommunity } from "../services/community"
 import '../styles/communitymodal.css'
 
 
@@ -201,9 +202,13 @@ const CommunityModalForm = ({handleModalToggle}:CommunityModalFormProps) => {
     handleModalToggle()
   }
 
-  const handleSubmit = () => {
-    console.log('submitted')
-    handleModalToggle()
+  const handleSubmit = async () => {
+    const requestPayload = {category:communityAbout, visibility, nsfw, name, description}
+    console.log(requestPayload)
+    const data = await createCommunity(requestPayload)
+    if(data){
+      handleModalToggle()
+    }
   }
 
   return (
