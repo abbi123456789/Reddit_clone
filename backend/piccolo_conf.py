@@ -4,8 +4,8 @@ from piccolo.engine.postgres import PostgresEngine
 DB = PostgresEngine(
     config={
         "database": "piccolo_dreaddit",
-        "user": "postgres",
-        "password": "postgres",
+        "user": "piccolo_user",
+        "password": "your_password",
         "host": "localhost",
         "port": 5432,
     }
