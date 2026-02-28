@@ -12,6 +12,10 @@
     font-size: 2.2rem;
 }
 
+.navbar .action-buttons > div{
+    cursor: pointer;
+}
+
 .project-name{
     color: orangered;
     font-weight: bolder;

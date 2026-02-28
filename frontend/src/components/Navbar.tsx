@@ -5,7 +5,7 @@ type NavbarProps = {
     handleModalToggle: () => void
 }
 
-const Navbar = ({showModal, handleModalToggle}:NavbarProps)=>{
+const Navbar = ()=>{
     return (
         <nav className="navbar">
             <div className="project-name">
@@ -22,7 +22,7 @@ const Navbar = ({showModal, handleModalToggle}:NavbarProps)=>{
                 <div className="chat-icon">
                     <i className="bi bi-chat-dots"></i>
                 </div>
-                <div className="create-post-icon" onClick={()=>handleModalToggle()}>
+                <div className="create-post-icon">
                     <i className="bi bi-plus-square"></i>
                     <p>create</p>
                 </div>
