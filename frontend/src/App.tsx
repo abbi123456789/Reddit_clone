@@ -3,6 +3,7 @@ import Registration from "./pages/RegistrationPage"
 import Login from "./pages/LoginPage"
 import HomePage from "./pages/HomePage"
 import CommunityPage from "./pages/CommunityPage"
+import CreatePost from "./pages/CreatePost"
 import { useState } from "react"
 
 const App = ()=>{
@@ -18,6 +19,7 @@ const App = ()=>{
       <Routes>
         <Route path="/" element={<HomePage handleModalToggle = {handleModalToggle} showModal={showModal}/>} />
         <Route path="/community" element={<CommunityPage handleModalToggle={handleModalToggle} showModal={showModal} />} />
+        <Route path="/create/post" element={<CreatePost handleModalToggle={handleModalToggle} showModal={showModal} />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
       </Routes>
