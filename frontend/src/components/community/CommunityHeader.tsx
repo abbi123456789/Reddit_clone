@@ -1,4 +1,4 @@
-import '../styles/communityheader.css'
+import '../../styles/communityheader.css'
 
 const CommunityHeader = ()=>{
     return (
