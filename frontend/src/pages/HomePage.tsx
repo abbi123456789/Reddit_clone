@@ -10,7 +10,7 @@ type HomePageProps = {
 const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
     return (
         <main className="home-container">
-            <Navbar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
+            <Navbar />
             <div className="main-content">
                 <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
             </div>
