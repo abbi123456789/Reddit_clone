@@ -1,3 +1,4 @@
+import RichTextEditor from "../Editor/RichTextEditor"
 const PostCreationForm = ()=>{
     return(
         <section className="create-post-section">
@@ -30,7 +31,7 @@ const PostCreationForm = ()=>{
             </div>
 
             <div className="post-body">
-                <textarea placeholder="Body Text" />
+                <RichTextEditor/>
             </div>
 
             <div className="action-buttons">

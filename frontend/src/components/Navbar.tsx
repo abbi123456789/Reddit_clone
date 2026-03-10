@@ -1,10 +1,5 @@
 import '../styles/navbar.css'
 
-type NavbarProps = {
-    showModal: boolean
-    handleModalToggle: () => void
-}
-
 const Navbar = ()=>{
     return (
         <nav className="navbar">

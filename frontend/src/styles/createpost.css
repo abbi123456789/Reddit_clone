@@ -10,8 +10,10 @@
 
 .create-post-container .sub-content{
     width: 100%;
+    height: 100vh;
     display: flex;
     margin: 20px;
+    overflow: auto;
 }
 
 .create-post-section{

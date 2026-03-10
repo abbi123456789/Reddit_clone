@@ -1,0 +1,17 @@
+.community-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.community-container .main-content{
+    display: flex;
+}
+
+.community-container .main-content .sub-content{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 20px;
+}
+

@@ -1,11 +1,11 @@
 import '../styles/sidebar.css'
 
 type SidebarProps = {
-    showModal: boolean
+    showModal?: boolean
     handleModalToggle: () => void
 }
 
-const Sidebar = ({showModal, handleModalToggle}:SidebarProps)=>{
+const Sidebar = ({handleModalToggle}:SidebarProps)=>{
     return (
         <aside className="sidebar">
             <div className="post-options">
