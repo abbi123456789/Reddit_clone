@@ -49,7 +49,7 @@ class UserController(Controller):
     
     @post('/login')
     async def login(self, data:LoginSchema)->Response:
-        user = await User.select(User.id, User.username, User.email, User.password, User.is_admin, User.created_at).where((User.email == data.email) | (User.username == data.email))
+        user = await User.select(User.id, User.username, User.email, User.password, User.is_admin, User.created_at).where((User.email == data.identifier) | (User.username == data.identifier))
 
         if not user:
             raise HTTPException(detail='Invalid username/password', status_code=400)
@@ -60,8 +60,8 @@ class UserController(Controller):
             raise HTTPException(detail='Invalid username/password', status_code=400)
         
         expires = datetime.datetime.now() + datetime.timedelta(seconds=ACCESS_TOKEN_TTL)
-        access_token = Token(exp=expires, sub=str(user.id)).encode(secret=TOKEN_SECRET, algorithm='HS256')
-        refresh_token = create_refresh_token(str(user.id))
+        access_token = Token(exp=expires, sub=str(user.get('id'))).encode(secret=TOKEN_SECRET, algorithm='HS256')
+        refresh_token = create_refresh_token(str(user.get('id')))
         #removing password, so it won't be seen from the client side.
         user.pop('password')
         response = Response({'user':user, 'access_token':access_token})

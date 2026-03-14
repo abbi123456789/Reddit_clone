@@ -6,7 +6,7 @@ class RegisterSchema(BaseModel):
     password: str
 
 class LoginSchema(BaseModel):
-    username_or_email: str
+    identifier: str
     password: str
 
 class UserSchema(BaseModel):
