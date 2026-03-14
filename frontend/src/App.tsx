@@ -20,12 +20,12 @@ const App = ()=>{
     <main>
       <Routes>
         <Route path="/" element={<HomePage handleModalToggle = {handleModalToggle} showModal={showModal}/>} />
-        <Route path="/community" element={<CommunityPage handleModalToggle={handleModalToggle} showModal={showModal} />} />
+        <Route path="/r/:communityName" element={<CommunityPage handleModalToggle={handleModalToggle} showModal={showModal} />} />
         <Route path="/create/post" element={<CreatePost handleModalToggle={handleModalToggle} showModal={showModal} />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/community/look-feel-page" element={<LookAndFeelPage />} />
-        <Route path="/community/post-flair" element={<PostFlairPage />} />
+        <Route path="/r/:communityName/look-feel" element={<LookAndFeelPage />} />
+        <Route path="/r/:communityName/post-flair" element={<PostFlairPage />} />
       </Routes>
     </main>
   )
