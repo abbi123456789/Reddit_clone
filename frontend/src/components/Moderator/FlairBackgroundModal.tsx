@@ -12,9 +12,11 @@ export type FlairBackgroundModalProps = {
     setHexCode: Dispatch<SetStateAction<string>>;
     setModalOpen: Dispatch<SetStateAction<boolean>>;
     communityName: string;
+    textColor: string;
+    setTextColor: Dispatch<SetStateAction<string>>;
 }
 
-const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCode, setHexCode, setModalOpen, communityName}:FlairBackgroundModalProps)=>{
+const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCode, setHexCode, setModalOpen, communityName, textColor, setTextColor}:FlairBackgroundModalProps)=>{
     const [hue, setHue] = useState(0);
     const [saturation, setSaturation] = useState(0);
 
@@ -26,9 +28,9 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
     }
 
     const onSave = async () => {
-        console.log("Saving flair with color:", { flair, hexCode, hue, saturation });
+        console.log("Saving flair with color:", { flair, hexCode, hue, saturation, textColor });
         // Here you would typically send the selected color to your backend or update the parent state
-        const newFlair = await createNewFlair(communityName, flair, hexCode, hue, saturation);
+        const newFlair = await createNewFlair(communityName, flair, hexCode, hue, saturation, textColor);
         console.log(newFlair)
         setModalOpen(false);
     }
@@ -54,7 +56,7 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
                 <div className="preview-card">
                     <p className='bolder-text community-title'>r/community_name</p>
                     <span className='bolder-text'>Post title</span>
-                    <span>{flair}</span>
+                    <span style={{ backgroundColor: hexCode, color: textColor , padding: '0px 8px', borderRadius: '20px' , width: 'fit-content'}}>{flair}</span>
                     <span>This is the post body. I am going to fuck you...</span>
                 </div>
             </div>
@@ -87,6 +89,14 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
                 <div className="hex-input-container">
                 <span>Hex code (optional)</span>
                 <input value={hexCode} onChange={(e) => setHexCode(e.target.value)} />
+                </div>
+
+                <div className="select-text-color">
+                    <span className="bolder-text">Text</span>
+                    <select value={textColor} onChange={(e) => setTextColor(e.target.value)}>
+                        <option value="black">Dark on Light</option>
+                        <option value="white">Light on Dark</option>
+                    </select>
                 </div>
             </div>
             )}

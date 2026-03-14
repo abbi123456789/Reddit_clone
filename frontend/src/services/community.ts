@@ -11,7 +11,7 @@ export type CommunityCreation = {
 export const createCommunity = async ({name, description, visibility, nsfw, category}: CommunityCreation) => {
     try{
         const response = await api.post(
-            '/community/create',
+            '/r/create',
             {name, description, visibility, nsfw, category}
         )
         return response.data
@@ -24,7 +24,7 @@ export const createCommunity = async ({name, description, visibility, nsfw, cate
 
 export const getMyCommunities = async () => {
     try{
-        const response = await api.get('/community/my-communities')
+        const response = await api.get('/r/my-communities')
         return response.data
     }catch(error){
         console.log(error)
@@ -32,9 +32,9 @@ export const getMyCommunities = async () => {
     }
 }
 
-export const getCommunity = async (communityId: number) => {
+export const getCommunity = async (communityName: string) => {
     try{
-        const response = await api.get(`/community/${communityId}`)
+        const response = await api.get(`/r/${communityName}`)
         return response.data
     }catch(error){
         console.log(error)

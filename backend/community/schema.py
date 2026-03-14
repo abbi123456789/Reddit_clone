@@ -10,7 +10,8 @@ class CommunitySchema(BaseModel):
 
 class FlairSchema(BaseModel):
     title: str
-    color: str
+    background_color: str
+    text_color: str
     mod_only: bool = False
     hue: int | None
     saturation: int | None

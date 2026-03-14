@@ -38,7 +38,7 @@ class CommunityController(Controller):
 
     @get('/my-communities')
     async def get_my_communities(self, request:Request[User, Any, Any])->list:
-        communities = await Community.select().where(Community.creator == request.user.get('id'))
+        communities = await Community.select(Community.id, Community.name).where(Community.creator == request.user.get('id'))
         return communities
 
     @get('/{community_id:int}')
@@ -63,7 +63,8 @@ class CommunityController(Controller):
         try:
             flair = CommunityFlair(
                 title=data.title,
-                color=data.color,
+                background_color=data.background_color,
+                text_color=data.text_color,
                 mod_only=data.mod_only,
                 hue=data.hue,
                 saturation=data.saturation,
@@ -73,6 +74,15 @@ class CommunityController(Controller):
             return flair.to_dict()
         except Exception as e:
             raise HTTPException(detail=str(e), status_code=500)
+
+    @get('/{community_name:str}/flairs')
+    async def get_flairs(self, request:Request[User, Any, Any])->list:
+        community_name = request.path_params['community_name']
+        community = await Community.objects().get(Community.name == community_name)
+        if not community:
+            raise HTTPException(detail="Community not found", status_code=404)
+        flairs = await CommunityFlair.select(CommunityFlair.id, CommunityFlair.title, CommunityFlair.background_color, CommunityFlair.text_color).where(CommunityFlair.community == community.id)
+        return flairs
 
     @post('/upload/image')
     async def upload_image(self, request: Request[User, Any, Any], data: UploadFile = Body(media_type=RequestEncodingType.MULTI_PART)) -> dict[str, str]:
