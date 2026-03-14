@@ -5,8 +5,8 @@ from litestar.datastructures import UploadFile
 from litestar.exceptions import HTTPException
 from typing import Any
 
-from .tables import Community, JoinedCommunityMembers, CommunityModerators
-from .schema import CommunitySchema
+from .tables import Community, CommunityFlair, JoinedCommunityMembers, CommunityModerators
+from .schema import CommunitySchema, FlairSchema
 from accounts.tables import User
 from utils.s3 import upload_file_to_s3
 
@@ -39,6 +39,28 @@ class CommunityController(Controller):
     @get('/{community_id:int}')
     async def get_community(self)->None:
         return None
+
+    @post('/{community_id:int}/create/flair')
+    async def create_flair(self, request:Request[User, Any, Any], data: FlairSchema)->None:
+        community_id = request.path_params['community_id']
+        community = await Community.objects().get(Community.id == community_id)
+        if not community:
+            raise HTTPException(detail="Community not found", status_code=404)
+        if community.creator_id != request.user.get('id'):
+            raise HTTPException(detail="Only the community creator can create flairs", status_code=403)
+        try:
+            flair = CommunityFlair(
+                title=data.title,
+                color=data.color,
+                mod_only=data.mod_only,
+                hue=data.hue,
+                saturation=data.saturation,
+                community_id=community_id
+            )
+            await flair.save()
+            return flair.to_dict()
+        except Exception as e:
+            raise HTTPException(detail=str(e), status_code=500)
 
     @post('/upload/image')
     async def upload_image(self, request: Request[User, Any, Any], data: UploadFile = Body(media_type=RequestEncodingType.MULTI_PART)) -> dict[str, str]:
