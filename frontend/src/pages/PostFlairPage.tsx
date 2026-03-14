@@ -12,6 +12,7 @@ const PostFlairPage = ()=>{
     const [showNewFlair, setShowNewFlair] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const [backgroundColor, setBackgroundColor] = useState(false)
+    const [textColor, setTextColor] = useState('black')
     const [hexCode, setHexCode] = useState("#DADADA")
     const [flair, setFlair] = useState<string>('')
 
@@ -43,6 +44,8 @@ const PostFlairPage = ()=>{
                             flair={flair}
                             setModalOpen={setModalOpen}
                             communityName={communityName}
+                            textColor={textColor}
+                            setTextColor={setTextColor}
                         />
                     </div>
                 )}
