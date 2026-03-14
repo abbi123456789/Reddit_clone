@@ -35,10 +35,22 @@ class CommunityController(Controller):
                 return community.to_dict()
             except Exception as e:
                 raise HTTPException(detail=str(e), status_code=500)
-            
+
+    @get('/my-communities')
+    async def get_my_communities(self, request:Request[User, Any, Any])->list:
+        communities = await Community.select().where(Community.creator == request.user.get('id'))
+        return communities
+
     @get('/{community_id:int}')
     async def get_community(self)->None:
-        return None
+        community_id = self.path_params['community_id']
+        community = await Community.objects().get(Community.id == community_id)
+        flairs = await CommunityFlair.select().where(CommunityFlair.community_id == community_id)
+        community_dict = community.to_dict()
+        community_dict['flairs'] = [flair.to_dict() for flair in flairs]
+        if not community:
+            raise HTTPException(detail="Community not found", status_code=404)
+        return community_dict
 
     @post('/{community_id:int}/create/flair')
     async def create_flair(self, request:Request[User, Any, Any], data: FlairSchema)->None:
