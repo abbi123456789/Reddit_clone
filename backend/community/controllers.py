@@ -11,7 +11,7 @@ from accounts.tables import User
 from utils.s3 import upload_file_to_s3
 
 class CommunityController(Controller):
-    path = '/community'
+    path = '/r'
 
     @post('/create')
     async def create_community(self, request:Request[User, Any, Any], data:CommunitySchema)->dict:
@@ -52,13 +52,13 @@ class CommunityController(Controller):
             raise HTTPException(detail="Community not found", status_code=404)
         return community_dict
 
-    @post('/{community_id:int}/create/flair')
+    @post('/{community_name:str}/create/flair')
     async def create_flair(self, request:Request[User, Any, Any], data: FlairSchema)->None:
-        community_id = request.path_params['community_id']
-        community = await Community.objects().get(Community.id == community_id)
+        community_name = request.path_params['community_name']
+        community = await Community.objects().get(Community.name == community_name)
         if not community:
             raise HTTPException(detail="Community not found", status_code=404)
-        if community.creator_id != request.user.get('id'):
+        if community.creator != request.user.get('id'):
             raise HTTPException(detail="Only the community creator can create flairs", status_code=403)
         try:
             flair = CommunityFlair(
@@ -67,7 +67,7 @@ class CommunityController(Controller):
                 mod_only=data.mod_only,
                 hue=data.hue,
                 saturation=data.saturation,
-                community_id=community_id
+                community=community.id
             )
             await flair.save()
             return flair.to_dict()
