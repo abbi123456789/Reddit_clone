@@ -18,6 +18,7 @@ class Community(Table, tablename='communities'):
     is_active = Boolean(default=True)
     visibility = Varchar(choices=Visibility, default=Visibility.public.value)
     nsfw = Boolean(default=False)
+    enable_post_flair = Boolean(default=False)
     created_at = Timestamptz()
     icon_url = Varchar(length=500, null=True)
     banner_url = Varchar(length=500, null=True)
