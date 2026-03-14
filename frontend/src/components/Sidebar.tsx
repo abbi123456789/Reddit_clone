@@ -1,6 +1,7 @@
 import '../styles/sidebar.css'
 import { getMyCommunities } from '../services/community'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 type SidebarProps = {
     showModal?: boolean
@@ -62,13 +63,15 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
                     <i className="bi bi-gear"></i>
                     <span>Manage</span>
                 </div>
-                // Display user's communities if they have any
+                {/* Display user's communities if they have any */}
                 {myCommunities.length > 0 && (
                 <div className='my-communities'>
                     {myCommunities.map((community: any) => (
-                        <div className='community' key={community.id}>
-                            <span>{community.name}</span>
-                        </div>
+                        <Link to={`/r/${community.name}`} style={{ textDecoration: 'none', color: 'inherit' }} key={community.id}>
+                            <div className='community' key={community.id}>
+                                <span>{community.name}</span>
+                            </div>
+                        </Link>
                     ))}
                 </div>
                 )}
