@@ -1,6 +1,21 @@
+import { useEffect, useState } from 'react'
+
 import '../../styles/moderatorsidebar.css'
+import { getMyCommunities } from '../../services/community';
 
 const ModeratorSidebar = ()=>{
+    const [myCommunities, setMyCommunities] = useState([])
+    
+    useEffect(()=>{
+        const fetchCommunities = async () => {
+            const communities = await getMyCommunities()
+            if(communities){
+                setMyCommunities(communities)
+            }
+        }
+        fetchCommunities()
+    }, [])
+
     return (
         <aside className="moderator-sidebar">
             <div className='exit-link'>
@@ -10,10 +25,16 @@ const ModeratorSidebar = ()=>{
 
             <div className='select-community'>
                 <select>
-                    <option value='r/community1'>r/community1</option>
-                    <option value='r/community2'>r/community2</option>
-                    <option value='r/community3'>r/community3</option>
-                    <option value='r/community4'>r/community4</option>
+                    {myCommunities.length > 0 ? (
+                        myCommunities.map((community: any) => (
+                            <option value={`r/${community.name}`} key={community.id}>
+                                {`r/${community.name}`}
+                            </option>
+                        ))
+                    ) : (
+                        <><option value="">Select a community</option>
+                        </>
+                    )}
                 </select>
             </div>
 
