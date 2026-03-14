@@ -11,7 +11,7 @@ type CreateNewFlairProps = {
     setFlair: Dispatch<SetStateAction<string>>;
 }
 
-const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, setBackgroundColor, flair, setFlair}:CreateNewFlairProps)=>{
+const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, setFlair}:CreateNewFlairProps)=>{
     const [modOnly, setModOnly] = useState<boolean>(false)
     const [usersCanEdit, setUsersCanEdit] = useState<boolean>(false)
 
@@ -30,9 +30,11 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, setBack
             <div className="flair-preview">
                 <span className='bolder-text'>Preview</span>
                 <div className="preview-card">
-                    <p className='bolder-text community-title'>r/community_name</p>
+                    <p className='bolder-text community-title'>r/community_name </p>
                     <span className='bolder-text'>Post title</span>
-                    <span>{flair}</span>
+                    <span style={backgroundColor? {backgroundColor: 'black', color: 'white', padding: '0.2rem 0.4rem', borderRadius: '4px'} : {}}>
+                        {flair}
+                    </span>
                     <span>This is the post body. I am going to fuck you...</span>
                 </div>
             </div>

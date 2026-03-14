@@ -9,12 +9,24 @@ export type FlairBackgroundModalProps = {
     setBackgroundColor: Dispatch<SetStateAction<boolean>>;
     hexCode: string;
     setHexCode: Dispatch<SetStateAction<string>>;
-    onClose: ()=>void;
+    setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCode, setHexCode, onClose}:FlairBackgroundModalProps)=>{
+const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCode, setHexCode, setModalOpen}:FlairBackgroundModalProps)=>{
     const [hue, setHue] = useState(0);
     const [saturation, setSaturation] = useState(0);
+
+    const onClose = () => {
+        setHexCode("#DADADA"); // Reset to default when closing
+        setHue(0);
+        setSaturation(0);
+        setModalOpen(false);
+    }
+
+    const onSave = () => {
+        // Here you would typically send the selected color to your backend or update the parent state
+        setModalOpen(false);
+    }
 
     const handleHue = (e:React.ChangeEvent<HTMLInputElement>) => {
         const newHue = parseInt(e.target.value);
@@ -76,7 +88,7 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
 
             <div className="action-buttons">
                 <button className="close-btn" onClick={onClose}>close</button>
-                <button className="save-btn" onClick={onClose}>save</button>
+                <button className="save-btn" onClick={onSave}>save</button>
             </div>
         </dialog>
     )

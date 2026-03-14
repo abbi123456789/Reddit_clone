@@ -12,7 +12,7 @@ const PostFlairPage = ()=>{
     const [backgroundColor, setBackgroundColor] = useState(false)
     const [hexCode, setHexCode] = useState("#DADADA")
     const [flair, setFlair] = useState<string>('')
-    console.log(isModalOpen)
+
     return(
         <main className="post-flair-page-container">
             <Navbar />
@@ -34,12 +34,12 @@ const PostFlairPage = ()=>{
                 {isModalOpen && showNewFlair && (
                     <div onClick={(e) => e.stopPropagation()}> {/* Prevents closing when clicking inside */}
                         <FlairBackgroundModal 
-                            onClose={() => setModalOpen(false)} 
                             backgroundColor={backgroundColor}
                             setBackgroundColor={setBackgroundColor}
                             hexCode={hexCode}
                             setHexCode={setHexCode}
                             flair={flair}
+                            setModalOpen={setModalOpen}
                         />
                     </div>
                 )}
