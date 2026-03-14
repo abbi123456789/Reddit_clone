@@ -1,5 +1,5 @@
 from piccolo.table import Table
-from piccolo.columns import Varchar, Text, ForeignKey, Timestamptz, Boolean, LazyTableReference, M2M
+from piccolo.columns import Varchar, Text, ForeignKey, Timestamptz, Boolean, LazyTableReference, M2M, Integer
 
 from accounts.tables import User
 
@@ -31,6 +31,9 @@ class CommunityFlair(Table, tablename='community_flairs'):
     title = Varchar(length=100)
     community = ForeignKey(references=Community)
     color = Varchar(length=30)
+    mod_only = Boolean(default=False)
+    hue = Integer(null=True)
+    saturation = Integer(null=True)
     created_on = Timestamptz()
 
 class CommunityRules(Table, tablename='rules'):
