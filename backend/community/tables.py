@@ -31,7 +31,7 @@ class Community(Table, tablename='communities'):
 class CommunityFlair(Table, tablename='community_flairs'):
     title = Varchar(length=100)
     community = ForeignKey(references=Community)
-    color = Varchar(length=30)
+    background_color = Varchar(length=30)
     mod_only = Boolean(default=False)
     hue = Integer(null=True)
     saturation = Integer(null=True)
