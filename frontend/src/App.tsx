@@ -4,6 +4,8 @@ import Login from "./pages/LoginPage"
 import HomePage from "./pages/HomePage"
 import CommunityPage from "./pages/CommunityPage"
 import CreatePost from "./pages/CreatePost"
+import LookAndFeelPage from "./pages/LookAndFeelPage"
+import PostFlairPage from "./pages/PostFlairPage"
 import { useState } from "react"
 
 const App = ()=>{
@@ -22,6 +24,8 @@ const App = ()=>{
         <Route path="/create/post" element={<CreatePost handleModalToggle={handleModalToggle} showModal={showModal} />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/community/look-feel-page" element={<LookAndFeelPage />} />
+        <Route path="/community/post-flair" element={<PostFlairPage />} />
       </Routes>
     </main>
   )

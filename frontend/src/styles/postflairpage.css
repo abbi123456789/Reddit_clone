@@ -1,0 +1,18 @@
+.post-flair-page-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-flair-page-container .main-content{
+    height: 100vh;
+    display: flex;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.post-flair-page-container .main-content .sub-content{
+    display: flex;
+    flex: 1;
+    margin: 20px;
+}

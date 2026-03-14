@@ -1,0 +1,73 @@
+.post-flair-content{
+    height: 100vh;
+    overflow: auto;
+    scrollbar-width: none;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    flex: 1;
+    margin-right: 50px;
+}
+
+.post-flair-content .post-flair-title{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-flair-content .post-flair-title .heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-flair-content .post-flair-title .heading div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.post-flair-content .post-flair-title .heading div .bi-arrow-left{
+    font-size: 2rem;
+    padding: 5px 10px;
+    background-color: lightgray;
+    border-radius: 50px;
+}
+
+.post-flair-content .post-flair-title .heading div > span{
+    font-weight: bolder;
+    font-size: 3rem;
+}
+
+.post-flair-content .post-flair-title .heading div > button{
+    padding: 8px 12px;
+    font-weight: bolder;
+    background-color: #0A449B;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.post-flair-content .post-flair-title .post-flair-info{
+    font-size: 1.4rem;
+}
+
+.post-flair-content .selection-actions{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-flair-content .selection-actions .action{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-flair-content .selection-actions .action .action-desc{
+    font-size: 1.2rem;
+    color: rgb(70, 72, 75);
+}
+

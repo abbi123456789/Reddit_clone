@@ -1,0 +1,64 @@
+.look-and-feel-container {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    flex: 1;
+}
+
+
+.look-and-feel-container .heading {
+    font-weight: bolder;
+    font-size: 3.5rem;
+}
+
+.look-and-feel-container .actions {
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.look-and-feel-container .actions .community-appearance-action,
+.look-and-feel-container .actions .post-flair-action,
+.look-and-feel-container .actions .user-flair-action,
+.look-and-feel-container .actions .custom-emoji-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    margin-right: 50px;
+    cursor: pointer;
+}
+
+.look-and-feel-container .actions .community-appearance-action:hover,
+.look-and-feel-container .actions .post-flair-action:hover,
+.look-and-feel-container .actions .user-flair-action:hover,
+.look-and-feel-container .actions .custom-emoji-action:hover  {
+    border-radius: 10px;
+    background-color: rgb(247, 245, 245);
+}
+
+.look-and-feel-container .actions .community-appearance-action > div,
+.look-and-feel-container .actions .post-flair-action > div,
+.look-and-feel-container .actions .user-flair-action > div,
+.look-and-feel-container .actions .custom-emoji-action > div  {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.look-and-feel-container .actions .community-appearance-action > div > p,
+.look-and-feel-container .actions .post-flair-action > div > p,
+.look-and-feel-container .actions .user-flair-action > div > p,
+.look-and-feel-container .actions .custom-emoji-action > div > p{
+    font-size: 1.2rem;
+    color: rgb(90, 87, 87);
+}
+
+.look-and-feel-container .actions .community-appearance-action > div > span,
+.look-and-feel-container .actions .post-flair-action > div > span,
+.look-and-feel-container .actions .user-flair-action > div > span,
+.look-and-feel-container .actions .custom-emoji-action > div > span {
+    font-size: 2rem;
+    font-weight: bolder;
+}

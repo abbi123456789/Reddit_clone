@@ -1,0 +1,107 @@
+/* The darkened background */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Dim the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it stays on top */
+}
+
+/* The Modal itself */
+.flair-background-modal {
+  font-size: 1.6rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  
+  transform: translate(-50%, -50%);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000; /* Sit above other content */
+  
+  margin: 0;
+  border: none;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  width: 90%;
+  max-width: 500px;
+}
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.flair-background-modal .flair-preview{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flair-background-modal .flair-preview .preview-card{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid lightslategray;
+  border-radius: 15px;
+  padding: 5px 10px;
+}
+
+.flair-background-modal .enable-background-color{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flair-background-modal .color-picker-settings{
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.color-picker-settings .preview-box{
+  height: 40px;
+  width: 80%;
+  justify-self: center;
+}
+
+.color-picker-settings .setting-row,
+.color-picker-settings .hex-input-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flair-background-modal .action-buttons{
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.flair-background-modal .action-buttons .close-btn{
+  padding: 5px 10px;
+  background-color: rgba(205, 22, 22, 0.938);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+}
+
+.flair-background-modal .action-buttons .save-btn{
+  padding: 5px 10px;
+  background-color: rgb(33, 33, 182);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+}

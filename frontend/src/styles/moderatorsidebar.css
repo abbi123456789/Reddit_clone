@@ -1,0 +1,75 @@
+.moderator-sidebar{
+    height: 100vh;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 300px;
+    border-right: 1px solid lightgray;
+    overflow: auto;
+    scrollbar-width: none;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.exit-link{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.mod-overview,
+.moderation,
+.wiki,
+.mod-community-apps,
+.mod-settings,
+.mod-rules{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mod-overview .heading,
+.moderation .heading,
+.wiki .heading,
+.mod-community-apps .heading,
+.mod-settings .heading,
+.mod-rules .heading{
+    font-weight: bolder;
+    text-transform: uppercase;
+    cursor: auto;
+}
+
+.mod-overview div,
+.moderation div,
+.wiki div,
+.mod-community-apps div,
+.mod-settings div,
+.mod-rules div{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mod-overview div > div,
+.moderation div > div,
+.wiki div >div,
+.mod-community-apps div > div,
+.mod-settings div > div,
+.mod-rules div > div{
+    display: flex;
+    cursor: pointer;
+    width:fit-content;
+    padding: 4px 10px 4px 10px;
+    border-radius: 8px;
+}
+
+.mod-overview div > div:hover,
+.moderation div > div:hover,
+.wiki div > div:hover,
+.mod-community-apps div > div:hover,
+.mod-settings div > div:hover,
+.mod-rules div > div:hover{
+    background-color: lightgray;
+}
+
