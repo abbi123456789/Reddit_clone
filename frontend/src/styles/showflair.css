@@ -1,0 +1,47 @@
+.flair-display{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flair-display .flair-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flair-display .flair-header > div{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.flair-display .flair-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flair-display .flair-item .flair-info{
+    display: flex;
+    gap: 60px;
+    align-items: center;
+}
+
+.flair-display .flair-item .flair-actions{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.flair-display .flair-item .flair-actions .bi-trash{
+    color: red;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.flair-display .flair-item .flair-actions .bi-pencil{
+    color: blue;
+    cursor: pointer;
+    background-color: transparent;
+}

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import '../../styles/postflair.css'
 import '../../styles/slider.css'
+import ShowFlair from './ShowFlair'
 
 type CreateNewFlairProps = {
     setShowNewFlair : Dispatch<SetStateAction<boolean>>
@@ -75,6 +76,7 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
                     <span>&gt;</span>
                 </div>
             </div>
+            <ShowFlair />
         </main>
     )
 }
