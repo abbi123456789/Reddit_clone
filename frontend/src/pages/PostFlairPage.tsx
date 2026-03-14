@@ -4,9 +4,11 @@ import ModeratorSidebar from "../components/Moderator/Sidebar"
 import PostFlair from "../components/Moderator/PostFlair"
 import CreateNewFlair from "../components/Moderator/CreateNewFlair"
 import FlairBackgroundModal from "../components/Moderator/FlairBackgroundModal"
+import { useParams } from "react-router-dom"
 import { useState } from "react"
 
 const PostFlairPage = ()=>{
+    const { communityName } = useParams()
     const [showNewFlair, setShowNewFlair] = useState<boolean>(false)
     const [isModalOpen, setModalOpen] = useState<boolean>(false)
     const [backgroundColor, setBackgroundColor] = useState(false)
@@ -40,6 +42,7 @@ const PostFlairPage = ()=>{
                             setHexCode={setHexCode}
                             flair={flair}
                             setModalOpen={setModalOpen}
+                            communityName={communityName}
                         />
                     </div>
                 )}

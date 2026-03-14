@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import { hslToHex } from "../../utils/hslToHex";
 import '../../styles/flairbackgroundmodal.css'
+import { createNewFlair } from "../../services/flairs";
 
 export type FlairBackgroundModalProps = {
     flair: string;
@@ -10,9 +11,10 @@ export type FlairBackgroundModalProps = {
     hexCode: string;
     setHexCode: Dispatch<SetStateAction<string>>;
     setModalOpen: Dispatch<SetStateAction<boolean>>;
+    communityName: string;
 }
 
-const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCode, setHexCode, setModalOpen}:FlairBackgroundModalProps)=>{
+const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCode, setHexCode, setModalOpen, communityName}:FlairBackgroundModalProps)=>{
     const [hue, setHue] = useState(0);
     const [saturation, setSaturation] = useState(0);
 
@@ -23,8 +25,11 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
         setModalOpen(false);
     }
 
-    const onSave = () => {
+    const onSave = async () => {
+        console.log("Saving flair with color:", { flair, hexCode, hue, saturation });
         // Here you would typically send the selected color to your backend or update the parent state
+        const newFlair = await createNewFlair(communityName, flair, hexCode, hue, saturation);
+        console.log(newFlair)
         setModalOpen(false);
     }
 
