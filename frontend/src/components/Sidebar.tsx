@@ -1,4 +1,6 @@
 import '../styles/sidebar.css'
+import { getMyCommunities } from '../services/community'
+import { useEffect, useState } from 'react'
 
 type SidebarProps = {
     showModal?: boolean
@@ -6,6 +8,18 @@ type SidebarProps = {
 }
 
 const Sidebar = ({handleModalToggle}:SidebarProps)=>{
+    const [myCommunities, setMyCommunities] = useState([])
+
+    useEffect(()=>{
+        const fetchCommunities = async () => {
+            const communities = await getMyCommunities()
+            if(communities){
+                setMyCommunities(communities)
+            }
+        }
+        fetchCommunities()
+    }, [])
+
     return (
         <aside className="sidebar">
             <div className="post-options">
@@ -48,6 +62,16 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
                     <i className="bi bi-gear"></i>
                     <span>Manage</span>
                 </div>
+                // Display user's communities if they have any
+                {myCommunities.length > 0 && (
+                <div className='my-communities'>
+                    {myCommunities.map((community: any) => (
+                        <div className='community' key={community.id}>
+                            <span>{community.name}</span>
+                        </div>
+                    ))}
+                </div>
+                )}
             </div>
 
             <div className='resources'>
