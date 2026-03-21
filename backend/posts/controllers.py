@@ -3,8 +3,8 @@ from typing import Any
 
 from accounts.tables import User
 from community.tables import Community, CommunityFlair
-from .tables import Post
-from .schema import PostCreate
+from .tables import Post, PostVote
+from .schema import PostCreate, VoteSchema
 from utils.slugify import create_timestamped_slug
 
 class PostController(Controller):
@@ -55,13 +55,76 @@ class PostController(Controller):
             print(post)
         return post[0] if post else {}
     
-    @post('/{post_id:int}/upvote')
-    async def upvote_post(self, post_id: int)->None:
-        raise NotImplementedError("This endpoint will handle upvoting a post")
-    
-    @post('/{post_id:int}/downvote')
-    async def downvote_post(self, post_id: int)->None:
-        raise NotImplementedError("This endpoint will handle downvoting a post")
+    # @post('/{post_id:int}/vote')
+    # async def upvote_post(self, data:VoteSchema, request:Request[User, Any, Any], post_id: int)->None:
+    #     user_id = request.user.get('id')
+    #     record_exists = await PostVote.exists().where((User.id == user_id) & (Post.id == post_id))
+    #     post = await Post.objects().where(Post.id == post_id).first()
+    #     async with PostVote._meta.db.transaction():
+    #         if not record_exists:
+    #             post_vote = PostVote(post=post_id, user=user_id, value=data.value)
+    #             await post_vote.save()
+    #             await post.update_self({Post.score : Post.score + data.value})
+    #         else:
+    #             post_vote = await PostVote.objects().where((User.id == user_id) & (Post.id == post_id)).first()
+    #             if post_vote.value == data.value:
+    #                 await post_vote.remove()
+    #                 await post.update_self({Post.score : Post.score - data.value})
+    #             else:
+    #                 post_vote.update_self({PostVote.value : data.value})
+    #                 if data.value == 1:
+    #                     await post.update_self({Post.score : Post.score + 2})
+    #                 else:
+    #                     await post.update_self({Post.score : Post.score - 2})
+
+                
+                
+    @post('/post_id:int/vote')
+    async def vote_post(self, data:VoteSchema, request:Request[User, Any, Any], post_id:int)->None:
+        user_id = request.user.get('id')
+        sql_query = '''
+        WITH existing AS (
+            SELECT value FROM post_votes WHERE post = {} AND voter = {}
+        ),
+        action AS (
+            INSERT INTO post_votes (post, voter, value)
+            VALUES ({}, {}, {})
+            ON CONFLICT (post, voter)
+            DO UPDATE SET value = EXCLUDED.value
+            WHERE post_votes.value != EXCLUDED.value
+            RETURNING (SELECT value FROM existing) AS old_value,
+            value AS new_value, 'voted' AS state
+        ),
+        deletion AS (
+            DELETE FROM post_votes
+            WHERE post = {} AND voter = {} AND value = {}
+            AND NOT EXISTS (SELECT 1 FROM action)
+            RETURNING {} AS deleted_value, 'toggled' AS state
+        ),
+        status_check AS (
+            SELECT
+                CASE
+                    WHEN (SELECT new_value FROM action) = 1 THEN 'upvoted'
+                    WHEN (SELECT new_value FROM action) = -1 THEN 'downvoted'
+                    WHEN EXISTS (SELECT 1 FROM deletion) THEN 'toggled_off'
+                    ELSE 'no_change'
+                END AS vote_status
+        ),
+        UPDATE post
+        SET score = score + CASE
+            WHEN EXISTS (SELECT 1 FROM action) THEN
+                CASE
+                    WHEN (SELECT old_value FROM action) IS NULL THEN (SELECT new_value FROM action)
+                    ELSE (SELECT new_value FROM action) - (SELECT old_value FROM action)
+                END
+            WHEN EXISTS (SELECT 1 FROM deletion) THEN -(SELECT deleted_value FROM deletion)
+            ELSE 0
+        END
+        WHERE id = {};
+        RETURNING id AS post_id, score AS new_score, (SELECT vote_status FROM status_check) AS status;
+        '''
+        await PostVote.raw(sql_query, post_id, user_id, post_id, user_id, data.value, post_id, user_id, data.value, data.value, post_id)
+
     
     @post('/{post_id:int}/edit')
     async def edit_post(self, post_id: int)->None:
