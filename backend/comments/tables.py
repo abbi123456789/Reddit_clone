@@ -13,9 +13,7 @@ class Comment(Table, tablename='comments'):
     post = ForeignKey(Post)
     community = ForeignKey(Community)
 
-    upvotes = Integer(default=1)
-    downvotes = Integer(default=1)
-    score = Integer(default=1)
+    score = Integer(default=0)
 
     parent = ForeignKey('self')
     depth = Integer(default=0)
