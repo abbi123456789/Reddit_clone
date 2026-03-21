@@ -6,6 +6,7 @@ import CommunityPage from "./pages/CommunityPage"
 import CreatePost from "./pages/CreatePost"
 import LookAndFeelPage from "./pages/LookAndFeelPage"
 import PostFlairPage from "./pages/PostFlairPage"
+import PostDetail from "./pages/PostDetail"
 import { useState } from "react"
 
 const App = ()=>{
@@ -21,7 +22,9 @@ const App = ()=>{
       <Routes>
         <Route path="/" element={<HomePage handleModalToggle = {handleModalToggle} showModal={showModal}/>} />
         <Route path="/r/:communityName" element={<CommunityPage handleModalToggle={handleModalToggle} showModal={showModal} />} />
-        <Route path="/create/post" element={<CreatePost handleModalToggle={handleModalToggle} showModal={showModal} />} />
+        <Route path="/submit" element={<CreatePost handleModalToggle={handleModalToggle} showModal={showModal} />} />
+        <Route path="/r/:communityName/submit" element={<CreatePost handleModalToggle={handleModalToggle} showModal={showModal} />} />
+        <Route path="/r/:communityName/comments/:postId/:postSlug" element={<PostDetail handleModalToggle={handleModalToggle} showModal={showModal} />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/r/:communityName/look-feel" element={<LookAndFeelPage />} />

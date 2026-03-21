@@ -1,0 +1,62 @@
+.post-comments{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.comment{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment-author{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.comment-interactions{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.comment-interactions .comment-score{
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.comment-interactions .comment-score .vote-button{
+    padding: 5px 7px;
+}
+
+.comment-interactions .comment-score .vote-button:hover{
+    background-color: rgb(188, 197, 206);
+    border-radius: 20px;
+}
+
+.comment-interactions .comment-reply{
+    display: flex;
+    gap: 8px;
+    padding: 5px 5px;
+    cursor: pointer;
+}
+
+.comment-interactions .comment-reply:hover{
+    background-color: rgb(188, 197, 206);
+    border-radius: 20px;
+}
+
+.comment-interactions .comment-share{
+    display: flex;
+    gap: 8px;
+    padding: 5px 5px;
+    cursor: pointer;
+}
+
+.comment-interactions .comment-share:hover{
+    background-color: rgb(188, 197, 206);
+    border-radius: 20px;
+}
