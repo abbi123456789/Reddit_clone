@@ -1,0 +1,77 @@
+/* Tabs Styling */
+.tabs-container {
+  display: flex;
+  gap: 32px;
+  border-bottom: 2px solid #edeff1;
+  margin-bottom: 32px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #7c7c7c;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tab.active {
+  color: #1c1c1c;
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #1c1c1c;
+}
+
+/* Disabled State */
+.settings-row.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.settings-row.disabled .row-title {
+  color: #7c7c7c;
+}
+
+/* Inline Link */
+.inline-link {
+  color: #0079d3;
+  text-decoration: none;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
+}
+
+/* External Icon */
+.external-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: #1c1c1c;
+}
+
+/* Spacing Adjustment */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Alignment for long descriptions */
+.row-value {
+  max-width: 300px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
