@@ -7,6 +7,7 @@ import CreatePost from "./pages/CreatePost"
 import LookAndFeelPage from "./pages/LookAndFeelPage"
 import PostFlairPage from "./pages/PostFlairPage"
 import PostDetail from "./pages/PostDetail"
+import ModeratorPostsAndComments from "./pages/ModeratorPostsAndComments"
 import { useState } from "react"
 
 const App = ()=>{
@@ -29,6 +30,7 @@ const App = ()=>{
         <Route path="/login" element={<Login />} />
         <Route path="/r/:communityName/look-feel" element={<LookAndFeelPage />} />
         <Route path="/r/:communityName/post-flair" element={<PostFlairPage />} />
+        <Route path="/r/:communityName/posts-and-comments" element={<ModeratorPostsAndComments />} />
       </Routes>
     </main>
   )
