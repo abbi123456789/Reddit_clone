@@ -4,7 +4,9 @@ from piccolo.columns import Varchar, JSONB, Timestamptz, ForeignKey, Text
 from community.tables import Community, CommunityFlair
 from accounts.tables import User
 
-from piccolo.columns import Varchar, Text, ForeignKey, Timestamptz, Boolean, JSONB, Integer
+from piccolo.columns import Varchar, Text, ForeignKey, Timestamptz, Boolean, JSONB, Integer,\
+LazyTableReference
+from piccolo.columns.m2m import M2M
 
 class Post(Table):
     title = Varchar(length=300)
@@ -33,3 +35,10 @@ class Post(Table):
     # Timestamps
     created_at = Timestamptz(auto_now_add=True)
     updated_at = Timestamptz(auto_update=True)
+    
+    voted_users = M2M(LazyTableReference('PostVote', module_path=__name__))
+
+class PostVote(Table, tablename='post_votes'):
+    post = ForeignKey(Post)
+    user = ForeignKey(User)
+    value = Integer()

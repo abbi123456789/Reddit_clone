@@ -19,3 +19,4 @@ class User(Table, tablename='users'):
     banned_from_communities = M2M(LazyTableReference('BannedCommunityMembers', module_path='community.tables'))
     joined_communites = M2M(LazyTableReference('JoinedCommunityMembers', module_path='community.tables'))
     moded_communities = M2M(LazyTableReference('CommunityModerators', module_path='community.tables'))
+    voted_posts = M2M(LazyTableReference('PostVote', module_path='posts.tables'))
