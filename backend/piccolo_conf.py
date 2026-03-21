@@ -11,5 +11,10 @@ DB = PostgresEngine(
     }
 )
 APP_REGISTRY = AppRegistry(
-    apps=["accounts.piccolo_app", "community.piccolo_app", "posts.piccolo_app"]
+    apps=[
+        "accounts.piccolo_app",
+        "community.piccolo_app",
+        "posts.piccolo_app",
+        "comments.piccolo_app",
+    ]
 )
