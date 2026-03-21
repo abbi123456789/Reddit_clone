@@ -20,9 +20,7 @@ class Post(Table):
     flair = ForeignKey(CommunityFlair, null=True)
     
     # Engagement & Ranking
-    upvotes = Integer(default=1)
-    downvotes = Integer(default=0)
-    score = Integer(default=1) # upvotes - downvotes (index this for sorting!)
+    score = Integer(default=0)
     comment_count = Integer(default=0) # Denormalized for performance
     
     # Moderation & Flags
