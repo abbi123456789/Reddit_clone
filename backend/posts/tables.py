@@ -40,5 +40,5 @@ class Post(Table):
 
 class PostVote(Table, tablename='post_votes'):
     post = ForeignKey(Post)
-    user = ForeignKey(User)
+    voter = ForeignKey(User)
     value = Integer()

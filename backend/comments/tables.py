@@ -31,5 +31,5 @@ class Comment(Table, tablename='comments'):
 
 class CommentVote(Table, tablename='comment_votes'):
     comment = ForeignKey(Comment)
-    user = ForeignKey(User)
+    voter = ForeignKey(User)
     value = Integer()
