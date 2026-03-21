@@ -1,0 +1,16 @@
+.post-detail-container {   
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.post-detail-container .main-content {
+    display: flex;
+}
+
+.post-detail-container .sub-content {
+    display: flex;
+    flex: 1;
+    margin-left: 20px;
+}
+

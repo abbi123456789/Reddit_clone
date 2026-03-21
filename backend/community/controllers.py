@@ -41,15 +41,42 @@ class CommunityController(Controller):
         communities = await Community.select(Community.id, Community.name).where(Community.creator == request.user.get('id'))
         return communities
 
-    @get('/{community_id:int}')
-    async def get_community(self)->None:
-        community_id = self.path_params['community_id']
-        community = await Community.objects().get(Community.id == community_id)
-        flairs = await CommunityFlair.select().where(CommunityFlair.community_id == community_id)
-        community_dict = community.to_dict()
-        community_dict['flairs'] = [flair.to_dict() for flair in flairs]
+    @get('/{community_name:str}')
+    async def get_community(self, request:Request[Any, Any, Any])->None:
+        sql_statement = '''
+        SELECT c.id, c.name, c.description, c.visibility, c.nsfw, c.category, c.creator,
+        f.id as flair_id, f.title as flair_title, f.background_color, f.text_color, f.mod_only, f.hue, f.saturation
+        FROM communities c
+        LEFT JOIN community_flairs f ON c.id = f.community
+        WHERE c.name = {}
+        '''
+        community_name = request.path_params['community_name']
+        async with Community._meta.db.transaction():
+            community = await Community.raw(sql_statement, community_name)
         if not community:
             raise HTTPException(detail="Community not found", status_code=404)
+        community_dict = {
+            'id': community[0].get('id'),
+            'name': community[0].get('name'),
+            'description': community[0].get('description'),
+            'visibility': community[0].get('visibility'),
+            'nsfw': community[0].get('nsfw'),
+            'category': community[0].get('category'),
+            'creator': community[0].get('creator'),
+            'flairs': []
+        }
+        for comm in community:
+            if comm.get('flair_id'):
+                flair_dict = {
+                    'id': comm.get('flair_id'),
+                    'title': comm.get('flair_title'),
+                    'background_color': comm.get('background_color'),
+                    'text_color': comm.get('text_color'),
+                    'mod_only': comm.get('mod_only'),
+                    'hue': comm.get('hue'),
+                    'saturation': comm.get('saturation')
+                }
+                community_dict['flairs'].append(flair_dict)
         return community_dict
 
     @post('/{community_name:str}/create/flair')

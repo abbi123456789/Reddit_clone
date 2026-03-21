@@ -1,4 +1,5 @@
 import api from "./auth";
+import type { Flair } from "./flairs";
 
 export type CommunityCreation = {
     name: string
@@ -6,6 +7,17 @@ export type CommunityCreation = {
     visibility: 'public' | 'private' | 'restricted'
     nsfw: boolean
     category: string
+}
+
+export type Community = {
+    id: number
+    name: string
+    description: string
+    visibility: 'public' | 'private' | 'restricted'
+    nsfw: boolean
+    category: string
+    creator: number
+    flairs?: Flair[]
 }
 
 export const createCommunity = async ({name, description, visibility, nsfw, category}: CommunityCreation) => {
@@ -32,7 +44,7 @@ export const getMyCommunities = async () => {
     }
 }
 
-export const getCommunity = async (communityName: string) => {
+export const getCommunity = async (communityName: string): Promise<Community | null> => {
     try{
         const response = await api.get(`/r/${communityName}`)
         return response.data

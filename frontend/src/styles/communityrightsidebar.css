@@ -1,0 +1,124 @@
+.community-right-sidebar{
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.community-right-sidebar .community-info{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid rgb(165, 175, 184);
+}
+
+.community-right-sidebar .community-info .title-join{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.community-right-sidebar .community-info .title-join .community-name{
+    font-weight: bolder;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+.community-right-sidebar .community-info .title-join .join-status{
+    padding: 6px 12px;
+    background-color: rgb(165, 175, 184);
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.community-right-sidebar .community-info .community-description{
+    display: flex;
+    flex-direction: column;
+}
+
+.community-right-sidebar .community-info .community-description .description-header{
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+
+.community-right-sidebar .community-info .community-description .description-body{
+    color: rgb(76, 79, 82);
+}
+
+.community-right-sidebar .community-info .community-type{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.community-right-sidebar .community-info .community-type > div{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.community-right-sidebar .community-info .community-guidelines{
+    display: flex;
+    justify-content: center;
+    margin: 0px 20px;
+    padding: 8px;
+    background-color: rgb(165, 175, 184);
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.community-right-sidebar .community-info .community-stats{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.community-right-sidebar .community-info .community-stats .stat-item{
+    display: flex;
+    flex-direction: column;
+}
+
+.community-right-sidebar .community-info .community-stats .stat-item .stat-count{
+    font-weight: bolder;
+    font-size: 1.2rem;
+}
+
+.community-right-sidebar .flair-display{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid rgb(165, 175, 184);
+}
+
+.community-right-sidebar .flair-display .flair-header{
+    font-weight: bold;
+    font-size: 1.6rem;
+}
+
+.community-right-sidebar .flair-display .flair-options{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.community-right-sidebar .community-rules{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.community-right-sidebar .community-rules .rules-header{
+    font-weight: bold;
+    font-size: 1.6rem;
+}
+
+.community-right-sidebar .community-rules .rules-list{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 1.4rem;
+}
