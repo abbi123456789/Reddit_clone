@@ -1,5 +1,15 @@
 import api from "./auth"
 
+export type Flair = {
+    id: number
+    title: string
+    background_color: string
+    text_color: string
+    mod_only: boolean
+    hue: number
+    saturation: number
+}
+
 const createNewFlair = async (communityName: string, title: string, background_color: string, hue: number, saturation:number, text_color: string) => {
     console.log({ communityName, title, background_color, hue, saturation, text_color })
     try{
@@ -18,7 +28,6 @@ const createNewFlair = async (communityName: string, title: string, background_c
 }
 
 const getFlairs = async (communityName: string) => {
-    console.log(communityName)
     try{
         const response = await api.get(`/r/${communityName}/flairs`)
         return response.data
