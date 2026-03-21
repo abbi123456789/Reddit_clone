@@ -1,5 +1,7 @@
 from piccolo.table import Table
-from piccolo.columns import JSONB, Text, Timestamptz, Integer, ForeignKey, Boolean
+from piccolo.columns import JSONB, Text, Timestamptz, Integer, ForeignKey, Boolean, \
+LazyTableReference
+from piccolo.columns.m2m import M2M
 
 from posts.tables import Post
 from community.tables import Community
@@ -23,3 +25,11 @@ class Comment(Table, tablename='comments'):
 
     created_at = Timestamptz()
     updated_at = Timestamptz(auto_update=True)
+
+    voted_users = M2M(LazyTableReference('CommentVote', module_path=__name__))
+
+
+class CommentVote(Table, tablename='comment_votes'):
+    comment = ForeignKey(Comment)
+    user = ForeignKey(User)
+    value = Integer()
