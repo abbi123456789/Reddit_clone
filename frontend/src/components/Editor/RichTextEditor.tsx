@@ -19,6 +19,10 @@ import RedditAutoLinkPlugin from './plugins/RedditAutoLinkPlugin';
 import ImagePlugin from './plugins/ImagePlugin';
 import { ImageNode } from './nodes/ImageNode';
 
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import type { EditorState, LexicalEditor } from 'lexical';
+import { $generateHtmlFromNodes } from '@lexical/html';
+
 import '../../styles/editor.css'
 
 const theme = {
@@ -118,7 +122,20 @@ const editorConfig = {
     ],
 };
 
-const RichTextEditor = () => {
+export interface RichTextEditorProps {
+    onChange?: (editorState: EditorState, html: string) => void;
+}
+
+const RichTextEditor = ({ onChange }: RichTextEditorProps) => {
+    const handleChange = (editorState: EditorState, editor: LexicalEditor) => {
+        if (!onChange) return;
+
+        editorState.read(() => {
+            const html = $generateHtmlFromNodes(editor, null);
+            onChange(editorState, html);
+        });
+    };
+
     return (
         <LexicalComposer initialConfig={editorConfig}>
             <div className="editor-container">
@@ -136,6 +153,7 @@ const RichTextEditor = () => {
                     <RedditAutoLinkPlugin />
                     <ImagePlugin />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+                    <OnChangePlugin onChange={handleChange} />
                 </div>
             </div>
         </LexicalComposer>
