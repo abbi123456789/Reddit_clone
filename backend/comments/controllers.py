@@ -40,7 +40,7 @@ class CommentController(Controller):
         print(comments)
         return comments
     
-    @get('/{comment_id:int}/vote')
+    @post('/{comment_id:int}/vote')
     async def vote_comment(self, data:CommentVoteSchema, request:Request[User, Any, Any], comment_id:int)->None:
         user_id = request.user.get('id')
         sql_statement = '''
