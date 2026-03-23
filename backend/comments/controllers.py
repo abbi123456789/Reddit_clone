@@ -28,20 +28,31 @@ class CommentController(Controller):
 
     @get('/')
     async def get_post_comments(self, request:Request[User, Any, Any])->list:
+        user_id = request.user.get('id')
         post_id = request.path_params['post_id']
         sql_statements = '''
-        SELECT c.id, c.content_json, c.content_html,
-        u.id AS author_id, u.username AS author_name
+        SELECT c.id, c.content_json, c.content_html, c.score,
+        u.id AS author_id, u.username AS author_name,
+        CASE
+            WHEN cv.value = 1 THEN 'upvoted'
+            WHEN cv.value = -1 THEN 'downvoted'
+            ELSE 'not_voted'
+        END AS vote_status
         FROM comments c
         LEFT JOIN users u ON c.author = u.id
+        LEFT JOIN comment_votes cv ON c.id = cv.comment AND cv.voter = {}
         LEFT JOIN post p ON c.post = {};
         '''
-        comments = await Comment.raw(sql_statements, post_id)
+        comments = await Comment.raw(sql_statements, user_id, post_id)
         print(comments)
         return comments
     
+
+class CommentVoteController(Controller):
+    path = '/comments'
+
     @post('/{comment_id:int}/vote')
-    async def vote_comment(self, data:CommentVoteSchema, request:Request[User, Any, Any], comment_id:int)->None:
+    async def vote_comment(self, data:CommentVoteSchema, request:Request[User, Any, Any], comment_id:int)->dict[str, Any]:
         user_id = request.user.get('id')
         sql_statement = '''
         WITH existing AS (
@@ -74,13 +85,14 @@ class CommentController(Controller):
             SET score = score + CASE
                 WHEN EXISTS (SELECT 1 FROM action) THEN
                     CASE
-                        WHEN (SELECT old_value FROM action) IS NULL THEN (SELECT new_value FROM action)
-                        ELSE (SELECT new_value FROM action) - (SELECT old_value FROM action)
+                        WHEN (SELECT old_value FROM action) IS NULL THEN (SELECT new_value::int FROM action)
+                        ELSE (SELECT new_value::int FROM action) - (SELECT old_value::int FROM action)
                     END
-                WHEN EXISTS (SELECT 1 FROM deletion) THEN -(SELECT deleted_value FROM deletion)
+                WHEN EXISTS (SELECT 1 FROM deletion) THEN -(SELECT deleted_value::int FROM deletion)
                 ELSE 0
             END
-            WHERE id = {};
-                    RETURNING id AS comment_id, score AS new_score, (SELECT vote_status FROM status_check) AS status;
+            WHERE id = {}
+            RETURNING id AS comment_id, score AS new_score, (SELECT vote_status FROM status_check) AS status;
         '''
-        await CommentVote.raw(sql_statement, comment_id, user_id, comment_id, user_id, data.value, comment_id, user_id, data.value, data.value, comment_id)
+        response = await CommentVote.raw(sql_statement, comment_id, user_id, comment_id, user_id, data.value, comment_id, user_id, data.value, str(data.value), comment_id)
+        return response[0] if response else {}

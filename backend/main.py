@@ -5,7 +5,7 @@ from litestar.config.cors import CORSConfig
 from accounts.controllers import jwt_auth, UserController
 from community.controllers import CommunityController
 from posts.controllers import PostController
-from comments.controllers import CommentController
+from comments.controllers import CommentController, CommentVoteController
 
 cors_config = CORSConfig(
     allow_origins=['http://localhost:5173'],
@@ -19,7 +19,7 @@ openapi_config = OpenAPIConfig(
 )
 
 app = Litestar(
-    route_handlers=[UserController, CommunityController, PostController, CommentController],
+    route_handlers=[UserController, CommunityController, PostController, CommentController, CommentVoteController],
     on_app_init=[jwt_auth.on_app_init],
     openapi_config=openapi_config,
     cors_config = cors_config,
