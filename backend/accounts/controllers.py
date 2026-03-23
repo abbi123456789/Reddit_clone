@@ -23,7 +23,7 @@ async def retrieve_user_handler(token: Token, connection: ASGIConnection) -> Use
 jwt_auth = JWTAuth[UserSchema](
     retrieve_user_handler=retrieve_user_handler,
     token_secret=TOKEN_SECRET,
-    exclude=['/accounts/login', '/accounts/register', '/schema', '/community/upload/image']
+    exclude=['/accounts/login', '/accounts/register', '/schema']
 )
 
 class UserController(Controller):
