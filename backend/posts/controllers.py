@@ -36,51 +36,33 @@ class PostController(Controller):
         print(post)
         return post.to_dict()
     
-    @get('/{post_slug:str}')
-    async def get_post(self, post_slug: str)->dict[str, Any]:
+    @get('/{post_id:int}/{post_slug:str}')
+    async def get_post(self, request:Request[User, Any, Any], post_id:int)->dict[str, Any]:
+        user_id = request.user.get('id')
         sql_statement = '''
         SELECT 
-            p.id, p.title, p.slug, p.content_html, p.content_json, p.updated_at, p.score, p.comment_count,
+            p.id, p.title, p.slug, p.content_html, p.content_json, p.updated_at, p.score, p.comment_count, p.score,
             u.username AS author_username, u.id AS author_id,
             c.name AS community_name, c.id AS community_id,
-            f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color
+            f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color,
+            CASE (SELECT value FROM post_votes WHERE post = {} AND voter = {})
+                WHEN 1 THEN 'upvoted'
+                WHEN -1 THEN 'downvoted'
+                ELSE 'not_voted'
+            END AS vote_status 
         FROM post p
         LEFT JOIN users u ON p.author = u.id
         LEFT JOIN communities c ON p.community = c.id
         LEFT JOIN community_flairs f ON p.flair = f.id
-        WHERE p.slug = {}
+        WHERE p.id = {};
         '''
         async with Post._meta.db.transaction():
-            post = await Post.raw(sql_statement, post_slug)
+            post = await Post.raw(sql_statement, post_id, user_id, post_id)
             print(post)
-        return post[0] if post else {}
-    
-    # @post('/{post_id:int}/vote')
-    # async def upvote_post(self, data:VoteSchema, request:Request[User, Any, Any], post_id: int)->None:
-    #     user_id = request.user.get('id')
-    #     record_exists = await PostVote.exists().where((User.id == user_id) & (Post.id == post_id))
-    #     post = await Post.objects().where(Post.id == post_id).first()
-    #     async with PostVote._meta.db.transaction():
-    #         if not record_exists:
-    #             post_vote = PostVote(post=post_id, user=user_id, value=data.value)
-    #             await post_vote.save()
-    #             await post.update_self({Post.score : Post.score + data.value})
-    #         else:
-    #             post_vote = await PostVote.objects().where((User.id == user_id) & (Post.id == post_id)).first()
-    #             if post_vote.value == data.value:
-    #                 await post_vote.remove()
-    #                 await post.update_self({Post.score : Post.score - data.value})
-    #             else:
-    #                 post_vote.update_self({PostVote.value : data.value})
-    #                 if data.value == 1:
-    #                     await post.update_self({Post.score : Post.score + 2})
-    #                 else:
-    #                     await post.update_self({Post.score : Post.score - 2})
-
+        return post[0] if post else {}            
                 
-                
-    @post('/post_id:int/vote')
-    async def vote_post(self, data:VoteSchema, request:Request[User, Any, Any], post_id:int)->None:
+    @post('/{post_id:int}/vote')
+    async def vote_post(self, data:VoteSchema, request:Request[User, Any, Any], post_id:int)->dict[str, Any]:
         user_id = request.user.get('id')
         sql_query = '''
         WITH existing AS (
@@ -109,21 +91,22 @@ class PostController(Controller):
                     WHEN EXISTS (SELECT 1 FROM deletion) THEN 'toggled_off'
                     ELSE 'no_change'
                 END AS vote_status
-        ),
+        )
         UPDATE post
         SET score = score + CASE
             WHEN EXISTS (SELECT 1 FROM action) THEN
                 CASE
-                    WHEN (SELECT old_value FROM action) IS NULL THEN (SELECT new_value FROM action)
-                    ELSE (SELECT new_value FROM action) - (SELECT old_value FROM action)
+                    WHEN (SELECT old_value FROM action) IS NULL THEN (SELECT new_value::int FROM action)
+                    ELSE (SELECT new_value::int FROM action) - (SELECT old_value::int FROM action)
                 END
-            WHEN EXISTS (SELECT 1 FROM deletion) THEN -(SELECT deleted_value FROM deletion)
+            WHEN EXISTS (SELECT 1 FROM deletion) THEN -(SELECT deleted_value::int FROM deletion)
             ELSE 0
         END
-        WHERE id = {};
+        WHERE id = {}
         RETURNING id AS post_id, score AS new_score, (SELECT vote_status FROM status_check) AS status;
         '''
-        await PostVote.raw(sql_query, post_id, user_id, post_id, user_id, data.value, post_id, user_id, data.value, data.value, post_id)
+        response = await PostVote.raw(sql_query, post_id, user_id, post_id, user_id, data.value, post_id, user_id, data.value, str(data.value), post_id)
+        return response[0] if response else {}
 
     
     @post('/{post_id:int}/edit')
