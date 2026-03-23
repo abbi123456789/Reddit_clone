@@ -26,6 +26,7 @@ export type Post = {
     flair_color: string | null;
     flair_title: string | null;
     flair_text_color: string | null;
+    vote_status: 'upvoted' | 'downvoted' | 'not_voted'
 }
 
 export const createPost = async (postData: PostData) => {
@@ -38,9 +39,9 @@ export const createPost = async (postData: PostData) => {
     }
 }
 
-export const getPostBySlug = async (postSlug: string) : Promise<Post> => {
+export const getPostBySlug = async (postId:string, postSlug: string) : Promise<Post> => {
     try {
-        const response = await api.get(`/posts/${postSlug}`);
+        const response = await api.get(`/posts/${postId}/${postSlug}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching post:", error);

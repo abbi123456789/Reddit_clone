@@ -8,6 +8,7 @@ import CommentInput from "../comments/CommentInput"
 import type {CommentBody} from '../../services/comments'
 import {createComment} from '../../services/comments'
 import PostComments from "../comments/PostComments"
+import { votePost } from "../../services/vote"
     
 const PostBody = ()=>{
     const { communityName, postId, postSlug } = useParams()
@@ -18,7 +19,8 @@ const PostBody = ()=>{
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const postData = await getPostBySlug(postSlug!)
+                const postData = await getPostBySlug(postId!, postSlug!)
+                console.log(postData)
                 setPost(postData)
             } catch (error) {
                 console.error("Error fetching post:", error)
@@ -36,6 +38,11 @@ const PostBody = ()=>{
             community_name: communityName!,
         }
         const response = await createComment(commentData)
+        console.log(response)
+    }
+
+    const handleVoteClick = async (postId:string, value:number) => {
+        const response = await votePost(postId, value)
         console.log(response)
     }
 
@@ -77,9 +84,9 @@ const PostBody = ()=>{
 
             <div className='post-interactions'>
                 <div className='vote-section'>
-                    <i className="bi bi-arrow-up vote-button"></i>
+                    <i className="bi bi-arrow-up vote-button" onClick={()=>handleVoteClick(postId!, 1)} style={{color: post?.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
                     <span className='vote-count'>{post?.score}</span>
-                    <i className="bi bi-arrow-down vote-button"></i>
+                    <i className="bi bi-arrow-down vote-button" onClick={()=>handleVoteClick(postId!, -1)} style={{color: post?.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
                 </div>
 
                 <div className='comment-section'>
