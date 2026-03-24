@@ -71,7 +71,7 @@ const PostBody = ()=>{
                     <span className='flair-text'>{postQuery.data?.flair_title}</span>
                 </div>
 
-                <div className='post-content' dangerouslySetInnerHTML={{ __html: postQuery.data?.content_html }} />
+                <div className='post-content' dangerouslySetInnerHTML={{ __html: postQuery.data?.content_html! }} />
             </div>
 
             <div className='post-interactions'>
