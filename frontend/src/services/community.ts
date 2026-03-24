@@ -34,7 +34,7 @@ export const createCommunity = async ({name, description, visibility, nsfw, cate
 
 }
 
-export const getMyCommunities = async () => {
+export const getMyCommunities = async (): Promise<Community[] | null> => {
     try{
         const response = await api.get('/r/my-communities')
         return response.data

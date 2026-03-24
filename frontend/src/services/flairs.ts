@@ -27,7 +27,7 @@ const createNewFlair = async (communityName: string, title: string, background_c
     }
 }
 
-const getFlairs = async (communityName: string) => {
+const getFlairs = async (communityName: string):Promise<Flair[]> => {
     try{
         const response = await api.get(`/r/${communityName}/flairs`)
         return response.data
