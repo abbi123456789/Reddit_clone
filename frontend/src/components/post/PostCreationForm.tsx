@@ -4,6 +4,7 @@ import { getFlairs } from "../../services/flairs"
 import { useEffect, useState } from "react"
 import { createPost, type PostData } from "../../services/posts"
 import { useNavigate } from "react-router-dom"
+import { useQuery } from '@tanstack/react-query'
 
 export type Community = {
     id: number
@@ -23,8 +24,6 @@ type PostCreationFormProps = {
 
 const PostCreationForm = ({ communityName }: PostCreationFormProps) => {
     const navigate = useNavigate()
-    const [myCommunities, setMyCommunities] = useState<Community[]>([])
-    const [flairs, setFlairs] = useState<Flair[]>([])
 
     const [selectedCommunity, setSelectedCommunity] = useState(communityName || "")
     const [title, setTitle] = useState("")
@@ -59,45 +58,16 @@ const PostCreationForm = ({ communityName }: PostCreationFormProps) => {
         }
     }
 
-    useEffect(() => {
-        const fetchCommunities = async () => {
-            try {
-                const communities = await getMyCommunities()
-                setMyCommunities(communities)
-            } catch (error) {
-                console.error("Error fetching communities:", error)
-            }
-        }
-        fetchCommunities()
-    }, [])
+    const communitiesQuery = useQuery({
+        queryKey: ['my-communities'],
+        queryFn: async () => await getMyCommunities()
+    })
 
-    useEffect(() => {
-        if (selectedCommunity.length > 0) {
-            const fetchFlairs = async () => {
-                try {
-                    const flairs = await getFlairs(selectedCommunity)
-                    setFlairs(flairs)
-                } catch (error) {
-                    console.error("Error fetching flairs:", error)
-                }
-            }
-            fetchFlairs()
-        }
-    }, [selectedCommunity])
-
-    useEffect(() => {
-    if (selectedCommunity.length > 0) {
-        const fetchFlairs = async () => {
-            try {
-                const flairs = await getFlairs(selectedCommunity)
-                setFlairs(flairs)
-            } catch (error) {
-                console.error("Error fetching flairs:", error)
-            }
-        }
-        fetchFlairs()
-    }
-}, [])
+    const flairsQuery = useQuery({
+        queryKey: ['flairs', selectedCommunity],
+        queryFn: async () => await getFlairs(selectedCommunity),
+        enabled: selectedCommunity.length > 0
+    })
 
     const handleCommunitySelection = async (event: React.ChangeEvent<HTMLSelectElement>) => {
         const communityName = event.target.value
@@ -114,7 +84,7 @@ const PostCreationForm = ({ communityName }: PostCreationFormProps) => {
             <div className="community-selection">
                 <select name="choose-community" onChange={handleCommunitySelection} value={selectedCommunity}>
                     <option value=''>Select a community</option>
-                    {myCommunities.map((community) => (
+                    {communitiesQuery.data?.map((community) => (
                         <option key={community.id} value={community.name}>
                             {community.name}
                         </option>
@@ -129,7 +99,7 @@ const PostCreationForm = ({ communityName }: PostCreationFormProps) => {
             <div className="add-flair-and-tag">
                 <select name="flair-tag" value={selectedFlair} onChange={(e) => setSelectedFlair(e.target.value)}>
                     <option value=''>Select a flair</option>
-                    {flairs.map((flair) => (
+                    {flairsQuery.data?.map((flair) => (
                         <option key={flair.id} value={flair.title}>
                             {flair.title}
                         </option>
