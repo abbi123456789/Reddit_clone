@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { getPostBySlug } from "../../services/posts"
 import { useState } from "react"
@@ -7,8 +7,9 @@ import type { Post } from "../../services/posts"
 import CommentInput from "../comments/CommentInput"
 import type {CommentBody} from '../../services/comments'
 import {createComment} from '../../services/comments'
-import PostComments from "../comments/PostComments"
+const PostComments = React.lazy(()=>import('../comments/PostComments'))
 import { votePost } from "../../services/vote"
+import { Suspense } from "react"
     
 const PostBody = ()=>{
     const { communityName, postId, postSlug } = useParams()
@@ -101,7 +102,9 @@ const PostBody = ()=>{
             </div>
 
             <CommentInput onSave={handleSaveComment} setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML}/>
-            <PostComments postId={parseInt(postId!)} communityName={communityName!}/>
+            <Suspense fallback={<p>Loading...</p>}>
+                <PostComments postId={parseInt(postId!)} communityName={communityName!}/>
+            </Suspense>
         </section>
     )
 }

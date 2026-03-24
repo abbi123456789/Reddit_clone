@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { getPostComments } from "../../services/comments";
-import type { PostComment } from "../../services/comments";
-import CommentCard from "./CommentCard";
+const CommentCard = React.lazy(()=>import('./CommentCard'))
 import '../../styles/comments.css'
+import {useQuery} from '@tanstack/react-query'
 
 export type PostCommentProps = {
     communityName: string;
@@ -10,18 +10,13 @@ export type PostCommentProps = {
 }
 
 const PostComments = ({communityName, postId}:PostCommentProps) => {
-    const [comments, setComments] = useState<PostComment[]>([])
-    useEffect(()=>{
-        const fetchPostComments = async () => {
-            const postComments = await getPostComments(postId, communityName);
-            console.log(postComments)
-            setComments(postComments)
-        }
-        fetchPostComments()
-    }, [])
+    const comments = useQuery({
+        queryKey: ['comments'],
+        queryFn: async () => await getPostComments(postId, communityName)
+    })
     return (
         <div className='post-comments'>
-            {comments.map((comment)=>(
+            {comments.data?.map((comment)=>(
                 <CommentCard comment={comment} key={comment.id} />
             ))}
         </div>
