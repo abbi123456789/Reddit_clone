@@ -1,34 +1,25 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useParams } from "react-router-dom"
 import { getPostBySlug } from "../../services/posts"
 import { useState } from "react"
 import '../../styles/postbody.css'
-import type { Post } from "../../services/posts"
 import CommentInput from "../comments/CommentInput"
 import type {CommentBody} from '../../services/comments'
 import {createComment} from '../../services/comments'
 const PostComments = React.lazy(()=>import('../comments/PostComments'))
 import { votePost } from "../../services/vote"
 import { Suspense } from "react"
-    
+import { useQuery } from '@tanstack/react-query'
+
 const PostBody = ()=>{
     const { communityName, postId, postSlug } = useParams()
-    const [post, setPost] = useState<Post | null>(null)
     const [commentJSON, setCommentJSON] = useState<string>('')
     const [commentHTML, setCommentHTML] = useState<string>('')
 
-    useEffect(() => {
-        const fetchPost = async () => {
-            try {
-                const postData = await getPostBySlug(postId!, postSlug!)
-                console.log(postData)
-                setPost(postData)
-            } catch (error) {
-                console.error("Error fetching post:", error)
-            }
-        }
-        fetchPost()
-    }, [postSlug])
+    const postQuery = useQuery({
+        queryKey: ['post', postSlug],
+        queryFn: async () => await getPostBySlug(postId!, postSlug!),
+    })
 
     const handleSaveComment = async () => {
         const commentData: CommentBody = {
@@ -58,11 +49,11 @@ const PostBody = ()=>{
                         <img src='/images/communityIcon.jpg' alt='Community Icon' className='community-icon' />
                         <div className='post-meta-data'>
                             <div className='post-inner-meta-data'>
-                                <span className='community-name'>r/developersIndia</span>
+                                <span className='community-name'>r/{postQuery.data?.community_name}</span>
                                 <span className='time-ago-separator'>.</span>
                                 <span className='time-ago'>2hr ago</span>
                             </div>
-                            <span className='author-name'>AdCapable2347</span>
+                            <span className='author-name'>{postQuery.data?.author_username}</span>
                         </div>
                     </div>
                 </div>
@@ -72,27 +63,27 @@ const PostBody = ()=>{
             </header>
 
             <div className='post-title'>
-                <h1>{post?.title}</h1>
+                <h1>{postQuery.data?.title}</h1>
             </div>
 
             <div className = 'post-flair-body'>
-                <div className='post-flair-tag' style={{backgroundColor: `${post?.flair_color}`, padding: '4px 8px', borderRadius: '15px', display: 'inline-block', marginBottom: '12px', 'width':'fit-content'}}>
-                    <span className='flair-text'>{post?.flair_title}</span>
+                <div className='post-flair-tag' style={{backgroundColor: `${postQuery.data?.flair_color}`, padding: '4px 8px', borderRadius: '15px', display: 'inline-block', marginBottom: '12px', 'width':'fit-content'}}>
+                    <span className='flair-text'>{postQuery.data?.flair_title}</span>
                 </div>
 
-                <div className='post-content' dangerouslySetInnerHTML={{ __html: post?.content_html }} />
+                <div className='post-content' dangerouslySetInnerHTML={{ __html: postQuery.data?.content_html }} />
             </div>
 
             <div className='post-interactions'>
                 <div className='vote-section'>
-                    <i className="bi bi-arrow-up vote-button" onClick={()=>handleVoteClick(postId!, 1)} style={{color: post?.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
-                    <span className='vote-count'>{post?.score}</span>
-                    <i className="bi bi-arrow-down vote-button" onClick={()=>handleVoteClick(postId!, -1)} style={{color: post?.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
+                    <i className="bi bi-arrow-up vote-button" onClick={()=>handleVoteClick(postId!, 1)} style={{color: postQuery.data?.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
+                    <span className='vote-count'>{postQuery.data?.score}</span>
+                    <i className="bi bi-arrow-down vote-button" onClick={()=>handleVoteClick(postId!, -1)} style={{color: postQuery.data?.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
                 </div>
 
                 <div className='comment-section'>
                     <i className="bi bi-chat-left-text comment-icon"></i>
-                    <span className='comment-count'>{post?.comment_count}</span>
+                    <span className='comment-count'>{postQuery.data?.comment_count}</span>
                 </div>
 
                 <div className='share-section'>
