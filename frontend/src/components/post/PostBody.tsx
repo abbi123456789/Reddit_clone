@@ -1,4 +1,4 @@
-import React from "react"
+import React, { startTransition, useOptimistic, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { getPostBySlug } from "../../services/posts"
 import { useState } from "react"
@@ -21,6 +21,40 @@ const PostBody = ()=>{
         queryFn: async () => await getPostBySlug(postId!, postSlug!),
     })
 
+    const [voteState, setVoteState] = useState<{score: number, vote_status: string}>({
+        score: postQuery.data?.score || 0,
+        vote_status: postQuery.data?.vote_status || 'not_voted'
+    })
+
+    useEffect(()=>{
+        setVoteState({score: postQuery.data?.score! || 0, vote_status: postQuery.data?.vote_status! || 'not_voted'})
+    }, [postQuery.data])
+
+    const [optimisticVote, dispatch] = useOptimistic(
+        voteState,
+        (current, action:{type: 'upvote' | 'downvote'}) => {
+            switch(action.type){
+                case 'upvote':
+                    if(current.vote_status == 'not_voted'){
+                        return {score: current.score + 1, vote_status: 'upvoted'}
+                    }else if(current.vote_status == 'upvoted'){
+                        return {score: current.score - 1, vote_status: 'not_voted'}
+                    }else if(current.vote_status == 'downvoted'){
+                        return {score: current.score + 2, vote_status: 'upvoted'}
+                    }
+                case 'downvote':
+                    if(current.vote_status == 'not_voted'){
+                        return {score: current.score - 1, vote_status: 'downvoted'}
+                    }else if(current.vote_status == 'downvoted'){
+                        return {score: current.score + 1, vote_status: 'not_voted'}
+                    }else if(current.vote_status == 'upvoted'){
+                        return {score: current.score - 2, vote_status: 'downvoted'}
+                    }
+            }
+        }
+    )
+
+
     const handleSaveComment = async () => {
         const commentData: CommentBody = {
             content_json: JSON.parse(commentJSON),
@@ -35,7 +69,21 @@ const PostBody = ()=>{
 
     const handleVoteClick = async (postId:string, value:number) => {
         const response = await votePost(postId, value)
-        console.log(response)
+        setVoteState({score: response.new_score, vote_status: response.status})
+    }
+
+    function handleUpvoteClick(){
+        startTransition(async () => {
+            dispatch({type: 'upvote'})
+            await handleVoteClick(postId!, 1)
+        })
+    }
+
+    function handleDownvoteClick(){
+        startTransition(async () => {
+            dispatch({type: 'downvote'})
+            await handleVoteClick(postId!, -1)
+        })
     }
 
     return (
@@ -76,9 +124,9 @@ const PostBody = ()=>{
 
             <div className='post-interactions'>
                 <div className='vote-section'>
-                    <i className="bi bi-arrow-up vote-button" onClick={()=>handleVoteClick(postId!, 1)} style={{color: postQuery.data?.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
-                    <span className='vote-count'>{postQuery.data?.score}</span>
-                    <i className="bi bi-arrow-down vote-button" onClick={()=>handleVoteClick(postId!, -1)} style={{color: postQuery.data?.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
+                    <i className="bi bi-arrow-up vote-button" onClick={()=>handleUpvoteClick()} style={{color: optimisticVote.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
+                    <span className='vote-count'>{optimisticVote.score}</span>
+                    <i className="bi bi-arrow-down vote-button" onClick={()=>handleDownvoteClick()} style={{color: optimisticVote.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
                 </div>
 
                 <div className='comment-section'>
