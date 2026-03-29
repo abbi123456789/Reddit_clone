@@ -12,14 +12,14 @@ export type VoteComment = {
     new_score: number;
 }
 
-export const votePost = async (postId:string, value: number) :Promise<VotePost>=> {
-    const data = {value:value}
-    const response = await api.post(`/posts/${postId}/vote`, data)
+export const votePost = async (data: {postId:string, value: 1 | -1}) :Promise<VotePost>=> {
+    const body = {value: data.value}
+    const response = await api.post(`/posts/${data.postId}/vote`, body)
     return response.data as VotePost
 }
 
-export const voteComment = async (commentId:number, value:number) :Promise<VoteComment>=> {
-    const data = {value:value}
-    const response = await api.post(`/comments/${commentId}/vote`, data)
+export const voteComment = async (data: {commentId:number, value: 1 | -1}) :Promise<VoteComment>=> {
+    const body = {value: data.value}
+    const response = await api.post(`/comments/${data.commentId}/vote`, body)
     return response.data as VoteComment
 }
