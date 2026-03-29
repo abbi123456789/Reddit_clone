@@ -52,7 +52,7 @@ class CommentController(Controller):
         user_id = request.user.get('id')
         sql_statement = '''
         WITH vote_status AS (
-            SELECT value FROM comment_votes WHERE comment = {} AND voter = {}
+            SELECT * FROM comment_votes WHERE comment = {} AND voter = {}
         )
         SELECT c.id, c.content_json, c.content_html, c.score,
         u.id AS author_id, u.username AS author_name,
