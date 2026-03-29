@@ -7,9 +7,9 @@ from accounts.tables import User
 from community.tables import Community
 
 class CommentController(Controller):
-    path = 'r/{community_name:str}/comments/{post_id:int}'
+    path = '/'
 
-    @post('/create')
+    @post('r/{community_name:str}/comments/{post_id:int}/create')
     async def create_comment(self, request:Request[User, Any, Any], data: CommentSchema)->dict[str, Any]:
 
         user_id = request.user.get('id')
@@ -26,7 +26,7 @@ class CommentController(Controller):
         await comment.save()
         return comment.to_dict()
 
-    @get('/')
+    @get('r/{community_name:str}/comments/{post_id:int}/')
     async def get_post_comments(self, request:Request[User, Any, Any])->list:
         user_id = request.user.get('id')
         post_id = request.path_params['post_id']
@@ -46,6 +46,29 @@ class CommentController(Controller):
         comments = await Comment.raw(sql_statements, user_id, post_id)
         print(comments)
         return comments
+
+    @get('comments/{comment_id:int}')
+    async def get_comment_by_id(self, request:Request[User, Any, Any], comment_id:int) -> dict[str, Any]:
+        user_id = request.user.get('id')
+        sql_statement = '''
+        WITH vote_status AS (
+            SELECT value FROM comment_votes WHERE comment = {} AND voter = {}
+        )
+        SELECT c.id, c.content_json, c.content_html, c.score,
+        u.id AS author_id, u.username AS author_name,
+        CASE
+            WHEN (SELECT value FROM vote_status) = 1 THEN 'upvoted'
+            WHEN (SELECT value FROM vote_status) = -1 THEN 'downvoted'
+            ELSE 'not_voted'
+        END AS vote_status
+        FROM comments c
+        LEFT JOIN users u ON c.author = u.id
+        LEFT JOIN vote_status vs ON c.id = vs.comment
+        WHERE c.id = {};
+        '''
+        comment = await Comment.raw(sql_statement, comment_id, user_id, comment_id)
+        print(comment)
+        return comment[0] if comment else {}
     
 
 class CommentVoteController(Controller):
