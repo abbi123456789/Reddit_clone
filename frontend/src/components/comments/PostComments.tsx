@@ -10,13 +10,14 @@ export type PostCommentProps = {
 }
 
 const PostComments = ({communityName, postId}:PostCommentProps) => {
-    const comments = useQuery({
-        queryKey: ['comments'],
+    const {data: comments, isPending, isError} = useQuery({
+        queryKey: ['comments', postId],
         queryFn: async () => await getPostComments(postId, communityName)
     })
+
     return (
         <div className='post-comments'>
-            {comments.data?.map((comment)=>(
+            {comments?.map((comment)=>(
                 <CommentCard comment={comment} key={comment.id} />
             ))}
         </div>
