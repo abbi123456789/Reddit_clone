@@ -1,0 +1,50 @@
+.comment-input-container{
+    font-size: 1.4rem;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+.inactive-comment-input{
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 10px 0px;
+}
+
+.placeholder{
+    margin-left: 12px;
+    color: #888;
+}
+
+.active-comment-input{
+    padding: 10px;
+}
+
+.active-comment-input .comment-actions{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.active-comment-input .comment-actions .cancel-button{
+    padding: 6px 16px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+.active-comment-input .comment-actions .save-button{
+    padding: 6px 16px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    background: #0079D3;
+    color: white;
+    font-weight: bold;
+}

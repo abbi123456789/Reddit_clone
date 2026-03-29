@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import CommentEditor from './CommentEditor';
+import '../../styles/commentinput.css'
 
 export type CommentInputProps = {
     setCommentJSON: (value: string) => void;
@@ -6,33 +8,68 @@ export type CommentInputProps = {
     onSave: () => void;
 }
 
-const CommentInput = ({ setCommentJSON, setCommentHTML, onSave }: CommentInputProps) => {
+export type ActiveCommentInputProps = {
+    setCommentJSON: (value: string) => void;
+    setCommentHTML: (value: string) => void;
+    onSave: () => void;
+    setIsActive: (value: boolean) => void;
+}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+const CommentInput = ({ setCommentJSON, setCommentHTML, onSave }: CommentInputProps) => {
+    const [isActive, setIsActive] = useState(false)
+    return (
+        <div className="comment-input-container">
+            {isActive ? 
+                <ActiveCommentInput setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML} onSave={onSave} setIsActive={setIsActive} /> 
+                : 
+                <InactiveCommentInput setIsActive={setIsActive}/>
+            }
+        </div>
+    );
+};
+
+
+const InactiveCommentInput = ({ setIsActive }: { setIsActive: (value: boolean) => void }) => {
+    return (
+        <div className = 'inactive-comment-input' onClick={()=>setIsActive(true)}>
+            <span className='placeholder'>Join the conversation</span>
+        </div>
+    )
+}
+
+const ActiveCommentInput = ({ setCommentJSON, setCommentHTML, onSave, setIsActive }: ActiveCommentInputProps) => {
     const handleEditorChange = (editorState: any, html: string) => {
         const json = editorState.toJSON();
         setCommentJSON(JSON.stringify(json));
         setCommentHTML(html);
     }
 
+    const handleCancel = () => {
+        setIsActive(false);
+        setCommentJSON('');
+        setCommentHTML('');
+    }
+
     return (
-        <div className="comment-input-container" style={{ border: '1px solid #ccc', borderRadius: '4px', padding: '12px', marginTop: '16px' }}>
+        <div className='active-comment-input'>
             <CommentEditor onChange={handleEditorChange} />
-            <div className="comment-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '12px' }}>
+            <div className="comment-actions">
                 <button
-                    style={{ padding: '6px 16px', borderRadius: '15px', border: 'none', cursor: 'pointer', background: '#f5f5f5', fontWeight: 'bold' }}
+                    className = 'cancel-button'
+                    onClick = {()=>handleCancel()}
                 >
                     Cancel
                 </button>
                 <button
+                    className = 'save-button'
                     onClick={()=>onSave()}
-                    style={{ padding: '6px 16px', borderRadius: '15px', border: 'none', cursor: 'pointer', background: '#0079D3', color: 'white', fontWeight: 'bold' }}
                 >
                     Save
                 </button>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default CommentInput;
