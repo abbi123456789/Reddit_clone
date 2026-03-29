@@ -14,7 +14,7 @@ export type PostComment = {
     content_html: string;
     author_id: number;
     author_name: string;
-    vote_status: 'upvoted' | 'downvoted' | 'no_change';
+    vote_status: 'upvoted' | 'downvoted' | 'not_voted';
     score: number;
 }
 
@@ -25,6 +25,10 @@ export const createComment = async (data: CommentBody) => {
 
 export const getPostComments = async (postId: number, communityName:string):Promise<PostComment[]> => {
     const response = await api.get(`/r/${communityName}/comments/${postId}`)
-    console.log(response.data)
+    return response.data
+}
+
+export async function getCommentById(commentId: number):Promise<PostComment> {
+    const response = await api.get(`/comments/${commentId}`)
     return response.data
 }
