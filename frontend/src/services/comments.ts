@@ -16,6 +16,9 @@ export type PostComment = {
     author_name: string;
     vote_status: 'upvoted' | 'downvoted' | 'not_voted';
     score: number;
+    parent: number | null;
+    depth: number;
+    children: PostComment[];
 }
 
 export const createComment = async (data: CommentBody) => {

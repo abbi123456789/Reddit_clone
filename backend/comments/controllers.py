@@ -31,7 +31,7 @@ class CommentController(Controller):
         user_id = request.user.get('id')
         post_id = request.path_params['post_id']
         sql_statements = '''
-        SELECT c.id, c.content_json, c.content_html, c.score,
+        SELECT c.id, c.content_json, c.content_html, c.score, c.depth, c.parent,
         u.id AS author_id, u.username AS author_name,
         CASE
             WHEN cv.value = 1 THEN 'upvoted'
@@ -41,7 +41,7 @@ class CommentController(Controller):
         FROM comments c
         LEFT JOIN users u ON c.author = u.id
         LEFT JOIN comment_votes cv ON c.id = cv.comment AND cv.voter = {}
-        LEFT JOIN post p ON c.post = {};
+        WHERE c.post = {};
         '''
         comments = await Comment.raw(sql_statements, user_id, post_id)
         print(comments)
@@ -50,20 +50,46 @@ class CommentController(Controller):
     @get('comments/{comment_id:int}')
     async def get_comment_by_id(self, request:Request[User, Any, Any], comment_id:int) -> dict[str, Any]:
         user_id = request.user.get('id')
+        # sql_statement = '''
+        # WITH vote_status AS (
+        #     SELECT * FROM comment_votes WHERE comment = {} AND voter = {}
+        # )
+        # SELECT c.id, c.content_json, c.content_html, c.score,
+        # u.id AS author_id, u.username AS author_name,
+        # CASE
+        #     WHEN (SELECT value FROM vote_status) = 1 THEN 'upvoted'
+        #     WHEN (SELECT value FROM vote_status) = -1 THEN 'downvoted'
+        #     ELSE 'not_voted'
+        # END AS vote_status
+        # FROM comments c
+        # LEFT JOIN users u ON c.author = u.id
+        # LEFT JOIN vote_status vs ON c.id = vs.comment
+        # WHERE c.id = {};
+        # '''
         sql_statement = '''
-        WITH vote_status AS (
-            SELECT * FROM comment_votes WHERE comment = {} AND voter = {}
-        )
-        SELECT c.id, c.content_json, c.content_html, c.score,
+        SELECT c.id, c.content_json, c.content_html, c.score, c.parent, c.depth,
         u.id AS author_id, u.username AS author_name,
         CASE
-            WHEN (SELECT value FROM vote_status) = 1 THEN 'upvoted'
-            WHEN (SELECT value FROM vote_status) = -1 THEN 'downvoted'
+            WHEN cv.value = 1 THEN 'upvoted'
+            WHEN cv.value = -1 THEN 'downvoted'
             ELSE 'not_voted'
-        END AS vote_status
+        END AS vote_status,
+        (SELECT json_agg(child_comments) FROM (
+            SELECT c2.id, c2.content_json, c2.content_html, c2.score, c2.parent, c2.depth,
+            u2.id AS author_id, u2.username AS author_name,
+            CASE
+                WHEN cv2.value = 1 THEN 'upvoted'
+                WHEN cv2.value = -1 THEN 'downvoted'
+                ELSE 'not_voted'
+            END AS vote_status
+            FROM comments c2
+            LEFT JOIN users u2 ON c2.author = u2.id
+            LEFT JOIN comment_votes cv2 ON c2.id = cv2.comment AND cv2.voter = {}
+            WHERE c2.parent = c.id
+        ) AS child_comments) AS children
         FROM comments c
         LEFT JOIN users u ON c.author = u.id
-        LEFT JOIN vote_status vs ON c.id = vs.comment
+        LEFT JOIN comment_votes cv ON c.id = cv.comment AND cv.voter = {}
         WHERE c.id = {};
         '''
         comment = await Comment.raw(sql_statement, comment_id, user_id, comment_id)
