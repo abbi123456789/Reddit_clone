@@ -49,6 +49,13 @@ const PostBody = ()=>{
         }
     })
 
+    //change it to useMutatin
+    const commentCreationMutation = useMutation({
+        mutationFn: createComment,
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ['comments', postId]})
+        }
+    })
 
     const handleSaveComment = async () => {
         const commentData: CommentBody = {
@@ -58,8 +65,7 @@ const PostBody = ()=>{
             post: parseInt(postId!),
             community_name: communityName!,
         }
-        const response = await createComment(commentData)
-        console.log(response)
+        commentCreationMutation.mutate(commentData)
     }
 
     const handleVoteClick = async (postId:string, value: 1 | -1) => {
