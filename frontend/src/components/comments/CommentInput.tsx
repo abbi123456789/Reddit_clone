@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CommentEditor from './CommentEditor';
 import '../../styles/commentinput.css'
+import type { EditorState } from 'lexical';
 
 export type CommentInputProps = {
     setCommentJSON: (value: string) => void;
@@ -39,7 +40,7 @@ const InactiveCommentInput = ({ setIsActive }: { setIsActive: (value: boolean) =
 }
 
 const ActiveCommentInput = ({ setCommentJSON, setCommentHTML, onSave, setIsActive }: ActiveCommentInputProps) => {
-    const handleEditorChange = (editorState: any, html: string) => {
+    const handleEditorChange = (editorState: EditorState, html: string) => {
         const json = editorState.toJSON();
         setCommentJSON(JSON.stringify(json));
         setCommentHTML(html);
