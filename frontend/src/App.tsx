@@ -10,6 +10,7 @@ import PostDetail from "./pages/PostDetail"
 import ModeratorPostsAndComments from "./pages/ModeratorPostsAndComments"
 import ModeratorGuides from "./pages/ModeratorGuides"
 import ModeratorSettings from "./pages/ModeratorSettings"
+import UserProfilePage from "./pages/UserProfilePage"
 import { useState } from "react"
 
 const App = ()=>{
@@ -35,6 +36,7 @@ const App = ()=>{
         <Route path="/r/:communityName/posts-and-comments" element={<ModeratorPostsAndComments />} />
         <Route path='/r/:communityName/guides' element={<ModeratorGuides />} />
         <Route path='/r/:communityName/general-settings' element={<ModeratorSettings />} />
+        <Route path='/u/:username' element={<UserProfilePage />} />
       </Routes>
     </main>
   )
