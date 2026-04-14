@@ -36,7 +36,7 @@ const App = ()=>{
         <Route path="/r/:communityName/posts-and-comments" element={<ModeratorPostsAndComments />} />
         <Route path='/r/:communityName/guides' element={<ModeratorGuides />} />
         <Route path='/r/:communityName/general-settings' element={<ModeratorSettings />} />
-        <Route path='/u/:username' element={<UserProfilePage />} />
+        <Route path='/u/:username' element={<UserProfilePage handleModalToggle={handleModalToggle} showModal={showModal}/>} />
       </Routes>
     </main>
   )
