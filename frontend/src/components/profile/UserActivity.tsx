@@ -1,6 +1,8 @@
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from '../../components/ui/Tabs'
-import { Suspense, useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import type { Key } from 'react-aria-components'
+import PostsTab  from './PostsTab'
+import CommentsTab from './CommentsTab'
 
 export function UserActivity () {
     const [activeTab, setActiveTab] = useState<Key>('posts')
@@ -9,8 +11,6 @@ export function UserActivity () {
     const handleTabChange = (key: Key) => {
         startTransition(async ()=>{
             setActiveTab(key)
-            await new Promise((resolve)=>setTimeout(resolve, 1000))
-            console.log('Hello beautiful.')
         })
     }
     return (
@@ -25,24 +25,16 @@ export function UserActivity () {
             </div>
             <TabPanels style={{opacity: isPending ? 0.5 : 1, transition: 'opacity 0.4s linear'}}>
                 <TabPanel id='posts'>
-                    <Suspense fallback={null}>
-                        <p>Posts content goes here...</p>
-                    </Suspense>
+                    <PostsTab />
                 </TabPanel>
                 <TabPanel id='comments'>
-                    <Suspense fallback={null}>
-                        <p>Comment content goes here...</p>
-                    </Suspense>
+                    <CommentsTab />
                 </TabPanel>
                 <TabPanel id='upvoted'>
-                    <Suspense fallback={null}>
-                        <p>Upvoted content goes here...</p>
-                    </Suspense>
+                    <p>Upvoted content goes here...</p>
                 </TabPanel>
                 <TabPanel id='downvoted'>
-                    <Suspense fallback={null}>
-                        <p>Downvoted content goes here...</p>
-                    </Suspense>
+                    <p>Downvoted content goes here...</p>
                 </TabPanel>
             </TabPanels>
         </Tabs>
