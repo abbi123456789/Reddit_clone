@@ -1,18 +1,17 @@
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from '../../components/ui/Tabs'
-import { useState, useTransition } from 'react'
+import { Suspense, useState } from 'react'
 import type { Key } from 'react-aria-components'
 import PostsTab  from './PostsTab'
 import CommentsTab from './CommentsTab'
+import VotedPostsTab from './VotedPostsTab'
 
 export function UserActivity () {
     const [activeTab, setActiveTab] = useState<Key>('posts')
-    const [isPending, startTransition] = useTransition()
 
     const handleTabChange = (key: Key) => {
-        startTransition(async ()=>{
-            setActiveTab(key)
-        })
+        setActiveTab(key)
     }
+
     return (
         <Tabs selectedKey={activeTab} onSelectionChange={handleTabChange} style={{width: '100%'}}>
             <div style={{display: 'flex' }}>
@@ -23,18 +22,24 @@ export function UserActivity () {
                     <Tab id='downvoted'>Downvoted</Tab>
                 </TabList>
             </div>
-            <TabPanels style={{opacity: isPending ? 0.5 : 1, transition: 'opacity 0.4s linear'}}>
+            <TabPanels>
                 <TabPanel id='posts'>
                     <PostsTab />
                 </TabPanel>
                 <TabPanel id='comments'>
-                    <CommentsTab />
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <CommentsTab />
+                    </Suspense >
                 </TabPanel>
                 <TabPanel id='upvoted'>
-                    <p>Upvoted content goes here...</p>
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <VotedPostsTab value={1} />
+                    </Suspense>
                 </TabPanel>
                 <TabPanel id='downvoted'>
-                    <p>Downvoted content goes here...</p>
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <VotedPostsTab value={-1} />
+                    </Suspense>
                 </TabPanel>
             </TabPanels>
         </Tabs>
