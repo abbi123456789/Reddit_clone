@@ -46,8 +46,10 @@ class ProfileController(Controller):
             comments = await User.raw(sql_statement, user_id, user_id)
         return comments
 
-    @get('/upvoted-posts')
-    async def getUserUpvotedPosts(self, request:Request[User, Any, Any])->list[dict[str, Any]]:
+    #Instead of writing two separate endpoints for getting liked and disliked posts, we are only having one function
+    #that fetches the data based on the vote value query parameter.
+    @get('/voted-posts')
+    async def get_user_voted_posts(self, request:Request[User, Any, Any], value:int=1)->list[dict[str, Any]]:
         user_id = request.user.get('id')
         sql_statement = '''
         SELECT p.id, p.title, LEFT(p.content_html, 200), p.score,
@@ -59,26 +61,13 @@ class ProfileController(Controller):
         WHERE pv.voter = {} AND pv.value = {};
         '''
         async with User._meta.db.transaction():
-            liked_posts = await User.raw(sql_statement, user_id, 1)
-        return liked_posts
+            voted_posts = await User.raw(sql_statement, user_id, value)
+        return voted_posts
     
-    @get('/downvoted-posts')
-    async def getUserDownvotedPosts(self, request:Request[User, Any, Any])->list[dict[str, Any]]:
-        user_id = request.user.get('id')
-        sql_statement = '''
-        SELECT p.id, p.title, LEFT(p.content_html, 200), p.score,
-        c.name AS community_name, c.id AS community_id,
-        FROM post_votes pv
-        INNER JOIN post p ON pv.post = p.id
-        INNER JOIN communities c ON p.community = c.id
-        WHERE pv.voter = {} AND pv.value = {}
-        '''
-        async with User._meta.db.transaction():
-            disliked_posts = await User.raw(sql_statement, user_id, -1)
-        return disliked_posts
-    
-    @get('/upvoted-comments')
-    async def getUserUpvotedComments(self, request:Request[User, Any, Any])->list[dict[str, Any]]:
+    #Instead of writing two separate endpoints for getting liked and disliked posts, we are only having one function
+    #that fetches the data based on the vote value query parameter.
+    @get('/voted-comments')
+    async def get_user_upvoted_comments(self, request:Request[User, Any, Any], value:int=1)->list[dict[str, Any]]:
         user_id = request.user.get('id')
         sql_statement = '''
         SELECT c.id, LEFT(c.content_html, 200), c.score,
@@ -89,20 +78,6 @@ class ProfileController(Controller):
         WHERE cv.voter = {} AND cv.value = {};
         '''
         async with User._meta.db.transaction():
-            liked_comments = await User.raw(sql_statement, user_id, 1)
+            liked_comments = await User.raw(sql_statement, user_id, value)
         return liked_comments
     
-    @get('/downvoted-comments')
-    async def getUserDownvotedComments(self, request:Request[User, Any, Any])->list[dict[str, Any]]:
-        user_id = request.user.get('id')
-        sql_statement = '''
-        SELECT c.id, LEFT(c.content_html, 200), c.score,
-        communities.name AS community_name, communities.id AS community_id
-        FROM comment_votes cv
-        INNER  JOIN comments c ON cv.comment = c.id
-        INNER JOIN communities ON c.community = communities.id
-        WHERE cv.voter = {} AND cv.value = {};
-        '''
-        async with User._meta.db.transaction():
-            disliked_comments = await User.raw(sql_statement, user_id, -1)
-        return disliked_comments
