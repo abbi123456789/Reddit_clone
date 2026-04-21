@@ -13,8 +13,8 @@ export function UserActivity () {
     }
 
     return (
-        <Tabs selectedKey={activeTab} onSelectionChange={handleTabChange} style={{width: '100%'}}>
-            <div style={{display: 'flex' }}>
+        <Tabs selectedKey={activeTab} onSelectionChange={handleTabChange} style={{width: '100%'}} className='profile-tabs'>
+            <div className='profile-tabs-inner' style={{display: 'flex' }}>
                 <TabList>
                     <Tab id='posts'>Posts</Tab>
                     <Tab id='comments'>Comments</Tab>

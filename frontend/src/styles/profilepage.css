@@ -1,4 +1,110 @@
 .main-content{
+    font-size: 1.6rem;
     display: flex;
     gap: 20px;
+}
+
+.profile-tabs{
+    margin: 20px;
+    width: 100%;
+}
+
+.profile-tabs-inner{
+    display: flex;
+}
+
+.user-post-card{
+    padding: 10px;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.user-post-card .community-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.community-info-left{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.post-interactions{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.vote-section{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 5px 4px 5px;
+    background-color: #f56f42;
+    border-radius: 15px;
+}
+
+.comment-section, .share-section{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 8px 4px 8px;
+    background-color: #c4cfc5;
+    border-radius: 15px;
+}
+
+.user-comment-card{
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+.user-comment-card .community-info{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-weight: bolder;
+}
+
+.user-comment-card .comment-post-title{
+    font-size: 1.2rem;
+}
+
+.user-comment-card .comment-author-info{
+    font-weight: bolder;
+}
+
+.user-comment-card .comment-interactions{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.user-comment-card .comment-interactions .comment-score{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 5px 4px 5px;
+    background-color: #f56f42;
+    border-radius: 15px;
+}
+
+.user-comment-card .comment-interactions .comment-reply, .user-comment-card .comment-interactions .comment-share{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 8px 4px 8px;
+    background-color: #c4cfc5;
+    border-radius: 15px;
 }
