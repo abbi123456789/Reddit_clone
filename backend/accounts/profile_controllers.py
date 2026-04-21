@@ -31,14 +31,17 @@ class ProfileController(Controller):
         user_id = request.user.get('id')
         sql_statement = '''
         SELECT c.id, LEFT(c.content_html, 200), c.score,
-        communities.name as community_name, communities.id as community_id,
+        p.title AS post_title, u.username AS comment_author,
+        communities.name AS community_name, communities.id AS community_id,
         CASE
             WHEN cv.value = 1 THEN 'upvoted'
             WHEN cv.value = -1 THEN 'downvoted'
             ELSE 'not_voted'
         END AS vote_status
         FROM comments c
+        INNER JOIN post p ON c.post = p.id
         INNER JOIN communities ON c.community = communities.id
+        INNER JOIN users u ON c.author = u.id
         LEFT JOIN comment_votes cv ON c.id = cv.comment AND cv.voter = {}
         WHERE c.author = {};
         '''
