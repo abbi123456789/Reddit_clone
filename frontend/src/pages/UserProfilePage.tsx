@@ -1,6 +1,7 @@
 import { UserActivity } from '../components/profile/UserActivity';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import '../styles/profilepage.css'
 
 type UserProfilePageProps = {
     showModal: boolean

@@ -23,7 +23,7 @@ const App = ()=>{
 
   return (
     <main>
-      <React.Suspense>
+      <React.Suspense fallback={<p>Loading...</p>}>
         <Routes>
           <Route path="/" element={<HomePage handleModalToggle = {handleModalToggle} showModal={showModal}/>} />
           <Route path="/r/:communityName" element={<CommunityPage handleModalToggle={handleModalToggle} showModal={showModal} />} />
