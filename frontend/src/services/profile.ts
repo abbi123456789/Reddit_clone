@@ -3,7 +3,7 @@ import api from "./auth";
 export type UserPosts = {
     id: number;
     title: string;
-    content_html: string;
+    left: string;
     score: number;
     status: 'upvoted' | 'downvoted' | 'not_voted';
     community_name: string;
@@ -12,8 +12,10 @@ export type UserPosts = {
 
 export type UserComments = {
     id: number;
-    content_html: string;
+    left: string;
     score: number;
+    post_title: string;
+    comment_author: string;
     status: 'upvoted' | 'downvoted' | 'not_voted';
     community_name: string;
     community_id: number;
