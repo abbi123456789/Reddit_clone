@@ -10,15 +10,23 @@ const api: AxiosInstance = axios.create({
 })
 
 // Request interceptor definition
-api.interceptors.request.use((config) => {
+api.interceptors.request.use(async (config) => {
     const token = localStorage.getItem('accessToken');
 
     if (token) {
         if (isTokenExpired(token)) {
-            // Token is expired, trigger logout
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('user');
-            window.dispatchEvent(new Event('auth_change'));
+            try{
+                const response = await axios.post(`${config.baseURL || 'http://localhost:8000'}/accounts/refresh`, {}, { withCredentials: true });
+                localStorage.setItem('accessToken', response.data.access_token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+                config.headers.Authorization = `Bearer ${response.data.access_token}`;
+                return config;
+            }catch(error){
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('user');
+                window.dispatchEvent(new Event('auth_change'));
+                return Promise.reject(error);
+            }
         } else {
             // Token is valid, attach it
             config.headers.Authorization = `Bearer ${token}`;
