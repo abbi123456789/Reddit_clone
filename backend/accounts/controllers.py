@@ -11,7 +11,7 @@ from .tables import User
 from .schema import RegisterSchema, LoginSchema, UserSchema
 from utils.pwd_hash import hash_password, verify_password
 from settings import ACCESS_TOKEN_TTL, TOKEN_SECRET, REFRESH_TOKEN_TTL
-from utils.refresh import create_refresh_token
+from utils.refresh import create_refresh_token, decode_refresh_token
 
 async def retrieve_user_handler(token: Token, connection: ASGIConnection) -> UserSchema | None:
     user_id = int(token.sub)
@@ -23,7 +23,7 @@ async def retrieve_user_handler(token: Token, connection: ASGIConnection) -> Use
 jwt_auth = JWTAuth[UserSchema](
     retrieve_user_handler=retrieve_user_handler,
     token_secret=TOKEN_SECRET,
-    exclude=['/accounts/login', '/accounts/register', '/schema']
+    exclude=['/accounts/login', '/accounts/register', '/accounts/refresh', '/schema']
 )
 
 class UserController(Controller):
@@ -67,3 +67,18 @@ class UserController(Controller):
         response = Response({'user':user, 'access_token':access_token})
         response.set_cookie('refresh_token', refresh_token, max_age=REFRESH_TOKEN_TTL, httponly=True, samesite='lax')
         return response
+
+    @post('/refresh')
+    async def refresh(self, connection: ASGIConnection)->Response:
+        refresh_token = connection.cookies.get('refresh_token')
+        if not refresh_token:
+            raise HTTPException(detail='Refresh token not found', status_code=401)
+        user_id = await decode_refresh_token(refresh_token)
+        if not user_id:
+            raise HTTPException(detail='Invalid refresh token', status_code=401)
+        user = await User.objects().get(User.id == user_id)
+        user = user.to_dict()
+        user.pop('password',  None)
+        expires = datetime.datetime.now() + datetime.timedelta(seconds=ACCESS_TOKEN_TTL)
+        access_token = Token(exp=expires, sub=str(user['id'])).encode(secret=TOKEN_SECRET, algorithm='HS256')
+        return Response({'access_token':access_token, 'user':user}) 
