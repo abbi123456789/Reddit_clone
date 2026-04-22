@@ -1,27 +1,28 @@
-import { useState } from "react";
+import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { doRegister } from "../services/account";
 import '../styles/login.css';
 
 const Registration = () => {
-    const [username, setUsername] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [confirmPassword, setConfirmPassword] = useState<string>('')
     const navigate = useNavigate();
+    const [_, dispatchAction, isPending] = React.useActionState(asyncRegister, null)
 
-    const handleRegister = async (e: any) => {
-        e.preventDefault()
-        const data = await doRegister({ username, email, password })
-        if (data) {
-            navigate('/login');
+    async function asyncRegister(_: any, formData: FormData){
+        const body = {
+            'username': formData.get('username') as string,
+            'email': formData.get('email') as string,
+            'password': formData.get('password') as string,
+        }
+        const result = await doRegister(body)
+        if(result){
+            navigate('/login')
         }
     }
 
     return (
         <div className="login-wrapper">
             <div className="login-page">
-                <form className="login-form">
+                <form className="login-form" action={dispatchAction}>
                     <div className="form-field">
                         <label htmlFor="username">Username <span className="required-field">*</span></label>
                         <input
@@ -29,8 +30,6 @@ const Registration = () => {
                             id="username"
                             name="username"
                             required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
 
@@ -38,11 +37,9 @@ const Registration = () => {
                         <label htmlFor="email">Email <span className="required-field">*</span></label>
                         <input
                             type="email"
-                            id="username"
-                            name="identifier"
+                            id="email"
+                            name="email"
                             required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 
@@ -54,8 +51,6 @@ const Registration = () => {
                             name="password"
                             placeholder="********"
                             required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
 
@@ -67,12 +62,12 @@ const Registration = () => {
                             name="confirm-password"
                             placeholder="********"
                             required
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
 
-                    <button onClick={handleRegister} className="btn-primary">Register</button>
+                    <button disabled={isPending} className="btn-primary">
+                        {isPending ? 'Registering...' : 'Register'}
+                    </button>
                 </form>
             </div>
         </div>

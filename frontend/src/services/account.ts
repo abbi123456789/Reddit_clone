@@ -21,7 +21,8 @@ const doLogin = async (data: LoginPaylod)=>{
     }
 }
 
-const doRegister = async (data: RegisterPayload)=>{
+
+export async function doRegister(data: RegisterPayload){
     try{
         const response = await api.post('/accounts/register', data)
         return response.data
@@ -31,4 +32,4 @@ const doRegister = async (data: RegisterPayload)=>{
     }
 }
 
-export {doLogin, doRegister}
+export {doLogin}
