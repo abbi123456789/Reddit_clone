@@ -2,10 +2,12 @@ import React from 'react'
 import type { ReactNode } from 'react'
 import { isTokenExpired } from '../utils/jwt';
 
-interface User {
+export interface User {
     id: number;
     username: string;
     email: string;
+    email_verified: boolean;
+    auth_provider: string;
     [key: string]: any;
 }
 

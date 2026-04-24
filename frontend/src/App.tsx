@@ -4,6 +4,8 @@ import { AuthProvider } from "./context/AuthContext"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 const Registration = React.lazy(() => import('./pages/RegistrationPage'))
 const Login = React.lazy(() => import('./pages/LoginPage'))
+const VerifyEmailPage = React.lazy(() => import('./pages/VerifyEmailPage'))
+const OAuthCallbackPage = React.lazy(() => import('./pages/OAuthCallbackPage'))
 const HomePage = React.lazy(() => import('./pages/HomePage'))
 const CommunityPage = React.lazy(() => import('./pages/CommunityPage'))
 const CreatePost = React.lazy(() => import('./pages/CreatePost'))
@@ -35,6 +37,8 @@ const App = () => {
             <Route path="/r/:communityName/comments/:postId/:postSlug" element={<PostDetail handleModalToggle={handleModalToggle} showModal={showModal} />} />
             <Route path="/register" element={<Registration />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="/auth/callback" element={<OAuthCallbackPage />} />
             <Route path="/r/:communityName/look-feel" element={<ProtectedRoute><LookAndFeelPage /></ProtectedRoute>} />
             <Route path="/r/:communityName/post-flair" element={<ProtectedRoute><PostFlairPage /></ProtectedRoute>} />
             <Route path="/r/:communityName/posts-and-comments" element={<ProtectedRoute><ModeratorPostsAndComments /></ProtectedRoute>} />

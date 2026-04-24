@@ -7,7 +7,7 @@ wheels/
 *.egg-info
 
 .env
-gemini_help/
+.codex/
 
 # Virtual environments
 .venv
