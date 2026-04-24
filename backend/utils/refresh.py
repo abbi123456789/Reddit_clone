@@ -1,19 +1,14 @@
-from litestar.security.jwt import Token
-
-import datetime
 from settings import REFRESH_TOKEN_TTL, TOKEN_SECRET
+from utils.tokens import create_typed_token, decode_typed_token
 
 def create_refresh_token(sub: str):
-    expires = datetime.datetime.now() + datetime.timedelta(seconds=REFRESH_TOKEN_TTL)
-    extras = {'type': 'refresh'}
-    token = Token(exp=expires, sub=sub, extras=extras)
-    return token.encode(secret=TOKEN_SECRET, algorithm='HS256')
+    return create_typed_token(
+        sub=sub,
+        secret=TOKEN_SECRET,
+        ttl_seconds=REFRESH_TOKEN_TTL,
+        token_type="refresh",
+    )
 
 def decode_refresh_token(token: str):
-    try:
-        token = Token.decode(token, secret=TOKEN_SECRET, algorithms=['HS256'])
-        if token.extras.get('type') != 'refresh':
-            return None
-        return token.sub
-    except Exception:
-        return None
+    decoded = decode_typed_token(token, secret=TOKEN_SECRET, expected_type="refresh")
+    return decoded.sub if decoded else None
