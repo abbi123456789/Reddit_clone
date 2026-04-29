@@ -10,7 +10,6 @@ from settings import (
     VERIFICATION_TOKEN_TTL,
 )
 
-
 def _utcnow() -> datetime.datetime:
     return datetime.datetime.now(datetime.timezone.utc)
 
@@ -39,11 +38,11 @@ def create_typed_token(
 
 def decode_typed_token(token: str, *, secret: str, expected_type: str) -> Token | None:
     try:
-        decoded = Token.decode(token, secret=secret, algorithms=["HS256"])
+        decoded = Token.decode(token, secret=secret, algorithm="HS256")
         if decoded.extras.get("type") != expected_type:
             return None
         return decoded
-    except Exception:
+    except Exception as e:
         return None
 
 

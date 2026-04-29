@@ -1,13 +1,14 @@
 import re
 from urllib.parse import urlencode
 
-from litestar import Controller, get, post
+from litestar import Controller, get, post, Request
 from litestar.exceptions import HTTPException
 from litestar.connection import ASGIConnection
 from litestar.security.jwt import Token, JWTAuth
 from litestar.response import Redirect, Response
+from litestar.params import Parameter
 
-from typing import Any
+from typing import Any, Annotated
 
 from .tables import User
 from .schema import RegisterSchema, LoginSchema, ResendVerificationSchema, UserSchema
@@ -118,7 +119,6 @@ jwt_auth = JWTAuth[UserSchema](
         '/accounts/resend-verification',
         '/accounts/google/start',
         '/accounts/google/callback',
-        '/schema',
     ]
 )
 
@@ -241,11 +241,11 @@ class UserController(Controller):
         if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
             raise build_error('Google OAuth is not configured on the server.', 'google_oauth_not_configured', 500)
 
-        state = create_oauth_state_token()
-        response = Redirect(build_google_oauth_url(state), status_code=302)
+        oauth_state = create_oauth_state_token()
+        response = Redirect(build_google_oauth_url(oauth_state), status_code=302)
         response.set_cookie(
             'oauth_state',
-            state,
+            oauth_state,
             max_age=600,
             httponly=True,
             samesite='lax',
@@ -256,16 +256,16 @@ class UserController(Controller):
     @get('/google/callback')
     async def google_callback(
         self,
-        connection: ASGIConnection,
+        request: Request,
         code: str | None = None,
-        state: str | None = None,
+        oauth_state: Annotated[str | None, Parameter(query='state', required=False)] = None,
         error: str | None = None,
     ) -> Redirect:
         if error:
             return redirect_with_error('google_access_denied', 'Google sign-in was cancelled.')
 
-        cookie_state = connection.cookies.get('oauth_state')
-        if not state or not cookie_state or state != cookie_state or not decode_oauth_state_token(state):
+        cookie_state = request.cookies.get('oauth_state')
+        if not oauth_state or not cookie_state or oauth_state != cookie_state or not decode_oauth_state_token(oauth_state):
             return redirect_with_error('google_state_invalid', 'Google sign-in could not be verified.')
 
         if not code:
@@ -309,14 +309,14 @@ class UserController(Controller):
         return response
 
     @post('/refresh')
-    async def refresh(self, connection: ASGIConnection)->Response:
-        refresh_token = connection.cookies.get('refresh_token')
+    async def refresh(self, request:Request)->Response:
+        refresh_token = request.cookies.get('refresh_token')
         if not refresh_token:
             raise HTTPException(detail='Refresh token not found', status_code=401)
-        user_id = await decode_refresh_token(refresh_token)
+        user_id = decode_refresh_token(refresh_token)
         if not user_id:
             raise HTTPException(detail='Invalid refresh token', status_code=401)
-        user = await User.objects().get(User.id == user_id)
+        user = await User.objects().get(User.id == int(user_id))
         user = serialize_user(user)
         access_token = build_access_token(str(user['id']))
         return Response({'access_token':access_token, 'user':user})

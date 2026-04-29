@@ -8,6 +8,8 @@ wheels/
 
 .env
 .codex/
+gemini_help/
+.codex
 
 # Virtual environments
 .venv
