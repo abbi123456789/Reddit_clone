@@ -1,9 +1,9 @@
+import React from 'react'
 import RichTextEditor from "../Editor/RichTextEditor"
 import { getMyCommunities } from "../../services/community"
 import { getFlairs } from "../../services/flairs"
-import { useEffect, useState } from "react"
 import { createPost, type PostData } from "../../services/posts"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useQuery } from '@tanstack/react-query'
 
 export type Community = {
@@ -18,19 +18,15 @@ export type Flair = {
     text_color: string
 }
 
-type PostCreationFormProps = {
-    communityName?: string
-}
-
-const PostCreationForm = ({ communityName }: PostCreationFormProps) => {
+const PostCreationForm = () => {
     const navigate = useNavigate()
+    const { communityName } = useParams()
+    const [selectedCommunity, setSelectedCommunity] = React.useState(communityName || "")
+    const [title, setTitle] = React.useState("")
+    const [selectedFlair, setSelectedFlair] = React.useState("")
 
-    const [selectedCommunity, setSelectedCommunity] = useState(communityName || "")
-    const [title, setTitle] = useState("")
-    const [selectedFlair, setSelectedFlair] = useState("")
-
-    const [postContentJson, setPostContentJson] = useState("")
-    const [postContentHtml, setPostContentHtml] = useState("")
+    const [postContentJson, setPostContentJson] = React.useState("")
+    const [postContentHtml, setPostContentHtml] = React.useState("")
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleEditorChange = (editorState: any, html: string) => {
@@ -71,6 +67,7 @@ const PostCreationForm = ({ communityName }: PostCreationFormProps) => {
 
     const handleCommunitySelection = async (event: React.ChangeEvent<HTMLSelectElement>) => {
         const communityName = event.target.value
+        setSelectedCommunity(communityName)
         navigate(`/r/${communityName}/submit`)
     }
 

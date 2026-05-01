@@ -3,7 +3,6 @@ import Sidebar from "../components/Sidebar"
 import CommunityModalForm from "../components/CommunityModal"
 import PostCreationForm from "../components/post/PostCreationForm"
 import '../styles/createpost.css'
-import { useParams } from "react-router-dom"
 
 type CreatePostPageProps = {
     showModal: boolean
@@ -11,15 +10,13 @@ type CreatePostPageProps = {
 }
 
 const CreatePost = ({showModal, handleModalToggle} : CreatePostPageProps)=>{
-    const params = useParams()
-    console.log(params)
     return (
         <main className="create-post-container">
             <Navbar />
             <div className="main-content">
                 <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
                 <div className="sub-content">
-                    <PostCreationForm communityName={params.communityName ? params.communityName : undefined} />
+                    <PostCreationForm  />
                     <div className="post-rules">
 
                     </div>
