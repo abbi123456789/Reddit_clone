@@ -28,23 +28,32 @@ class CommentController(Controller):
 
     @get('r/{community_name:str}/comments/{post_id:int}/')
     async def get_post_comments(self, request:Request[User, Any, Any])->list:
-        user_id = request.user.get('id')
         post_id = request.path_params['post_id']
-        sql_statements = '''
-        SELECT c.id, c.content_json, c.content_html, c.score, c.depth, c.parent,
-        u.id AS author_id, u.username AS author_name,
-        CASE
-            WHEN cv.value = 1 THEN 'upvoted'
-            WHEN cv.value = -1 THEN 'downvoted'
-            ELSE 'not_voted'
-        END AS vote_status
-        FROM comments c
-        LEFT JOIN users u ON c.author = u.id
-        LEFT JOIN comment_votes cv ON c.id = cv.comment AND cv.voter = {}
-        WHERE c.post = {};
-        '''
-        comments = await Comment.raw(sql_statements, user_id, post_id)
-        print(comments)
+        if request.user:
+            user_id = request.user.get('id')
+            sql_statements = '''
+            SELECT c.id, c.content_json, c.content_html, c.score, c.depth, c.parent,
+            u.id AS author_id, u.username AS author_name,
+            CASE
+                WHEN cv.value = 1 THEN 'upvoted'
+                WHEN cv.value = -1 THEN 'downvoted'
+                ELSE 'not_voted'
+            END AS vote_status
+            FROM comments c
+            LEFT JOIN users u ON c.author = u.id
+            LEFT JOIN comment_votes cv ON c.id = cv.comment AND cv.voter = {}
+            WHERE c.post = {};
+            '''
+            comments = await Comment.raw(sql_statements, user_id, post_id)
+        else:
+            sql_statements = '''
+            SELECT c.id, c.content_json, c.content_html, c.score, c.depth, c.parent,
+            u.id AS author_id, u.username AS author_name
+            FROM comments c
+            LEFT JOIN users u ON c.author = u.id
+            WHERE c.post = {};
+            '''
+            comments = await Comment.raw(sql_statements, post_id)
         return comments
 
     @get('comments/{comment_id:int}')
