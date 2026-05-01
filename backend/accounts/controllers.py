@@ -10,6 +10,7 @@ from litestar.params import Parameter
 
 from typing import Any, Annotated
 
+from .middleware import CustomJWTAuthenticationMiddleware
 from .tables import User
 from .schema import RegisterSchema, LoginSchema, ResendVerificationSchema, UserSchema
 from utils.pwd_hash import hash_password, verify_password
@@ -119,7 +120,8 @@ jwt_auth = JWTAuth[UserSchema](
         '/accounts/resend-verification',
         '/accounts/google/start',
         '/accounts/google/callback',
-    ]
+    ],
+    authentication_middleware_class= CustomJWTAuthenticationMiddleware
 )
 
 class UserController(Controller):
