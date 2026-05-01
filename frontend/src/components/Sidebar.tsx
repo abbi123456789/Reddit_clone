@@ -1,7 +1,9 @@
 import '../styles/sidebar.css'
 import { getMyCommunities } from '../services/community'
+import type { Community } from '../services/community'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 type SidebarProps = {
     showModal?: boolean
@@ -9,7 +11,8 @@ type SidebarProps = {
 }
 
 const Sidebar = ({handleModalToggle}:SidebarProps)=>{
-    const [myCommunities, setMyCommunities] = useState([])
+    const { isAuthenticated } = useAuth()
+    const [myCommunities, setMyCommunities] = useState<Community[]>([])
 
     useEffect(()=>{
         const fetchCommunities = async () => {
@@ -18,7 +21,9 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
                 setMyCommunities(communities)
             }
         }
-        fetchCommunities()
+        if(isAuthenticated){
+            fetchCommunities()
+        }
     }, [])
 
     return (
@@ -40,12 +45,14 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
                     <i className="bi bi-boxes"></i>
                     <span>Explore</span>
                 </div>
+                {isAuthenticated && 
                 <div className="start-community" onClick={() => handleModalToggle()}>
                     <i className="bi bi-plus-lg"></i>
                     <span>Start a Community</span>
                 </div>
+                }
             </div>
-
+            {isAuthenticated &&
             <div className="moderator-options">
                 <div className="mod-queue">
                     <i className="bi bi-text-left"></i>
@@ -76,6 +83,7 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
                 </div>
                 )}
             </div>
+            }       
 
             <div className='resources'>
                 <div className='about-reddit'>

@@ -41,14 +41,28 @@
 .action-buttons{
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 10px;
+}
+
+.action-buttons > div{
+    padding: 5px 8px 5px 8px;
+    border-radius: 20px;
 }
 
 .advertisment-icon:hover, .chat-icon:hover, .create-post-icon:hover, .notification-icon:hover, .profile-icon:hover{
     background-color: lightgrey;
-    padding: 10px;
-    border: none;
-    border-radius: 20px;
+}
+
+.action-buttons .signup-icon{
+    background-color: rgb(125, 131, 137);
+    color: white;
+    font-weight: bolder;
+}
+
+.action-buttons .login-icon{
+    background-color: orangered;
+    color: white;
+    font-weight: bolder;
 }
 
 .create-post-icon{

@@ -26,3 +26,7 @@ input{
 .bi-reddit{
     color: orangered;
 }
+
+a{
+    text-decoration: none;
+}
