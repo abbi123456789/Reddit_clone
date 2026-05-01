@@ -24,8 +24,10 @@ const Navbar = ()=>{
                         <i className="bi bi-chat-dots"></i>
                     </div>
                     <div className="create-post-icon">
-                        <i className="bi bi-plus-square"></i>
-                        <p>create</p>
+                        <Link to='/submit' style={{display: 'flex', gap: '5px', alignItems: 'center', color: 'black'}}>
+                            <i className="bi bi-plus-square"></i>
+                            <p>create</p>
+                        </Link>
                     </div>
                     <div className="notification-icon">
                         <i className="bi bi-bell"></i>

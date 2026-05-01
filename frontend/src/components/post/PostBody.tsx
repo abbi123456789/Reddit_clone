@@ -11,11 +11,13 @@ import { votePost } from "../../services/vote"
 import { Suspense } from "react"
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { updateScore } from "../../utils/updateScore"
+import { useAuth } from "../../context/AuthContext"
 
 const PostBody = ()=>{
     const { communityName, postId, postSlug } = useParams()
     const [commentJSON, setCommentJSON] = useState<string>('')
     const [commentHTML, setCommentHTML] = useState<string>('')
+    const { isAuthenticated } = useAuth()
 
     const queryClient = useQueryClient()
 
@@ -126,7 +128,9 @@ const PostBody = ()=>{
                 </div>
             </div>
 
-            <CommentInput onSave={handleSaveComment} setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML}/>
+            { isAuthenticated && 
+                <CommentInput onSave={handleSaveComment} setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML}/>
+            }
             <Suspense fallback={<p>Loading...</p>}>
                 <PostComments postId={parseInt(postId!)} communityName={communityName!}/>
             </Suspense>
