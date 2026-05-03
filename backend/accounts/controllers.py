@@ -14,6 +14,7 @@ from .middleware import CustomJWTAuthenticationMiddleware
 from .tables import User
 from .schema import RegisterSchema, LoginSchema, ResendVerificationSchema, UserSchema
 from utils.pwd_hash import hash_password, verify_password
+from utils.secret import generate_secret
 from settings import (
     COOKIE_SECURE,
     FRONTEND_URL,
@@ -135,12 +136,14 @@ class UserController(Controller):
             raise build_error('A user with this email/username already exists', 'user_exists', 400)
 
         hashed_password = await hash_password(data.password)
+        google_sub = generate_secret()
         user = await User.objects().create(
             username=data.username,
             email=email,
             password=hashed_password,
             auth_provider='local',
             email_verified=False,
+            google_sub=google_sub,
         )
         token = create_email_verification_token(str(user.id), user.email)
         await send_verification_email(user.email, user.username, token)
