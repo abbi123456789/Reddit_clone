@@ -7,6 +7,7 @@ from accounts.profile_controllers import ProfileController
 from community.controllers import CommunityController
 from posts.controllers import PostController
 from comments.controllers import CommentController, CommentVoteController
+from core.controllers import HomeController
 
 cors_config = CORSConfig(
     allow_origins=['http://localhost:5173'],
@@ -20,7 +21,7 @@ openapi_config = OpenAPIConfig(
 )
 
 app = Litestar(
-    route_handlers=[UserController, CommunityController, PostController, CommentController, CommentVoteController, ProfileController],
+    route_handlers=[UserController, CommunityController, PostController, CommentController, CommentVoteController, ProfileController, HomeController],
     on_app_init=[jwt_auth.on_app_init],
     openapi_config=openapi_config,
     cors_config = cors_config,

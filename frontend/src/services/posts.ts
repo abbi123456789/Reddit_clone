@@ -48,3 +48,13 @@ export const getPostBySlug = async (postId:string, postSlug: string) : Promise<P
         throw error;
     }
 }
+
+export async function getPostFeed() : Promise<Post[] | null> {
+    try{
+        const response = await api.get('/posts/feed');
+        return response.data;
+    } catch(error) {
+        console.log("Error fetching feed:", error);
+        throw error;
+    }
+}
