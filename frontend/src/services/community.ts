@@ -1,5 +1,6 @@
 import api from "./auth";
 import type { Flair } from "./flairs";
+import type { Post } from './posts';
 
 export type CommunityCreation = {
     name: string
@@ -61,5 +62,15 @@ export async function userJoinedCommunity(communityName: string) : Promise<boole
     }catch(error){
         console.log(error)
         return null
+    }
+}
+
+export async function getCommunityPosts(communityName: string) : Promise<Post[] | null>{
+    try{
+        const response = await api.get(`/r/${communityName}/posts`)
+        return response.data;
+    }catch(error){
+        console.log(error)
+        return null;
     }
 }

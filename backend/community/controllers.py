@@ -3,7 +3,7 @@ from litestar.enums import RequestEncodingType
 from litestar.params import Body
 from litestar.datastructures import UploadFile
 from litestar.exceptions import HTTPException
-from typing import Any
+from typing import Any, List
 
 from .tables import Community, CommunityFlair, JoinedCommunityMembers, CommunityModerators
 from .schema import CommunitySchema, FlairSchema
@@ -138,3 +138,44 @@ class CommunityController(Controller):
         results = await Community.raw(sql_statement, user_id, community_id)
         results = results[0]
         return results.get('is_member')
+
+    @get('/{community_name:str}/posts')
+    async def get_community_posts(self, request:Request[User, Any, Any])->List[dict[str, Any]]:
+        community_name = request.path_params['community_name']
+        query_result = await Community.select('id').where(Community.name == community_name)
+        if query_result:
+            community = query_result[0]
+            community_id = community.get('id')
+        if request.user:
+            user_id = request.user.get('id')
+            sql_statement = '''
+            SELECT p.id, p.title, p.slug, p.content_html, p.content_json, p.updated_at, p.score, p.comment_count, p.score,
+            u.username AS author_name, u.id AS author_id,
+            c.name AS community_name, c.id AS community_id,
+            f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color,
+            CASE (SELECT value FROM post_votes WHERE post=p.id AND voter={})
+                WHEN 1 THEN 'upvoted'
+                WHEN -1 THEN 'downvoted'
+                ELSE 'not_voted'
+            END AS vote_status
+            FROM communities c
+            LEFT JOIN post p ON p.community = c.id
+            LEFT JOIN users u ON p.author = u.id
+            LEFT JOIN community_flairs f ON p.flair = f.id
+            WHERE c.id = {};
+            '''
+            results = await Community.raw(sql_statement, user_id, community_id)
+        else:
+            sql_statement = '''
+            SELECT p.id, p.title, p.slug, p.content_html, p.content_json, p.updated_at, p.score, p.comment_count, p.score,
+            u.username AS author_name, u.id AS author_id,
+            c.name AS community_name, c.id AS community_id,
+            f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color
+            FROM communities c
+            LEFT JOIN post p ON p.community = c.id
+            LEFT JOIN users u ON p.author = u.id
+            LEFT JOIN community_flairs f ON p.flair = f.id
+            WHERE c.id = {};
+            '''
+            results = await Community.raw(sql_statement, community_id)
+        return results
