@@ -1,6 +1,8 @@
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import CommunityModalForm from "../components/CommunityModal"
+import FeedPosts from "../components/FeedPosts"
+import '../styles/home.css'
 
 type HomePageProps = {
     showModal: boolean
@@ -13,6 +15,9 @@ const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
             <Navbar />
             <div className="main-content">
                 <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
+                <div className='sub-content'>
+                    <FeedPosts />
+                </div>
             </div>
             {showModal && <CommunityModalForm handleModalToggle={handleModalToggle} />}
         </main>
