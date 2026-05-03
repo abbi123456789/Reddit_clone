@@ -1,12 +1,13 @@
 import type { Post } from "../../services/posts";
 import '../../styles/postcard.css'
-
+import { Link } from "react-router-dom";
 type PostCardProps = {
     post: Post
 }
 
 export default function PostCard({post}: PostCardProps){
     return (
+        <Link to={`/r/${post.community_name}/comments/${post.id}/${post.slug}`}>
         <div className='post'>
             <div className='post-meta-data'>
                 <div className='post-community'>
@@ -17,7 +18,7 @@ export default function PostCard({post}: PostCardProps){
             </div>
             <div className='post-content'>
                 <div className='post-title'>
-                    <strong>{post.title}</strong>
+                    <strong style={{color: 'black'}}>{post.title}</strong>
                 </div>
                 <div className='post-body'>
                     <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content_html! }} />
@@ -41,5 +42,6 @@ export default function PostCard({post}: PostCardProps){
                 </div>
             </div>
         </div>
+        </Link>
     )
 }

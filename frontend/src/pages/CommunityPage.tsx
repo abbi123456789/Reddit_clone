@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar"
 import CommunityModalForm from "../components/CommunityModal"
 import CommunityHeader from "../components/community/CommunityHeader"
 import '../styles/communitypage.css'
-import CommunityMeta from "../components/community/CommunityMeta"
+import CommunityRightSideBar from "../components/community/CommunityRightSideBar"
 import CommunityPosts from "../components/community/CommunityPosts"
 
 type CommunityPageProps = {
@@ -21,7 +21,7 @@ const CommunityPage = ({showModal, handleModalToggle} : CommunityPageProps)=>{
                     <CommunityHeader />
                     <div className="community-main-content">
                         <CommunityPosts />
-                        <CommunityMeta />
+                        <CommunityRightSideBar />
                     </div>
                 </div>
             </div>
