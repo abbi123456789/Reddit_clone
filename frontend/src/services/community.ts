@@ -54,3 +54,12 @@ export const getCommunity = async (communityName: string): Promise<Community | n
     }
 }
 
+export async function userJoinedCommunity(communityName: string) : Promise<boolean | null>{ 
+    try{
+        const response = await api.get(`/r/${communityName}/join/status`)
+        return response.data
+    }catch(error){
+        console.log(error)
+        return null
+    }
+}

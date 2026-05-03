@@ -120,3 +120,21 @@ class CommunityController(Controller):
         except Exception as e:
             print(e)
             raise HTTPException(detail=str(e), status_code=500)
+        
+    @get('/{community_name:str}/join/status')
+    async def user_join_status(self, request:Request[User, Any, Any]) -> bool:
+        user_id = request.user.get('id')
+        community_name = request.path_params['community_name']
+        query_result = await Community.select('id').where(Community.name == community_name)
+        if query_result:
+            community = query_result[0]
+            community_id = community.get('id')
+        sql_statement = '''
+        SELECT EXISTS (
+            SELECT 1 FROM joined_members
+            WHERE user_id = {} AND community_id = {}
+        ) AS is_member;
+        '''
+        results = await Community.raw(sql_statement, user_id, community_id)
+        results = results[0]
+        return results.get('is_member')
