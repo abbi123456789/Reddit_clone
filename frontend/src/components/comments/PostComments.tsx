@@ -19,7 +19,6 @@ const PostComments = ({communityName, postId}:PostCommentProps) => {
     })
 
     const commentTree = buildCommentTree(comments || [])
-    console.log(comments)
     return (
         <div className='post-comments'>
             {commentTree.map((comment)=>(

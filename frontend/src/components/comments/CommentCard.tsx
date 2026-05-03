@@ -44,12 +44,10 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
             return {previousComment}
         },
         onError: (_, variables, context) => {
-            const queryClient = useQueryClient()
             queryClient.setQueryData(['comment', variables.commentId], context?.previousComment)
             queryClient.invalidateQueries({queryKey: ['comments', postId]})
         },
         onSettled: () => {
-            const queryClient = useQueryClient()
             queryClient.invalidateQueries({queryKey: ['comments', postId]})
         }
     })
