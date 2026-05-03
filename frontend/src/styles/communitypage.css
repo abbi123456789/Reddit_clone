@@ -1,11 +1,14 @@
 .community-container{
-    position: relative;
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .community-container .main-content{
     display: flex;
+    flex: 1;
+    min-height: 0px;
+    min-width: 0px;
 }
 
 .community-container .main-content .sub-content{
@@ -13,5 +16,19 @@
     flex: 1;
     flex-direction: column;
     margin: 20px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.community-container .main-content .sub-content .community-main-content{
+    display: flex;
+}
+
+.community-main-content .community-posts{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
