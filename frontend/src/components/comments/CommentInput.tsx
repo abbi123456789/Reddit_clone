@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import CommentEditor from './CommentEditor';
 import '../../styles/commentinput.css'
 import type { EditorState } from 'lexical';
@@ -7,6 +6,8 @@ export type CommentInputProps = {
     setCommentJSON: (value: string) => void;
     setCommentHTML: (value: string) => void;
     onSave: () => void;
+    isActive: boolean;
+    setIsActive: (value: boolean) => void;
 }
 
 export type ActiveCommentInputProps = {
@@ -17,8 +18,7 @@ export type ActiveCommentInputProps = {
 }
 
 
-const CommentInput = ({ setCommentJSON, setCommentHTML, onSave }: CommentInputProps) => {
-    const [isActive, setIsActive] = useState(false)
+const CommentInput = ({ setCommentJSON, setCommentHTML, onSave, isActive, setIsActive }: CommentInputProps) => {
     return (
         <div className="comment-input-container">
             {isActive ? 

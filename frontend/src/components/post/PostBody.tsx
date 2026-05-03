@@ -17,6 +17,8 @@ const PostBody = ()=>{
     const { communityName, postId, postSlug } = useParams()
     const [commentJSON, setCommentJSON] = useState<string>('')
     const [commentHTML, setCommentHTML] = useState<string>('')
+    // To check, if the comment input box is active or not, when user clicks on it, it becomes active and shows the comment editor, otherwise it shows the placeholder text
+    const [isActive, setIsActive] = useState(false)
     const { isAuthenticated } = useAuth()
 
     const queryClient = useQueryClient()
@@ -54,7 +56,11 @@ const PostBody = ()=>{
     //change it to useMutatin
     const commentCreationMutation = useMutation({
         mutationFn: createComment,
+        onError: (err) => {
+            console.error('Error creating comment:', err)
+        },
         onSettled: () => {
+            console.log('Invalidating comments query')
             queryClient.invalidateQueries({queryKey: ['comments', postId]})
         }
     })
@@ -68,6 +74,9 @@ const PostBody = ()=>{
             community_name: communityName!,
         }
         commentCreationMutation.mutate(commentData)
+        setCommentHTML('')
+        setCommentJSON('')
+        setIsActive(false)
     }
 
     const handleVoteClick = async (postId:string, value: 1 | -1) => {
@@ -129,7 +138,7 @@ const PostBody = ()=>{
             </div>
 
             { isAuthenticated && 
-                <CommentInput onSave={handleSaveComment} setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML}/>
+                <CommentInput onSave={handleSaveComment} setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML} isActive={isActive} setIsActive={setIsActive}/>
             }
             <Suspense fallback={<p>Loading...</p>}>
                 <PostComments postId={parseInt(postId!)} communityName={communityName!}/>
