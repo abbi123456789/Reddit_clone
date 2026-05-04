@@ -14,28 +14,26 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import type { EditorState, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes } from '@lexical/html';
 
-import '../../styles/comment-editor.css';
-
 const theme = {
     ltr: 'ltr',
     rtl: 'rtl',
-    placeholder: 'comment-editor-placeholder',
-    paragraph: 'editor-paragraph',
-    link: 'editor-link',
+    placeholder: 'pointer-events-none absolute top-1 left-0 inline-block select-none overflow-hidden text-ellipsis text-[14px] text-[#999] whitespace-nowrap',
+    paragraph: 'relative m-0 mb-2',
+    link: 'text-[#216fdb] no-underline hover:cursor-pointer hover:underline',
     text: {
-        bold: 'editor-text-bold',
-        italic: 'editor-text-italic',
+        bold: 'font-bold',
+        italic: 'italic',
         overflowed: 'editor-text-overflowed',
         hashtag: 'editor-text-hashtag',
-        underline: 'editor-text-underline',
-        strikethrough: 'editor-text-strikethrough',
-        underlineStrikethrough: 'editor-text-underlineStrikethrough',
-        code: 'editor-text-code',
+        underline: 'underline',
+        strikethrough: 'line-through',
+        underlineStrikethrough: 'underline line-through',
+        code: 'bg-[#f0f2f5] px-1 py-px font-mono text-[94%]',
     },
 };
 
 function Placeholder() {
-    return <div className="comment-editor-placeholder">What are your thoughts?</div>;
+    return <div className="pointer-events-none absolute top-1 left-0 inline-block select-none overflow-hidden text-ellipsis whitespace-nowrap text-[14px] text-[#999]">What are your thoughts?</div>;
 }
 
 const editorConfig = {
@@ -66,10 +64,10 @@ const CommentReplyEditor = ({ setCommentReplyJSON, setCommentReplyHTML }: Commen
 
     return (
         <LexicalComposer initialConfig={editorConfig}>
-            <div className="comment-editor-container">
-                <div className="comment-editor-inner">
+            <div className="relative m-0 rounded text-left leading-5 font-normal text-black">
+                <div className="relative bg-transparent">
                     <RichTextPlugin
-                        contentEditable={<ContentEditable className="comment-editor-input" />}
+                        contentEditable={<ContentEditable className="relative h-[30px] min-h-[30px] overflow-y-auto py-1 text-[14px] caret-[#444] outline-0 [tab-size:1]" />}
                         placeholder={<Placeholder />}
                         ErrorBoundary={LexicalErrorBoundary}
                     />

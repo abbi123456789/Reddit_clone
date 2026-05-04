@@ -13,8 +13,8 @@ export function UserActivity () {
     }
 
     return (
-        <Tabs selectedKey={activeTab} onSelectionChange={handleTabChange} style={{width: '100%'}} className='profile-tabs'>
-            <div className='profile-tabs-inner' style={{display: 'flex' }}>
+        <Tabs selectedKey={activeTab} onSelectionChange={handleTabChange} className="h-full w-full overflow-y-auto p-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex">
                 <TabList>
                     <Tab id='posts'>Posts</Tab>
                     <Tab id='comments'>Comments</Tab>

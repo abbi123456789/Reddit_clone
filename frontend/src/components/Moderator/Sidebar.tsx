@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Input, SearchField } from 'react-aria-components'
 
-import '../../styles/moderatorsidebar.css'
 import { getMyCommunities } from '../../services/community';
 import type { Community } from '../../services/community';
 import { AriaSelect } from '../ui/Select';
@@ -20,14 +19,19 @@ const ModeratorSidebar = ()=>{
         fetchCommunities()
     }, [])
 
+    const sectionClass = "flex flex-col gap-2";
+    const headingClass = "font-bold uppercase";
+    const actionGroupClass = "flex flex-col gap-1";
+    const actionClass = "flex w-fit cursor-pointer rounded-lg px-2.5 py-1 hover:bg-gray-300";
+
     return (
-        <aside className="moderator-sidebar">
-            <div className='exit-link'>
+        <aside className="flex h-screen w-[300px] flex-col gap-5 overflow-auto border-r border-gray-300 pt-2.5 pl-2.5 text-[1.6rem] [scrollbar-width:none]">
+            <div className="flex items-center gap-2">
                 <i className="bi bi-arrow-left"></i>
                 <span>Exit mod tools</span>
             </div>
 
-            <div className='select-community'>
+            <div>
                 <AriaSelect
                     ariaLabel="Select moderator community"
                     placeholder="Select a community"
@@ -40,145 +44,145 @@ const ModeratorSidebar = ()=>{
                 />
             </div>
 
-            <div className='search-tools'>
-                <SearchField aria-label="Search mod tools">
-                    <Input placeholder='search-tools' />
+            <div>
+                <SearchField className="flex" aria-label="Search mod tools">
+                    <Input className="rounded border border-gray-300 p-1" placeholder='search-tools' />
                 </SearchField>
             </div>
 
-            <div className='mod-overview'>
-                <div className='heading'>
+            <div className={sectionClass}>
+                <div className={headingClass}>
                     <span>Overview</span>
                 </div>
 
-                <div className='overview-actions'>
-                    <div>
+                <div className={actionGroupClass}>
+                    <div className={actionClass}>
                         <span>Queues</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mod Mail</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Scheduled Posts and Events</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Restricted Users</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mods & Members</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Insights</span>
                     </div>
                 </div>
             </div>
 
-            <div className='moderation'>
-                <div className='heading'>
+            <div className={sectionClass}>
+                <div className={headingClass}>
                     <span>Moderation</span>
                 </div>
 
-                <div className='moderation-actions'>
-                    <div>
+                <div className={actionGroupClass}>
+                    <div className={actionClass}>
                         <span>Rules</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Saved Responses</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mod Log</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Automod</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Safety Filters</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Automations</span>
                     </div>
                 </div>
             </div>
 
-            <div className='wiki'>
-                <div className='heading'>
+            <div className={sectionClass}>
+                <div className={headingClass}>
                     <span>Wiki</span>
                 </div>
 
-                <div className='wiki-actions'>
-                    <div>
+                <div className={actionGroupClass}>
+                    <div className={actionClass}>
                         <span>Wiki Activity</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Wiki Settings</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Launch Wiki</span>
                     </div>
                 </div>
             </div>
 
-            <div className='mod-community-apps'>
-                <div className='heading'>
+            <div className={sectionClass}>
+                <div className={headingClass}>
                     <span>Community Apps</span>
                 </div>
 
-                <div className='community-apps-actions'>
-                    <div>
+                <div className={actionGroupClass}>
+                    <div className={actionClass}>
                         <span>Installed Apps</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Browse Apps</span>
                     </div>
                 </div>
             </div>
 
-            <div className='mod-settings'>
-                <div className='heading'>
+            <div className={sectionClass}>
+                <div className={headingClass}>
                     <span>Settings</span>
                 </div>
 
-                <div className='settings-actions'>
-                    <div>
+                <div className={actionGroupClass}>
+                    <div className={actionClass}>
                         <span>General settings</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Posts & Comments</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Look and Feel</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Community Guide</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Notifications</span>
                     </div>
                 </div>
             </div>
 
-            <div className='mod-rules'>
-                <div className='heading'>
+            <div className={sectionClass}>
+                <div className={headingClass}>
                     <span>Rules</span>
                 </div>
 
-                <div className='rules-actions'>
-                    <div>
+                <div className={actionGroupClass}>
+                    <div className={actionClass}>
                         <span>Reddit for Community</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mod Help Center</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mod Code of Conduct</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mod Support</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Mod Help</span>
                     </div>
-                    <div>
+                    <div className={actionClass}>
                         <span>Contact Reddit</span>
                     </div>
                 </div>

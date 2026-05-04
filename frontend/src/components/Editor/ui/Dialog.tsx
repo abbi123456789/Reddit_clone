@@ -8,8 +8,6 @@
 
 import type {JSX} from 'react';
 
-import './Dialog.css';
-
 import type {ReactNode} from 'react';
 
 type Props = Readonly<{
@@ -18,7 +16,7 @@ type Props = Readonly<{
 }>;
 
 export function DialogButtonsList({children}: Props): JSX.Element {
-  return <div className="DialogButtonsList">{children}</div>;
+  return <div className="mt-5 flex flex-col justify-end [&_button]:mb-5">{children}</div>;
 }
 
 export function DialogActions({
@@ -26,7 +24,7 @@ export function DialogActions({
   children,
 }: Props): JSX.Element {
   return (
-    <div className="DialogActions" data-test-id={dataTestId}>
+    <div className="mt-5 flex flex-row justify-end" data-test-id={dataTestId}>
       {children}
     </div>
   );

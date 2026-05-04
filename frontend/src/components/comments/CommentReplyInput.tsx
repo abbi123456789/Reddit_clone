@@ -1,5 +1,4 @@
 import CommentReplyEditor from './CommentReplyEditor';
-import '../../styles/commentinput.css'
 import { useState } from 'react';
 import { createComment } from '../../services/comments';
 import type { CommentBody } from '../../services/comments';
@@ -51,21 +50,21 @@ const CommentInput = ({onReply, parentId}: CommentReplyInputProps) => {
     }
 
     return (
-        <div className="comment-input-container">
-            <div className='active-comment-input'>
+        <div className="w-full rounded-[20px] border border-gray-300 text-[1.4rem]">
+            <div className="p-2.5">
                 <CommentReplyEditor 
                     setCommentReplyJSON={setCommentReplyJSON} 
                     setCommentReplyHTML={setCommentReplyHTML} 
                 />
-                <div className="comment-actions">
+                <div className="mt-3 flex justify-end gap-2">
                     <Button
-                        className = 'cancel-button'
+                        className="rounded-[15px] border-0 bg-[#f5f5f5] px-4 py-1.5 font-bold"
                         onPress = {()=>handleCancel()}
                     >
                         Cancel
                     </Button>
                     <Button
-                        className = 'save-button'
+                        className="rounded-[15px] border-0 bg-[#0079d3] px-4 py-1.5 font-bold text-white"
                         onPress={()=>handleSave()}
                     >
                         Save

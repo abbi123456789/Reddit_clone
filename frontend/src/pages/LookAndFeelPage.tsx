@@ -4,11 +4,11 @@ import LookAndFeel from "../components/Moderator/CommunityLookAndFeel"
 
 const LookAndFeelPage = ()=>{
     return(
-        <main className="community-container">
+        <main className="flex h-screen flex-col overflow-hidden">
             <Navbar />
-            <div className="main-content">
+            <div className="flex min-h-0 flex-1 gap-5 text-[1.6rem]">
                 <ModeratorSidebar/>
-                <div className="sub-content">
+                <div className="flex min-h-0 min-w-0 flex-1 p-5">
                     <LookAndFeel />
                 </div>
             </div>

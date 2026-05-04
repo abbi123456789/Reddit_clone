@@ -1,7 +1,6 @@
 import { getFlairs } from "../../services/flairs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import '../../styles/showflair.css'
 
 export type Flair = {
     id: number;
@@ -27,9 +26,9 @@ const ShowFlair = ()=>{
         fetchFlairs();
     }, [communityName])
     return(
-        <div className="flair-display">
-            <div className="flair-header">  
-                <div>
+        <div className="flex flex-col gap-2.5">
+            <div className="flex items-center justify-between">  
+                <div className="flex items-center gap-5">
                     <span>flair preview</span>
                     <span>settings</span>
                 </div>
@@ -37,18 +36,18 @@ const ShowFlair = ()=>{
             </div>
             {flairs.map((flair)=>{
             return(
-            <div key={flair.id} className="flair-item">
-                <div className="flair-info">
-                    <div className="flair-preview" style={{backgroundColor: flair.background_color, color: flair.text_color, padding: '0px 8px', borderRadius: '20px'}}>
+            <div key={flair.id} className="flex items-center justify-between">
+                <div className="flex items-center gap-[60px]">
+                    <div className="rounded-[20px] px-2" style={{backgroundColor: flair.background_color, color: flair.text_color}}>
                         {flair.title}
                     </div>
-                    <div className="flair-settings">
+                    <div>
                         {flair.mod_only ? 'Mod only' : 'Everyone'}
                     </div>
                 </div>
-                <div className="flair-actions">
-                    <i className="bi bi-trash"></i>
-                    <i className="bi bi-pencil"></i>
+                <div className="flex items-center gap-5">
+                    <i className="bi bi-trash cursor-pointer bg-transparent text-red-600"></i>
+                    <i className="bi bi-pencil cursor-pointer bg-transparent text-blue-600"></i>
                 </div>
             </div>
             )})}

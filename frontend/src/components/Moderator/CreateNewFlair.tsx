@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Button, Checkbox, Input, TextField } from 'react-aria-components'
-import '../../styles/createnewflair.css'
 
 type CreateNewFlairProps = {
     setShowNewFlair : Dispatch<SetStateAction<boolean>>;
@@ -15,26 +14,28 @@ type CreateNewFlairProps = {
 const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, setFlair}:CreateNewFlairProps)=>{
     const [modOnly, setModOnly] = useState<boolean>(false)
     const [usersCanEdit, setUsersCanEdit] = useState<boolean>(false)
+    const switchClass = "group relative inline-block h-7 w-[50px] data-[disabled]:opacity-50";
+    const sliderClass = "absolute inset-0 cursor-pointer rounded-[34px] bg-[#e9e9ea] transition before:absolute before:bottom-0.5 before:left-0.5 before:h-6 before:w-6 before:rounded-full before:bg-white before:shadow-sm before:transition group-data-[selected]:bg-[#34c759] group-data-[selected]:before:translate-x-[22px]";
 
     return(
-        <aside className="create-new-flair">
-            <header className="create-actions">
-                <div className="label">
+        <aside className="flex w-[300px] flex-col gap-5 text-[1.6rem]">
+            <header className="flex items-center justify-between">
+                <div className="font-bold">
                     <p>Create flair</p>
                 </div>
-                <div className="actions">
-                    <Button className='create-flair-button'>Create</Button>
-                    <Button className="close-flair-button" aria-label="Close flair creator" onPress={()=>setShowNewFlair(false)}>
-                        <i className="bi bi-x-lg"></i>
+                <div className="flex gap-5">
+                    <Button className="rounded-[20px] border-0 bg-[#0a449b] px-2.5 py-1 font-bold text-white">Create</Button>
+                    <Button className="border-0 bg-transparent p-0" aria-label="Close flair creator" onPress={()=>setShowNewFlair(false)}>
+                        <i className="bi bi-x-lg rounded-[20px] bg-slate-400 px-2 py-1"></i>
                     </Button>
                 </div>
             </header>
 
-            <div className="flair-preview">
-                <span className='bolder-text'>Preview</span>
-                <div className="preview-card">
-                    <p className='bolder-text community-title'>r/community_name </p>
-                    <span className='bolder-text'>Post title</span>
+            <div className="flex flex-col gap-2.5">
+                <span className="font-bold">Preview</span>
+                <div className="flex flex-col rounded-[10px] border border-slate-600 px-5 py-2.5 text-[1.4rem]">
+                    <p className="text-[1.2rem] font-bold">r/community_name </p>
+                    <span className="font-bold">Post title</span>
                     <span style={backgroundColor? {backgroundColor: 'black', color: 'white', padding: '0.2rem 0.4rem', borderRadius: '4px'} : {}}>
                         {flair}
                     </span>
@@ -42,40 +43,40 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, 
                 </div>
             </div>
 
-            <div className='flair-input'>
-                <span className='bolder-text'>setup</span>
+            <div className="flex flex-col gap-2.5">
+                <span className="font-bold">setup</span>
 
-                <div className="flair-input-element">
+                <div>
                     <TextField aria-label="Flair text" value={flair} onChange={setFlair}>
-                        <Input type="text" placeholder="general" />
+                        <Input className="h-10 w-[300px] rounded-[20px] border-0 px-5 focus:outline focus:outline-1 focus:outline-slate-600" type="text" placeholder="general" />
                     </TextField>
                 </div>
             </div>
 
-            <div className="set-bg-color">
+            <div className="flex items-center justify-between">
                 <span>Color</span>
-                <Button className='set-color' onPress={()=>setModalOpen(true)}>
-                    <span className='bolder-text'>none, Dark on Light</span>
-                    <span className='bolder-text'>&gt;</span>
+                <Button className="flex items-center gap-2.5 border-0 bg-transparent px-3 py-2 hover:rounded-[20px] hover:bg-slate-300" onPress={()=>setModalOpen(true)}>
+                    <span className="font-bold">none, Dark on Light</span>
+                    <span className="font-bold">&gt;</span>
                 </Button>
             </div>
 
-            <div className="flair-options">
-                <span className='bolder-text'>options</span>
-                <div>
+            <div className="flex flex-col gap-2.5">
+                <span className="font-bold">options</span>
+                <div className="flex items-center justify-between">
                     <span>For mods only</span>
                     <div>
-                        <Checkbox className="switch" isSelected={modOnly} onChange={setModOnly} aria-label="For mods only">
-                            <span className="slider"></span>
+                        <Checkbox className={switchClass} isSelected={modOnly} onChange={setModOnly} aria-label="For mods only">
+                            <span className={sliderClass}></span>
                         </Checkbox>
                     </div>
                 </div>
 
-                <div>
+                <div className="flex items-center justify-between">
                     <span>Allow users to edit</span>
                     <div>
-                        <Checkbox className="switch" isDisabled={!modOnly} isSelected={usersCanEdit} onChange={setUsersCanEdit} aria-label="Allow users to edit flair">
-                            <span className="slider"></span>
+                        <Checkbox className={switchClass} isDisabled={!modOnly} isSelected={usersCanEdit} onChange={setUsersCanEdit} aria-label="Allow users to edit flair">
+                            <span className={sliderClass}></span>
                         </Checkbox>
                     </div>
                 </div>

@@ -8,8 +8,6 @@
 
 import type {JSX} from 'react';
 
-import './Button.css';
-
 import type {ReactNode} from 'react';
 import { Button as AriaButton } from 'react-aria-components';
 
@@ -36,9 +34,9 @@ export default function Button({
     <AriaButton
       isDisabled={disabled}
       className={joinClasses(
-        'Button__root',
-        disabled && 'Button__disabled',
-        small && 'Button__small',
+        'rounded border-0 bg-[#eee] px-[15px] py-2.5 text-[14px] hover:bg-[#ddd]',
+        disabled && 'cursor-not-allowed hover:bg-[#eee]',
+        small && 'px-2.5 py-1 text-[13px]',
         className,
       )}
       onPress={onClick}

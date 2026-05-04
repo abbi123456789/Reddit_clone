@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import CommunityModalForm from "../components/CommunityModal";
 import PostBody from "../components/post/PostBody";
-import '../styles/postdetail.css'
 import CommunityRightSideBar from "../components/community/CommunityRightSideBar";
 
 type PostDetailPageProps = {
@@ -12,11 +11,11 @@ type PostDetailPageProps = {
 
 const PostDetail = ({handleModalToggle, showModal}: PostDetailPageProps) => {
     return (
-        <main className="post-detail-container">
+        <main className="flex h-screen flex-col overflow-hidden p-5">
             <Navbar />
-            <div className="main-content">
+            <div className="flex min-h-0 min-w-0 flex-1">
                 <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
-                <div className="sub-content">
+                <div className="ml-5 flex h-full w-full flex-1 overflow-y-auto">
                     <PostBody />
                     <CommunityRightSideBar />
                 </div>

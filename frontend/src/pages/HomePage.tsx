@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import CommunityModalForm from "../components/CommunityModal"
 import FeedPosts from "../components/FeedPosts"
-import '../styles/home.css'
 
 type HomePageProps = {
     showModal: boolean
@@ -11,11 +10,11 @@ type HomePageProps = {
 
 const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
     return (
-        <main className="home-container">
+        <main className="flex h-screen flex-col">
             <Navbar />
-            <div className="main-content">
+            <div className="flex flex-1 gap-8">
                 <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
-                <div className='sub-content'>
+                <div className="px-2.5 py-5">
                     <FeedPosts />
                 </div>
             </div>

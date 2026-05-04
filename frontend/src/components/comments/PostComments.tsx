@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { getPostComments } from "../../services/comments";
 const CommentCard = React.lazy(()=>import('./CommentCard'))
-import '../../styles/comments.css'
 import { useQuery } from '@tanstack/react-query'
 import { buildCommentTree } from "../../utils/buildCommentTree";
 
@@ -18,7 +17,7 @@ const PostComments = ({postId}:PostCommentProps) => {
 
     const commentTree = React.useMemo(()=>buildCommentTree(comments || []), [comments])
     return (
-        <div className='post-comments'>
+        <div className="flex flex-col gap-5">
             {commentTree.map((comment)=>(
                 <CommentCard 
                     comment={comment} 

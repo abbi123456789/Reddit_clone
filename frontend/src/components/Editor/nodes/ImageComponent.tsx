@@ -9,8 +9,6 @@
 import type { LexicalCommand, LexicalEditor, NodeKey } from 'lexical';
 import type { JSX } from 'react';
 
-import './ImageNode.css';
-
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalEditable } from '@lexical/react/useLexicalEditable';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';

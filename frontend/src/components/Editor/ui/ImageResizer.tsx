@@ -149,7 +149,7 @@ export default function ImageResizer({
       setStartCursor(direction);
       onResizeStart();
 
-      controlWrapper.classList.add('image-control-wrapper--resizing');
+      controlWrapper.classList.add('touch-none');
       image.style.height = `${height}px`;
       image.style.width = `${width}px`;
 
@@ -227,7 +227,7 @@ export default function ImageResizer({
       positioning.currentHeight = 0;
       positioning.isResizing = false;
 
-      controlWrapper.classList.remove('image-control-wrapper--resizing');
+      controlWrapper.classList.remove('touch-none');
 
       setEndCursor();
       onResizeEnd(width, height);
@@ -236,52 +236,54 @@ export default function ImageResizer({
       document.removeEventListener('pointerup', handlePointerUp);
     }
   };
+  const resizerClass = 'absolute block h-[7px] w-[7px] border border-white bg-[#3c84f4]';
+
   return (
     <div ref={controlWrapperRef}>
       <div
-        className="image-resizer image-resizer-n"
+        className={`${resizerClass} top-[-6px] left-[48%] cursor-n-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north);
         }}
       />
       <div
-        className="image-resizer image-resizer-ne"
+        className={`${resizerClass} top-[-6px] right-[-6px] cursor-ne-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.east);
         }}
       />
       <div
-        className="image-resizer image-resizer-e"
+        className={`${resizerClass} right-[-6px] bottom-[48%] cursor-e-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.east);
         }}
       />
       <div
-        className="image-resizer image-resizer-se"
+        className={`${resizerClass} right-[-6px] bottom-[-2px] cursor-nwse-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.east);
         }}
       />
       <div
-        className="image-resizer image-resizer-s"
+        className={`${resizerClass} bottom-[-2px] left-[48%] cursor-s-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south);
         }}
       />
       <div
-        className="image-resizer image-resizer-sw"
+        className={`${resizerClass} bottom-[-2px] left-[-6px] cursor-sw-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.south | Direction.west);
         }}
       />
       <div
-        className="image-resizer image-resizer-w"
+        className={`${resizerClass} bottom-[48%] left-[-6px] cursor-w-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.west);
         }}
       />
       <div
-        className="image-resizer image-resizer-nw"
+        className={`${resizerClass} top-[-6px] left-[-6px] cursor-nw-resize`}
         onPointerDown={(event) => {
           handlePointerDown(event, Direction.north | Direction.west);
         }}

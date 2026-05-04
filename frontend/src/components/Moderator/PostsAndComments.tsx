@@ -10,27 +10,27 @@ type SettingsRowProps = {
 
 const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }:SettingsRowProps) => {
   return (
-    <div className="settings-row">
-      <div className="text-container">
-        <h3 className="row-title">{title}</h3>
-        {subtitle && <p className="row-subtitle">{subtitle}</p>}
+    <div className="flex min-h-12 items-center justify-between py-4">
+      <div className="flex-1">
+        <h3 className="m-0 text-[16px] font-normal text-[#1c1c1c]">{title}</h3>
+        {subtitle && <p className="mt-1 mb-0 text-[12px] text-[#7c7c7c]">{subtitle}</p>}
       </div>
       
-      <div className="action-container">
-        {value && <span className="row-value">{value}</span>}
+      <div className="flex items-center gap-3">
+        {value && <span className="text-[14px] text-[#7c7c7c]">{value}</span>}
         
         {type === "link" && (
-          <div className="chevron-icon">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <div>
+            <svg className="h-5 w-5 fill-[#1c1c1c]" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path d="M7.293 4.707L12.586 10l-5.293 5.293 1.414 1.414L15.414 10 8.707 3.293z" />
             </svg>
           </div>
         )}
 
         {type === "toggle" && (
-          <Checkbox className="toggle-switch" defaultSelected={toggleChecked} aria-label={title}>
-            <span className="slider">
-              {toggleChecked && <span className="check-mark">✓</span>}
+          <Checkbox className="group relative inline-block h-8 w-[50px] data-[disabled]:opacity-50" defaultSelected={toggleChecked} aria-label={title}>
+            <span className="absolute inset-0 flex cursor-pointer items-center justify-end rounded-[34px] bg-[#edeff1] pr-2 transition before:absolute before:bottom-1 before:left-1 before:h-6 before:w-6 before:rounded-full before:bg-white before:shadow-sm before:transition group-data-[selected]:bg-[#0079d3] group-data-[selected]:before:translate-x-[18px]">
+              {toggleChecked && <span className="text-[14px] font-bold text-white">✓</span>}
             </span>
           </Checkbox>
         )}
@@ -41,8 +41,8 @@ const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }:Se
 
 export default function PostsAndComments() {
   return (
-    <div className="container">
-      <h1 className="main-title">Posts & Comments</h1>
+    <div className='font-sans'>
+      <h1 className="mb-8 text-[28px] font-bold text-[#1c1c1c]">Posts & Comments</h1>
 
       <SettingsRow 
         title="Post guidelines" 
@@ -51,7 +51,7 @@ export default function PostsAndComments() {
       <SettingsRow title="Allowed posts" value="All" />
       <SettingsRow title="Who can create AMAs" value="Anyone" />
 
-      <hr className="divider" />
+      <hr className="my-4 border-0 border-t border-[#edeff1]" />
 
       <SettingsRow title="Title restrictions" value="None" />
       <SettingsRow title="Body" value="Optional" />
@@ -67,7 +67,7 @@ export default function PostsAndComments() {
       />
       <SettingsRow title="Hold content for review" />
 
-      <hr className="divider" />
+      <hr className="my-4 border-0 border-t border-[#edeff1]" />
 
       <SettingsRow 
         title="Spoiler tag" 

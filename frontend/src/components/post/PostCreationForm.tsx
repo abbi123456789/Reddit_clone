@@ -73,14 +73,15 @@ const PostCreationForm = () => {
     }
 
     return (
-        <section className="create-post-section">
-            <div className="create-post-desc">
+        <section className="flex flex-1 flex-col gap-5">
+            <div className="flex items-center justify-between font-bold">
                 <h1>Create Post</h1>
-                <p>Drafts</p>
+                <p className="text-[1.8rem]">Drafts</p>
             </div>
 
-            <div className="community-selection">
+            <div>
                 <AriaSelect
+                    className="[&_.aria-select-trigger]:rounded-[25px] [&_.aria-select-trigger]:border-0 [&_.aria-select-trigger]:bg-gray-300 [&_.aria-select-trigger]:px-6 [&_.aria-select-trigger]:py-2.5"
                     ariaLabel="Choose community"
                     name="choose-community"
                     placeholder="Select a community"
@@ -93,14 +94,15 @@ const PostCreationForm = () => {
                 />
             </div>
 
-            <div className="post-title">
+            <div className="w-full">
                 <TextField aria-label="Post title" value={title} onChange={setTitle} isRequired>
-                    <Input type="text" placeholder="Title" />
+                    <Input className="block h-[60px] w-full rounded-[30px] border border-gray-500 px-5" type="text" placeholder="Title" />
                 </TextField>
             </div>
 
-            <div className="add-flair-and-tag">
+            <div>
                 <AriaSelect
+                    className="[&_.aria-select-trigger]:rounded-[25px] [&_.aria-select-trigger]:border-0 [&_.aria-select-trigger]:bg-gray-300 [&_.aria-select-trigger]:px-6 [&_.aria-select-trigger]:py-2.5"
                     ariaLabel="Choose flair"
                     name="flair-tag"
                     placeholder="Select a flair"
@@ -113,13 +115,13 @@ const PostCreationForm = () => {
                 />
             </div>
 
-            <div className="post-body">
+            <div className="w-full">
                 <RichTextEditor onChange={handleEditorChange} />
             </div>
 
-            <div className="action-buttons">
-                <Button>Save Draft</Button>
-                <Button onPress={handleSubmit}>Post</Button>
+            <div className="mr-8 flex justify-end gap-8">
+                <Button className="rounded-[20px] border-0 px-4 py-2.5">Save Draft</Button>
+                <Button className="rounded-[20px] border-0 px-4 py-2.5" onPress={handleSubmit}>Post</Button>
             </div>
         </section>
     )

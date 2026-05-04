@@ -23,42 +23,40 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import type { EditorState, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes } from '@lexical/html';
 
-import '../../styles/editor.css'
-
 const theme = {
     ltr: 'ltr',
     rtl: 'rtl',
-    placeholder: 'editor-placeholder',
-    paragraph: 'editor-paragraph',
-    quote: 'editor-quote',
+    placeholder: 'pointer-events-none absolute top-[15px] left-2.5 inline-block select-none overflow-hidden text-ellipsis text-[15px] text-[#999]',
+    paragraph: 'relative m-0 mb-2',
+    quote: 'm-0 ml-5 border-l-4 border-solid border-l-[#ced0d4] pl-4 text-[15px] text-[#65676b]',
     heading: {
-        h1: 'editor-heading-h1',
-        h2: 'editor-heading-h2',
-        h3: 'editor-heading-h3',
+        h1: 'm-0 mb-3 p-0 text-[24px] font-normal text-[#050505]',
+        h2: 'm-0 mt-2.5 p-0 text-[18px] font-bold text-[#65676b]',
+        h3: 'm-0 mt-2.5 p-0 text-[14px] font-bold uppercase text-[#65676b]',
     },
     list: {
         nested: {
-            listitem: 'editor-nested-listitem',
+            listitem: 'list-none',
         },
-        ol: 'editor-list-ol',
-        ul: 'editor-list-ul',
-        listitem: 'editor-listitem',
+        ol: 'm-0 ml-4 p-0',
+        ul: 'm-0 ml-4 p-0',
+        listitem: 'mx-8 my-2',
         listitemChecked: 'editor-listitem-checked',
         listitemUnchecked: 'editor-listitem-unchecked',
     },
-    image: 'editor-image',
-    link: 'editor-link',
+    image: 'relative inline-block cursor-default select-none [&_img]:max-w-full [&_img.focused]:outline-2 [&_img.focused]:outline-[#3c84f4]',
+    link: 'text-[#216fdb] no-underline hover:cursor-pointer hover:underline',
     text: {
-        bold: 'editor-text-bold',
-        italic: 'editor-text-italic',
+        bold: 'font-bold',
+        italic: 'italic',
         overflowed: 'editor-text-overflowed',
         hashtag: 'editor-text-hashtag',
-        underline: 'editor-text-underline',
-        strikethrough: 'editor-text-strikethrough',
-        underlineStrikethrough: 'editor-text-underlineStrikethrough',
-        code: 'editor-text-code',
+        underline: 'underline',
+        strikethrough: 'line-through',
+        underlineStrikethrough: 'underline line-through',
+        code: 'bg-[#f0f2f5] px-1 py-px font-mono text-[94%]',
     },
-    code: 'editor-code',
+    code: 'relative my-2 block overflow-x-auto bg-[#f0f2f5] py-2 pr-2 pl-[52px] font-mono text-[13px] leading-[1.53] [tab-size:2] before:absolute before:top-0 before:left-0 before:min-w-[25px] before:border-r before:border-gray-300 before:bg-[#eee] before:p-2 before:text-right before:whitespace-pre-wrap before:text-[#777] before:content-[attr(data-gutter)]',
     codeHighlight: {
         atrule: 'editor-tokenAttr',
         attr: 'editor-tokenAttr',
@@ -94,7 +92,7 @@ const theme = {
 };
 
 function Placeholder() {
-    return <div className="editor-placeholder">What are your thoughts?</div>;
+    return <div className="pointer-events-none absolute top-[15px] left-2.5 inline-block select-none overflow-hidden text-ellipsis text-[15px] text-[#999]">What are your thoughts?</div>;
 }
 
 const editorConfig = {
@@ -138,11 +136,11 @@ const RichTextEditor = ({ onChange }: RichTextEditorProps) => {
 
     return (
         <LexicalComposer initialConfig={editorConfig}>
-            <div className="editor-container">
+            <div className="relative mx-auto my-5 rounded-t-[10px] rounded-b-lg border border-gray-300 bg-white text-left leading-5 font-normal text-black">
                 <ToolbarPlugin />
-                <div className="editor-inner">
+                <div className="relative bg-white">
                     <RichTextPlugin
-                        contentEditable={<ContentEditable className="editor-input" />}
+                        contentEditable={<ContentEditable className="relative min-h-[150px] resize-y p-[15px_10px] text-[15px] caret-[#444] outline-0 [tab-size:1]" />}
                         placeholder={<Placeholder />}
                         ErrorBoundary={LexicalErrorBoundary}
                     />

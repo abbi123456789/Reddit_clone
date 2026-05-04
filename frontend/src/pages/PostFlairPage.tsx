@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar"
-import '../styles/postflairpage.css'
 import ModeratorSidebar from "../components/Moderator/Sidebar"
 import PostFlair from "../components/Moderator/PostFlair"
 import CreateNewFlair from "../components/Moderator/CreateNewFlair"
@@ -17,11 +16,11 @@ const PostFlairPage = ()=>{
     const [flair, setFlair] = useState<string>('')
 
     return(
-        <main className="post-flair-page-container">
+        <main className="relative flex flex-col">
             <Navbar />
-            <div className="main-content">
+            <div className="flex h-screen overflow-y-auto [scrollbar-width:none]">
                 <ModeratorSidebar/>
-                <div className="sub-content">
+                <div className="m-5 flex flex-1">
                     <PostFlair setShowNewFlair={setShowNewFlair}/>
                     {showNewFlair && 
                         <CreateNewFlair 

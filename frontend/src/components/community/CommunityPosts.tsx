@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getCommunityPosts } from "../../services/community";
 import PostCard from "../post/PostCard";
-import '../../styles/communitypage.css'
 
 export default function CommunityPosts(){
     const { communityName } = useParams();
@@ -11,7 +10,7 @@ export default function CommunityPosts(){
         queryFn: async () => await getCommunityPosts(communityName!),
     })
     return(
-        <div className='community-posts'>
+        <div className="mb-10 flex flex-col gap-5">
             {communityPosts?.map((post)=>(
                 <PostCard key={post.id} post={post} />
             ))}

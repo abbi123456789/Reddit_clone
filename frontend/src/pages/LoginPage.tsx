@@ -3,7 +3,12 @@ import { Button, Form, Input, Label, TextField } from 'react-aria-components';
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { beginGoogleLogin, doLogin, resendVerificationEmail } from "../services/account";
-import '../styles/login.css';
+
+const authWrapperClass = "flex min-h-screen items-center justify-center bg-[#f8efe8] bg-[radial-gradient(circle_at_top_left,rgba(255,111,60,0.18),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(255,177,66,0.2),transparent_30%)] p-6";
+const authPageClass = "m-auto w-[90%] max-w-[560px] rounded-xl border border-black/15 bg-[#faebd7] p-6 text-[1.1rem] shadow-[0_18px_50px_rgba(92,47,19,0.15)]";
+const fieldClass = "flex flex-col gap-1.5 [&_input]:rounded-lg [&_input]:border [&_input]:border-black/20 [&_input]:px-3 [&_input]:py-2.5 [&_input]:text-[1rem]";
+const primaryButtonClass = "ml-auto w-fit rounded-full border-0 bg-orange-600 px-4 py-2.5 text-[1rem] text-white disabled:cursor-progress disabled:opacity-75";
+const secondaryButtonClass = "rounded-full border-0 bg-slate-500 px-4 py-2.5 text-[1rem] text-white disabled:cursor-progress disabled:opacity-75";
 
 const Login = () => {
     const { login } = useAuth();
@@ -79,22 +84,22 @@ const Login = () => {
     }
 
     return (
-        <div className="login-wrapper">
-            <div className="login-page">
-                <div className="auth-header">
-                    <h1>Welcome back</h1>
-                    <p>Sign in with your password or use Google.</p>
+        <div className={authWrapperClass}>
+            <div className={authPageClass}>
+                <div className="mb-5">
+                    <h1 className="mb-2">Welcome back</h1>
+                    <p className="m-0 text-[#5a463a]">Sign in with your password or use Google.</p>
                 </div>
 
                 {errorMessage && (
-                    <div className={`auth-message ${errorCode === null ? 'auth-message-success' : 'auth-message-error'}`}>
+                    <div className={`mb-4 rounded-[10px] px-3.5 py-3 ${errorCode === null ? 'bg-[#dff6df] text-[#205b2d]' : 'bg-[#ffe1db] text-[#84291a]'}`}>
                         {errorMessage}
                     </div>
                 )}
 
-                <Form className="login-form" action={dispatchAction}>
-                    <TextField className="form-field" name="identifier" type="text" isRequired>
-                        <Label>Username/Email <span className="required-field">*</span></Label>
+                <Form className="flex flex-col gap-4" action={dispatchAction}>
+                    <TextField className={fieldClass} name="identifier" type="text" isRequired>
+                        <Label>Username/Email <span className="text-red-600">*</span></Label>
                         <Input
                             type="text"
                             id="identifier"
@@ -102,8 +107,8 @@ const Login = () => {
                         />
                     </TextField>
 
-                    <TextField className="form-field" name="password" type="password" isRequired>
-                        <Label>Password <span className="required-field">*</span></Label>
+                    <TextField className={fieldClass} name="password" type="password" isRequired>
+                        <Label>Password <span className="text-red-600">*</span></Label>
                         <Input
                             type="password"
                             id="password"
@@ -111,22 +116,23 @@ const Login = () => {
                         />
                     </TextField>
 
-                    <Button isDisabled={isPending} className="btn-primary">
+                    <Button isDisabled={isPending} className={primaryButtonClass}>
                         {isPending ? 'Logging you in' : 'Login'}
                     </Button>
                 </Form>
 
-                <div className="auth-divider">
+                <div className="my-[18px] flex items-center gap-3 text-[#8a7361] before:h-px before:flex-1 before:bg-black/15 before:content-[''] after:h-px after:flex-1 after:bg-black/15 after:content-['']">
                     <span>or</span>
                 </div>
 
-                <Button type="button" className="btn-google" onPress={beginGoogleLogin}>
+                <Button type="button" className="w-full rounded-full border border-black/20 bg-white px-4 py-2.5 text-[1rem] text-[#1f1f1f] disabled:cursor-progress disabled:opacity-75" onPress={beginGoogleLogin}>
                     Continue with Google
                 </Button>
 
                 {errorCode === 'email_unverified' && (
-                    <Form className="inline-form" onSubmit={handleResendVerification}>
+                    <Form className="mt-[18px] flex flex-col gap-3" onSubmit={handleResendVerification}>
                         <TextField
+                            className={fieldClass}
                             name="resend-email"
                             type="email"
                             value={resendEmail}
@@ -140,10 +146,10 @@ const Login = () => {
                             placeholder="tony@example.com"
                         />
                         </TextField>
-                        <Button type="submit" className="btn-secondary" isDisabled={isResending}>
+                        <Button type="submit" className={secondaryButtonClass} isDisabled={isResending}>
                             {isResending ? 'Sending...' : 'Resend verification'}
                         </Button>
-                        {resendMessage && <p className="inline-feedback">{resendMessage}</p>}
+                        {resendMessage && <p className="m-0 text-[#5a463a]">{resendMessage}</p>}
                     </Form>
                 )}
             </div>

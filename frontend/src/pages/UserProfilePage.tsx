@@ -1,7 +1,6 @@
 import { UserActivity } from '../components/profile/UserActivity';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import '../styles/profilepage.css'
 
 type UserProfilePageProps = {
     showModal: boolean
@@ -10,11 +9,11 @@ type UserProfilePageProps = {
 
 const UserProfilePage = ({ showModal, handleModalToggle }: UserProfilePageProps) => {
     return (
-        <main className="community-container">
+        <main className="flex h-screen flex-col overflow-hidden">
             <Navbar />
-            <div className="main-content">
+            <div className="flex min-h-0 flex-1 gap-5 text-[1.6rem]">
                 <Sidebar showModal={showModal} handleModalToggle={handleModalToggle} />
-                <div className="sub-content">
+                <div className="flex min-h-0 min-w-0 flex-1">
                     <UserActivity />
                 </div>
             </div>

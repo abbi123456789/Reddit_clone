@@ -11,21 +11,23 @@ type SettingsRowProps = {
 // Reusing your SettingsRow component with minor tweaks for icon size
 const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }: SettingsRowProps) => {
   return (
-    <div className="settings-row">
-      <div className="text-container">
-        <h3 className="row-title">{title}</h3>
-        {subtitle && <p className="row-subtitle">{subtitle}</p>}
+    <div className="flex min-h-12 items-center justify-between py-4">
+      <div className="flex-1">
+        <h3 className="m-0 text-[16px] font-normal text-[#1c1c1c]">{title}</h3>
+        {subtitle && <p className="mt-1 mb-0 text-[12px] text-[#7c7c7c]">{subtitle}</p>}
       </div>
-      <div className="action-container">
-        {value && <span className="row-value">{value}</span>}
+      <div className="flex items-center gap-3">
+        {value && <span className="text-[14px] text-[#7c7c7c]">{value}</span>}
         {type === "link" && (
-          <div className="chevron-icon">
-            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 4.707L12.586 10l-5.293 5.293 1.414 1.414L15.414 10 8.707 3.293z" /></svg>
+          <div>
+            <svg className="h-5 w-5 fill-[#1c1c1c]" viewBox="0 0 20 20" fill="currentColor"><path d="M7.293 4.707L12.586 10l-5.293 5.293 1.414 1.414L15.414 10 8.707 3.293z" /></svg>
           </div>
         )}
         {type === "toggle" && (
-          <Checkbox className="toggle-switch" defaultSelected={toggleChecked} aria-label={title}>
-            <span className="slider">{toggleChecked && <span className="check-mark">✓</span>}</span>
+          <Checkbox className="group relative inline-block h-8 w-[50px]" defaultSelected={toggleChecked} aria-label={title}>
+            <span className="absolute inset-0 flex cursor-pointer items-center justify-end rounded-[34px] bg-[#edeff1] pr-2 transition before:absolute before:bottom-1 before:left-1 before:h-6 before:w-6 before:rounded-full before:bg-white before:shadow-sm before:transition group-data-[selected]:bg-[#0079d3] group-data-[selected]:before:translate-x-[18px]">
+              {toggleChecked && <span className="text-[14px] font-bold text-white">✓</span>}
+            </span>
           </Checkbox>
         )}
       </div>
@@ -34,18 +36,20 @@ const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }: S
 };
 
 const CommunityGuides = () => {
+  const tabClass = "relative border-0 bg-transparent py-3 text-[14px] font-semibold text-[#7c7c7c]";
+
   return (
-    <div className="page-wrapper">
+    <div className="w-full">
       {/* Tabs Navigation */}
-      <div className="tabs-container">
-        <Button className="tab active">Community Guide</Button>
-        <Button className="tab">Mod Guide</Button>
-        <Button className="tab">Training Queue</Button>
+      <div className="mb-5 flex gap-[30px] border-b border-[#edeff1]">
+        <Button className={`${tabClass} text-[#1c1c1c] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[#1c1c1c] after:content-['']`}>Community Guide</Button>
+        <Button className={tabClass}>Mod Guide</Button>
+        <Button className={tabClass}>Training Queue</Button>
       </div>
 
-      <div className="main-content">
+      <div className="mt-[30px] flex gap-[60px]">
         {/* Left Column: Settings */}
-        <div className="settings-column">
+        <div className="flex-[1.2]">
           <SettingsRow 
             title="Enable community guide" 
             subtitle="Appears in the sidebar on desktop and About in the Reddit app."
@@ -65,24 +69,24 @@ const CommunityGuides = () => {
         </div>
 
         {/* Right Column: Preview Card */}
-        <div className="preview-column">
-          <div className="preview-card">
-            <div className="preview-header-art">
+        <div className="flex-[0.8]">
+          <div className="overflow-hidden rounded-3xl border border-[#edeff1] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+            <div className="relative h-[140px] overflow-hidden bg-[#f6f7f8]">
               {/* Abstract shapes representing the background art */}
-              <div className="art-shape bubble-1"></div>
-              <div className="art-shape bubble-2"></div>
-              <div className="art-shape bubble-3"></div>
-              <div className="art-shape bubble-4"></div>
+              <div className="absolute left-2.5 top-2.5 h-[60px] w-[100px] rounded-[30px] bg-[#e0e0e0]"></div>
+              <div className="absolute right-10 top-2.5 h-20 w-20 rounded-xl bg-[#e0e0e0]"></div>
+              <div className="absolute bottom-2.5 left-2.5 h-10 w-[120px] rounded-[20px] bg-[#e0e0e0]"></div>
+              <div className="absolute right-2.5 bottom-[-10px] h-[90px] w-[60px] rounded-[20px] bg-[#e0e0e0]"></div>
             </div>
             
-            <div className="preview-body">
-              <div className="community-badge">r/iojoihihuj</div>
-              <div className="message-box">
+            <div className="p-5 text-center">
+              <div className="relative mt-[-40px] inline-block rounded-[20px] border-4 border-white bg-orange-600 px-4 py-1.5 text-[18px] font-extrabold text-white">r/iojoihihuj</div>
+              <div className="my-5 mb-2.5 rounded-xl bg-[#e8eef3] p-4 text-left text-[13px] leading-[1.4]">
                 <p>👋 Welcome u/Traditional_Tear_603! We're just getting started - share a post or comment to help shape this community into something great!</p>
               </div>
-              <p className="mod-team-label">- r/iojoihihuj Mod Team</p>
-              <Button className="got-it-btn">Got It</Button>
-              <p className="footer-note">Access the community guide any time in the sidebar</p>
+              <p className="mb-5 text-left text-[12px] text-[#7c7c7c]">- r/iojoihihuj Mod Team</p>
+              <Button className="w-full rounded-3xl border-0 bg-[#0045ac] p-3 font-bold text-white">Got It</Button>
+              <p className="mt-3 text-[11px] text-[#7c7c7c]">Access the community guide any time in the sidebar</p>
             </div>
           </div>
         </div>

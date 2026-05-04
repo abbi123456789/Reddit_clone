@@ -8,8 +8,6 @@
 
 import type {JSX} from 'react';
 
-import './Input.css';
-
 import type {HTMLInputTypeAttribute} from 'react';
 import { Input, Label, TextField } from 'react-aria-components';
 
@@ -31,11 +29,11 @@ export default function TextInput({
   type = 'text',
 }: Props): JSX.Element {
   return (
-    <TextField className="Input__wrapper" value={value} onChange={onChange} type={type}>
-      <Label className="Input__label">{label}</Label>
+    <TextField className="mb-2.5 flex flex-row items-center" value={value} onChange={onChange} type={type}>
+      <Label className="flex flex-1 text-[#666]">{label}</Label>
       <Input
         type={type}
-        className="Input__input"
+        className="flex min-w-0 flex-[2] rounded border border-[#999] px-2.5 py-2 text-[16px]"
         placeholder={placeholder}
         data-test-id={dataTestId}
       />

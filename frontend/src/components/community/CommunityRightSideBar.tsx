@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import '../../styles/communityrightsidebar.css'
 import { useEffect , useState } from 'react'
 import { getCommunity } from '../../services/community'
 import type { Community } from '../../services/community'
@@ -21,59 +20,59 @@ const CommunityRightSideBar = () => {
     }, [communityName])
 
     return (
-        <aside className="community-right-sidebar">
-            <div className='community-info'>
-                <div className='title-join'>
-                    <span className="community-name">r/{communityData?.name}</span>
-                    <span className="join-status">Joined</span>
+        <aside className="flex flex-[2] flex-col gap-5 p-5">
+            <div className="flex flex-col gap-2.5 border-b border-slate-400">
+                <div className="flex items-center justify-between">
+                    <span className="cursor-pointer text-[1.6rem] font-bold">r/{communityData?.name}</span>
+                    <span className="cursor-pointer rounded-[30px] bg-slate-400 px-3 py-1.5">Joined</span>
                 </div>
-                <div className='community-description'>
-                    <span className='description-header'>
+                <div className="flex flex-col">
+                    <span className="text-[1.2rem] font-bold">
                         The {communityData?.name} community
                     </span>
-                    <span className='description-body'>
+                    <span className="text-slate-600">
                         {communityData?.description || 'No description available.'}
                     </span>
                 </div>
-                <div className='community-type'>
-                    <div className='community-creation'>
+                <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
                         <i className="bi bi-calendar2-plus"></i>
-                        <span className='creation-date'>Created Jan 1, 2020</span>
+                        <span>Created Jan 1, 2020</span>
                     </div>
-                    <div className='community-visibility'>
+                    <div className="flex items-center gap-2">
                         <i className="bi bi-globe"></i>
-                        <span className='visibility'>{communityData?.visibility || 'Public'}</span>
+                        <span>{communityData?.visibility || 'Public'}</span>
                     </div>
                 </div>
-                <div className='community-guidelines'>
+                <div className="mx-5 flex cursor-pointer justify-center rounded-[15px] bg-slate-400 p-2 text-[1.2rem] font-bold">
                     <span>Community Guide</span>
                 </div>
-                <div className='community-stats'>
-                    <div className='stat-item'>
-                        <span className='stat-count'>123k</span>
-                        <span className='stat-label'>Members</span>
+                <div className="mb-5 flex items-center justify-between">
+                    <div className="flex flex-col">
+                        <span className="text-[1.2rem] font-bold">123k</span>
+                        <span>Members</span>
                     </div>
-                    <div className='stat-item'>
-                        <span className='stat-count'>456</span>
-                        <span className='stat-label'>Online</span>
+                    <div className="flex flex-col">
+                        <span className="text-[1.2rem] font-bold">456</span>
+                        <span>Online</span>
                     </div>
                 </div>
             </div>
 
-            <div className='flair-display'>
-                <span className='flair-header'>Filter By Flair</span>
-                <div className='flair-options'>
+            <div className="flex flex-col gap-2.5 border-b border-slate-400">
+                <span className="text-[1.6rem] font-bold">Filter By Flair</span>
+                <div className="mb-5 flex gap-5">
                     {communityData?.flairs?.map((flair) => (
-                        <div key={flair.id} className='flair-option' style={{backgroundColor: flair.background_color, padding: '4px 8px', borderRadius: '15px', display: 'inline-block', marginBottom: '12px', 'width':'fit-content'}}>
-                            <span className='flair-text' style={{color: flair.text_color}}>{flair.title}</span>
+                        <div key={flair.id} className="mb-3 inline-block w-fit rounded-[15px] px-2 py-1" style={{backgroundColor: flair.background_color}}>
+                            <span style={{color: flair.text_color}}>{flair.title}</span>
                         </div>
                     ))}
                 </div>
             </div>
 
-            <div className='community-rules'>
-                <span className='rules-header'>Community Rules</span>
-                <ol className='rules-list'>
+            <div className="flex flex-col gap-2.5">
+                <span className="text-[1.6rem] font-bold">Community Rules</span>
+                <ol className="flex list-decimal flex-col gap-1 pl-5 text-[1.4rem]">
                     <li>No spamming or self-promotion.</li>
                     <li>Be respectful to others.</li>
                     <li>Use appropriate flairs for your posts.</li>

@@ -1,55 +1,57 @@
 import { Link } from 'react-router-dom'
 import { Input, SearchField } from 'react-aria-components'
 
-import '../styles/navbar.css'
 import { useAuth } from '../context/AuthContext'
 
 const Navbar = ()=>{
     const { isAuthenticated } = useAuth()
+    const iconButtonClass = "cursor-pointer rounded-[20px] px-3 py-2 hover:bg-gray-300";
+    const authLinkClass = "rounded-[20px] px-3 py-2 font-bold text-white";
+
     return (
-        <nav className="navbar">
-            <div className="project-name">
+        <nav className="flex h-[60px] items-center justify-between border-b border-gray-300 p-4 text-[1.8rem]">
+            <div className="font-['Gill_Sans','Gill_Sans_MT',Calibri,'Trebuchet_MS',sans-serif] text-[4rem] font-bold text-orange-600">
                 <p>reddit</p>
             </div>
-            <div className="search-bar">
+            <div className="flex max-w-[700px] grow rounded-[30px] border-2 border-orange-600 p-1 text-[3rem]">
                 <i className="bi bi-reddit"></i>
-                <SearchField aria-label="Search Reddit">
-                    <Input placeholder="Find Anything" />
+                <SearchField aria-label="Search Reddit" className="flex grow">
+                    <Input className="grow border-0 outline-none" placeholder="Find Anything" />
                 </SearchField>
             </div>
-            <div className="action-buttons">
+            <div className="flex items-center gap-4 [&_.bi]:text-[2.2rem]">
                 {isAuthenticated ? (
                 <>
-                    <div className="advertisment-icon">
+                    <div className={iconButtonClass}>
                         <i className="bi bi-badge-ad"></i>
                     </div>
-                    <div className="chat-icon">
+                    <div className={iconButtonClass}>
                         <i className="bi bi-chat-dots"></i>
                     </div>
-                    <div className="create-post-icon">
-                        <Link to='/submit' style={{display: 'flex', gap: '5px', alignItems: 'center', color: 'black'}}>
+                    <div className={iconButtonClass}>
+                        <Link to='/submit' className="flex items-center gap-2 text-black">
                             <i className="bi bi-plus-square"></i>
                             <p>create</p>
                         </Link>
                     </div>
-                    <div className="notification-icon">
+                    <div className={iconButtonClass}>
                         <i className="bi bi-bell"></i>
                     </div>
-                    <div className="profile-icon">
+                    <div className={iconButtonClass}>
                         <i className="bi bi-person"></i>
                     </div>
                 </>
                 ) : (
                 <>
-                <div className='signup-icon'>
+                <div className={`${authLinkClass} bg-slate-500`}>
                     <Link to='/register' replace>
-                        <span style={{color: 'white'}}>Sign Up</span>
+                        <span>Sign Up</span>
                     </Link>
                 </div>
 
-                <div className='login-icon'>
+                <div className={`${authLinkClass} bg-orange-600`}>
                     <Link to='/login' replace>
-                        <span style={{color: 'white'}}>Log In</span>
+                        <span>Log In</span>
                     </Link>
                 </div>
                 </>

@@ -1,32 +1,27 @@
-*,
-*::after,
-*::before{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-}
+@import "tailwindcss";
 
-html{
+@layer base {
+  html {
     font-size: 10px;
-}
+  }
 
-body{
+  body {
     overflow: hidden;
-}
+  }
 
-input{
+  input {
     font-size: 16px;
-    padding: 5px;
-}
+  }
 
-.required-field{
-    color: red;
-}
-
-.bi-reddit{
-    color: orangered;
-}
-
-a{
+  a {
     text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  .bi-reddit {
+    color: orangered;
+  }
 }

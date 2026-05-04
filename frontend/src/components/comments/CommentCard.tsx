@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { CommentNode } from "../../utils/buildCommentTree"
 import { getCommentById, type PostComment } from "../../services/comments"
-import '../../styles/comments.css'
 import { voteComment } from "../../services/vote"
 import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query'
 import { useParams } from "react-router-dom"
@@ -63,7 +62,7 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
 
     return (
         <div style={{ paddingLeft: depth * 16 }}>
-            <div className='comment'>
+            <div className="flex flex-col gap-2.5">
                 {hasChildren && (
                     <Button
                         aria-label={isCollapsed ? 'Expand replies' : 'Collapse replies'}
@@ -82,42 +81,42 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
                     />
                 )}
 
-                <div style={{flex: 1}}>
-                    <div className='comment-author'>
+                <div className="flex-1">
+                    <div className="text-[1.2rem] font-bold">
                         <span>{commentData?.author_name}</span>
                     </div>
-                    <div className='comment-content' dangerouslySetInnerHTML={{ __html: commentData?.content_html }} />
-                    <div className='comment-interactions'>
-                        <div className='comment-score'>
-                            <Button className='vote-button' aria-label="Upvote comment" onPress={()=>handleVoteClick(commentData?.id, 1)} style={{color: commentData?.vote_status === 'upvoted' ? 'red' : 'black'}}>
+                    <div dangerouslySetInnerHTML={{ __html: commentData?.content_html }} />
+                    <div className="flex items-center gap-5">
+                        <div className="flex cursor-pointer items-center gap-0.5">
+                            <Button className="border-0 bg-transparent px-2 py-1 hover:rounded-[20px] hover:bg-slate-300" aria-label="Upvote comment" onPress={()=>handleVoteClick(commentData?.id, 1)} style={{color: commentData?.vote_status === 'upvoted' ? 'red' : 'black'}}>
                                 <i className='bi bi-arrow-up'></i>
                             </Button>
                             <span>{commentData?.score}</span>
-                            <Button className='vote-button' aria-label="Downvote comment" onPress={()=>handleVoteClick(commentData?.id, -1)} style={{color: commentData?.vote_status === 'downvoted' ? 'red' : 'black'}}>
+                            <Button className="border-0 bg-transparent px-2 py-1 hover:rounded-[20px] hover:bg-slate-300" aria-label="Downvote comment" onPress={()=>handleVoteClick(commentData?.id, -1)} style={{color: commentData?.vote_status === 'downvoted' ? 'red' : 'black'}}>
                                 <i className='bi bi-arrow-down'></i>
                             </Button>
                         </div>
 
-                        <Button className='comment-reply' onPress={handleReplyClick}>
-                            <i className="bi bi-chat-left-text comment-icon"></i>
+                        <Button className="flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 hover:rounded-[20px] hover:bg-slate-300" onPress={handleReplyClick}>
+                            <i className="bi bi-chat-left-text"></i>
                             <span>Reply</span>
                         </Button>
 
-                        <div className='comment-share'>
-                            <i className='bi bi-share share-icon'></i>
+                        <div className="flex cursor-pointer gap-2 p-1 hover:rounded-[20px] hover:bg-slate-300">
+                            <i className='bi bi-share'></i>
                             <span>share</span>
                         </div>
                     </div>
                 </div>
                 {!isCollapsed && commentData?.children && commentData.children.length > 0 && (
-                    <div className='comment-children'>
+                    <div>
                         {commentData.children.map(child => (
                             <CommentCard key={child.id} comment={child} depth={depth + 1} activeReplyCommentId={activeReplyCommentId} onReply={onReply}/>
                         ))}
                     </div>
                 )}
                 {isReplying && (
-                    <div className='comment-reply-input'>
+                    <div>
                         <CommentReplyInput parentId={comment.id} onReply={onReply}/>
                     </div>
                 )}

@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import CommunityModalForm from "../components/CommunityModal"
 import PostCreationForm from "../components/post/PostCreationForm"
-import '../styles/createpost.css'
 
 type CreatePostPageProps = {
     showModal: boolean
@@ -11,11 +10,11 @@ type CreatePostPageProps = {
 
 const CreatePost = ({showModal, handleModalToggle} : CreatePostPageProps)=>{
     return (
-        <main className="create-post-container">
+        <main className="flex w-full flex-col">
             <Navbar />
-            <div className="main-content">
+            <div className="flex">
                 <Sidebar handleModalToggle = {handleModalToggle} showModal = {showModal}/>
-                <div className="sub-content">
+                <div className="m-5 flex h-screen w-full overflow-auto">
                     <PostCreationForm  />
                     <div className="post-rules">
 

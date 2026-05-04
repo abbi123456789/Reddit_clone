@@ -2,7 +2,6 @@ import React from "react"
 import { useParams } from "react-router-dom"
 import { getPostBySlug, type Post } from "../../services/posts"
 import { useState } from "react"
-import '../../styles/postbody.css'
 import CommentInput from "../comments/CommentInput"
 import type {CommentBody} from '../../services/comments'
 import {createComment} from '../../services/comments'
@@ -90,61 +89,64 @@ const PostBody = ()=>{
         postScoreMutation.mutate({postId, value})
     }
 
+    const voteButtonClass = "cursor-pointer border-0 bg-transparent px-2 py-1 hover:rounded-[25px] hover:bg-slate-400";
+    const interactionClass = "flex items-center gap-1 rounded-[20px] bg-[#dae0e5] px-4 py-2";
+
     return (
-        <section className="post-detail-section">
-            <header className='post-info-header'>
-                <div className='post-info-left-side'>
-                    <div className='back-button'>
-                        <i className="bi bi-arrow-left"></i>
+        <section className="flex flex-[5] flex-col gap-5 p-5">
+            <header className="flex justify-between">
+                <div className="flex items-center gap-2.5">
+                    <div>
+                        <i className="bi bi-arrow-left cursor-pointer rounded-[30px] bg-slate-400 px-2 py-1.5 text-[1.6rem]"></i>
                     </div>
-                    <div className='post-info'>
-                        <img src='/images/communityIcon.jpg' alt='Community Icon' className='community-icon' />
-                        <div className='post-meta-data'>
-                            <div className='post-inner-meta-data'>
-                                <span className='community-name'>r/{data?.community_name}</span>
-                                <span className='time-ago-separator'>.</span>
-                                <span className='time-ago'>2hr ago</span>
+                    <div className="flex items-center gap-2.5">
+                        <img src='/images/communityIcon.jpg' alt='Community Icon' className="h-8 w-8 rounded-full border border-black" />
+                        <div className="flex flex-col">
+                            <div className="flex gap-1">
+                                <span className="cursor-pointer font-bold">r/{data?.community_name}</span>
+                                <span>.</span>
+                                <span>2hr ago</span>
                             </div>
-                            <span className='author-name'>{data?.author_username}</span>
+                            <span className="cursor-pointer text-slate-600">{data?.author_username}</span>
                         </div>
                     </div>
                 </div>
-                <div className='post-info-right-side'>
-                    <i className="bi bi-three-dots"></i>
+                <div className="flex">
+                    <i className="bi bi-three-dots cursor-pointer rounded-[30px] bg-slate-400 px-2 py-1.5 text-[1.6rem]"></i>
                 </div>
             </header>
 
-            <div className='post-title'>
+            <div>
                 <h1>{data?.title}</h1>
             </div>
 
-            <div className = 'post-flair-body'>
-                <div className='post-flair-tag' style={{backgroundColor: `${data?.flair_color}`, padding: '4px 8px', borderRadius: '15px', display: 'inline-block', marginBottom: '12px', 'width':'fit-content'}}>
-                    <span className='flair-text'>{data?.flair_title}</span>
+            <div className="flex flex-col">
+                <div className="mb-3 inline-block w-fit rounded-[15px] px-2 py-1" style={{backgroundColor: `${data?.flair_color}`}}>
+                    <span>{data?.flair_title}</span>
                 </div>
 
-                <div className='post-content' dangerouslySetInnerHTML={{ __html: data?.content_html! }} />
+                <div dangerouslySetInnerHTML={{ __html: data?.content_html! }} />
             </div>
 
-            <div className='post-interactions'>
-                <div className='vote-section'>
-                    <Button className="vote-button" aria-label="Upvote post" onPress={()=>handleVoteClick(postId!, 1)} style={{color: data?.vote_status === 'upvoted' ? 'red' : 'black'}}>
+            <div className="flex items-center gap-5">
+                <div className="flex items-center gap-0.5 rounded-[20px] bg-[#dae0e5] px-2 py-2">
+                    <Button className={voteButtonClass} aria-label="Upvote post" onPress={()=>handleVoteClick(postId!, 1)} style={{color: data?.vote_status === 'upvoted' ? 'red' : 'black'}}>
                         <i className="bi bi-arrow-up"></i>
                     </Button>
-                    <span className='vote-count'>{data?.score}</span>
-                    <Button className="vote-button" aria-label="Downvote post" onPress={()=>handleVoteClick(postId!, -1)} style={{color: data?.vote_status === 'downvoted' ? 'red' : 'black'}}>
+                    <span>{data?.score}</span>
+                    <Button className={voteButtonClass} aria-label="Downvote post" onPress={()=>handleVoteClick(postId!, -1)} style={{color: data?.vote_status === 'downvoted' ? 'red' : 'black'}}>
                         <i className="bi bi-arrow-down"></i>
                     </Button>
                 </div>
 
-                <div className='comment-section'>
-                    <i className="bi bi-chat-left-text comment-icon"></i>
-                    <span className='comment-count'>{data?.comment_count}</span>
+                <div className={interactionClass}>
+                    <i className="bi bi-chat-left-text"></i>
+                    <span>{data?.comment_count}</span>
                 </div>
 
-                <div className='share-section'>
-                    <i className="bi bi-share share-icon"></i>
-                    <span className='share-text'>Share</span>
+                <div className={interactionClass}>
+                    <i className="bi bi-share"></i>
+                    <span>Share</span>
                 </div>
             </div>
 
