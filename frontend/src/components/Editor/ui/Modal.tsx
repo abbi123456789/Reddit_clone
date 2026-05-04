@@ -14,6 +14,7 @@ import {isDOMNode} from 'lexical';
 import type { ReactNode } from 'react';
 import {useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
+import { Button, Dialog } from 'react-aria-components';
 
 function PortalImpl({
   onClose,
@@ -26,7 +27,7 @@ function PortalImpl({
   onClose: () => void;
   title: string;
 }) {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (modalRef.current !== null) {
@@ -71,18 +72,18 @@ function PortalImpl({
   }, [closeOnClickOutside, onClose]);
 
   return (
-    <div className="Modal__overlay" role="dialog">
-      <div className="Modal__modal" tabIndex={-1} ref={modalRef}>
+    <div className="Modal__overlay">
+      <Dialog className="Modal__modal" aria-label={title} ref={modalRef}>
         <h2 className="Modal__title">{title}</h2>
-        <button
+        <Button
           className="Modal__closeButton"
           aria-label="Close modal"
           type="button"
-          onClick={onClose}>
+          onPress={onClose}>
           X
-        </button>
+        </Button>
         <div className="Modal__content">{children}</div>
-      </div>
+      </Dialog>
     </div>
   );
 }

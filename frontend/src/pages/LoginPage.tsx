@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Form, Input, Label, TextField } from 'react-aria-components';
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { beginGoogleLogin, doLogin, resendVerificationEmail } from "../services/account";
@@ -91,58 +92,59 @@ const Login = () => {
                     </div>
                 )}
 
-                <form className="login-form" action={dispatchAction}>
-                    <div className="form-field">
-                        <label htmlFor="identifier">Username/Email <span className="required-field">*</span></label>
-                        <input
+                <Form className="login-form" action={dispatchAction}>
+                    <TextField className="form-field" name="identifier" type="text" isRequired>
+                        <Label>Username/Email <span className="required-field">*</span></Label>
+                        <Input
                             type="text"
                             id="identifier"
-                            name="identifier"
                             placeholder="tony@example.com"
-                            required
                         />
-                    </div>
+                    </TextField>
 
-                    <div className="form-field">
-                        <label htmlFor="password">Password <span className="required-field">*</span></label>
-                        <input
+                    <TextField className="form-field" name="password" type="password" isRequired>
+                        <Label>Password <span className="required-field">*</span></Label>
+                        <Input
                             type="password"
                             id="password"
-                            name="password"
                             placeholder="********"
-                            required
                         />
-                    </div>
+                    </TextField>
 
-                    <button disabled={isPending} className="btn-primary">
+                    <Button isDisabled={isPending} className="btn-primary">
                         {isPending ? 'Logging you in' : 'Login'}
-                    </button>
-                </form>
+                    </Button>
+                </Form>
 
                 <div className="auth-divider">
                     <span>or</span>
                 </div>
 
-                <button type="button" className="btn-google" onClick={beginGoogleLogin}>
+                <Button type="button" className="btn-google" onPress={beginGoogleLogin}>
                     Continue with Google
-                </button>
+                </Button>
 
                 {errorCode === 'email_unverified' && (
-                    <form className="inline-form" onSubmit={handleResendVerification}>
-                        <label htmlFor="resend-email">Resend verification email</label>
-                        <input
+                    <Form className="inline-form" onSubmit={handleResendVerification}>
+                        <TextField
+                            name="resend-email"
+                            type="email"
+                            value={resendEmail}
+                            onChange={setResendEmail}
+                            isRequired
+                        >
+                        <Label>Resend verification email</Label>
+                        <Input
                             type="email"
                             id="resend-email"
-                            value={resendEmail}
-                            onChange={(event) => setResendEmail(event.target.value)}
                             placeholder="tony@example.com"
-                            required
                         />
-                        <button type="submit" className="btn-secondary" disabled={isResending}>
+                        </TextField>
+                        <Button type="submit" className="btn-secondary" isDisabled={isResending}>
                             {isResending ? 'Sending...' : 'Resend verification'}
-                        </button>
+                        </Button>
                         {resendMessage && <p className="inline-feedback">{resendMessage}</p>}
-                    </form>
+                    </Form>
                 )}
             </div>
         </div>

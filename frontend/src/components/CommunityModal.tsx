@@ -1,4 +1,13 @@
 import { useState } from "react"
+import {
+  Button,
+  Checkbox,
+  Input,
+  Radio,
+  RadioGroup,
+  TextArea,
+  TextField,
+} from 'react-aria-components'
 import { communityCategories } from "../services/communityCategories"
 import { createCommunity } from "../services/community"
 import '../styles/communitymodal.css'
@@ -12,6 +21,7 @@ type AboutCommunityProps = {
 
 type CommunityVisibilityProps = {
   nsfw: boolean
+  visibility: 'public' | 'private' | 'restricted'
   setVisibility: React.Dispatch<React.SetStateAction<'public' | 'private' | 'restricted'>>
   setNsfw: React.Dispatch<React.SetStateAction<boolean>>
   handlePrevious: () => void
@@ -46,27 +56,25 @@ const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCo
 
       <div className="community-category">
         {communityCategories.map((category: string) => (
-          <div className="category" key={category}>
-            <p onClick={() => handleSelect(category)}>
-              {category}
-            </p>
-          </div>
+          <Button className="category" key={category} onPress={() => handleSelect(category)}>
+            {category}
+          </Button>
         ))}
       </div>
 
       <div className="action-buttons">
-        <button className="cancel-button" onClick={handleCancel}>
+        <Button className="cancel-button" onPress={handleCancel}>
           Cancel
-        </button>
-        <button className="next-button" onClick={handleNext}>
+        </Button>
+        <Button className="next-button" onPress={handleNext}>
           Next
-        </button>
+        </Button>
       </div>
     </section>
   )
 }
 
-const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, handleNext}: CommunityVisibilityProps)=>{
+const CommunityVisibility = ({nsfw, visibility, setVisibility, setNsfw, handlePrevious, handleNext}: CommunityVisibilityProps)=>{
   return (
     <section className="community-visibility-step">
       <div className="heading">
@@ -76,7 +84,12 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
         </p>
       </div>
 
-      <div className="visibility-selection">
+      <RadioGroup
+        aria-label="Community visibility"
+        className="visibility-selection"
+        value={visibility}
+        onChange={(value) => setVisibility(value as 'public' | 'private' | 'restricted')}
+      >
         <div className="public-visibility">
           <div>
             <i className="bi bi-globe"></i>
@@ -85,7 +98,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Anyone can view, post and comment to this community.</p>
             </div>
           </div>
-          <input type="radio" id="public" name="visibility" onClick={()=>setVisibility('public')}></input>
+          <Radio value="public" aria-label="Public" />
         </div>
         <div className="restricted-visibility">
           <div>
@@ -95,7 +108,7 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Anyone can view, but only approved users can contribute.</p>
             </div>
           </div>
-          <input type="radio" id="restricted" name="visibility" onClick={()=>setVisibility('restricted')}></input>
+          <Radio value="restricted" aria-label="Restricted" />
         </div>
         <div className="private-visibility">
           <div>
@@ -105,9 +118,9 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Only approved users can view and contribute.</p>
             </div>
           </div>
-          <input type="radio" id="private" name="visibility" onClick={()=>setVisibility('private')}></input>
+          <Radio value="private" aria-label="Private" />
         </div>
-      </div>
+      </RadioGroup>
 
       <div className="nsfw-selection">
         <div className="nsfw-type">
@@ -118,17 +131,17 @@ const CommunityVisibility = ({nsfw, setVisibility, setNsfw, handlePrevious, hand
               <p>Users must be over 18 to view and contribute.</p>
             </div>
           </div>
-          <input type="checkbox" checked={nsfw} onChange={()=>setNsfw((prev)=>!prev)} />
+          <Checkbox aria-label="Mature community" isSelected={nsfw} onChange={setNsfw} />
         </div>
       </div>
 
       <div className="action-buttons">
-        <button className="previous-button" onClick={handlePrevious}>
+        <Button className="previous-button" onPress={handlePrevious}>
           Previous
-        </button>
-        <button className="next-button" onClick={handleNext}>
+        </Button>
+        <Button className="next-button" onPress={handleNext}>
           Next
-        </button>
+        </Button>
       </div>
     </section>
   )
@@ -144,8 +157,12 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
 
       <div className="community-details">
         <div className="name-description">
-            <input type="text" placeholder="Community name" value={name} onChange={(e)=>setName(e.target.value)} required/>
-            <textarea placeholder="Description" value={description} onChange={(e)=>setDescription(e.target.value)} required />
+            <TextField aria-label="Community name" value={name} onChange={setName} isRequired>
+              <Input type="text" placeholder="Community name" />
+            </TextField>
+            <TextField aria-label="Community description" value={description} onChange={setDescription} isRequired>
+              <TextArea placeholder="Description" />
+            </TextField>
         </div>
 
         <div className="display-card">
@@ -162,12 +179,12 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
         </div>
       </div>
       <div className="action-buttons">
-        <button className="previous-button" onClick={handlePrevious}>
+        <Button className="previous-button" onPress={handlePrevious}>
           Previous
-        </button>
-        <button className="submit-button" onClick={handleSubmit}>
+        </Button>
+        <Button className="submit-button" onPress={handleSubmit}>
           Submit
-        </button>
+        </Button>
       </div>
     </section>
   )
@@ -224,6 +241,7 @@ const CommunityModalForm = ({handleModalToggle}:CommunityModalFormProps) => {
       {currentTab === "visibility" && (
         <CommunityVisibility
           nsfw = {nsfw}
+          visibility={visibility}
           setVisibility={setVisibility}
           setNsfw={setNsfw}
           handleNext={handleNext}

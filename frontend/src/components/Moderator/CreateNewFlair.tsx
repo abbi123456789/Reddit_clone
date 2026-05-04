@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
+import { Button, Checkbox, Input, TextField } from 'react-aria-components'
 import '../../styles/createnewflair.css'
 
 type CreateNewFlairProps = {
@@ -22,8 +23,10 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, 
                     <p>Create flair</p>
                 </div>
                 <div className="actions">
-                    <button className='create-flair-button'>Create</button>
-                    <i className="bi bi-x-lg" onClick={()=>setShowNewFlair(false)}></i>
+                    <Button className='create-flair-button'>Create</Button>
+                    <Button className="close-flair-button" aria-label="Close flair creator" onPress={()=>setShowNewFlair(false)}>
+                        <i className="bi bi-x-lg"></i>
+                    </Button>
                 </div>
             </header>
 
@@ -43,16 +46,18 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, 
                 <span className='bolder-text'>setup</span>
 
                 <div className="flair-input-element">
-                    <input type="text" value={flair} onChange={(e)=>setFlair(e.target.value)} placeholder="general" />
+                    <TextField aria-label="Flair text" value={flair} onChange={setFlair}>
+                        <Input type="text" placeholder="general" />
+                    </TextField>
                 </div>
             </div>
 
             <div className="set-bg-color">
                 <span>Color</span>
-                <div className='set-color' onClick={()=>setModalOpen(true)}>
+                <Button className='set-color' onPress={()=>setModalOpen(true)}>
                     <span className='bolder-text'>none, Dark on Light</span>
                     <span className='bolder-text'>&gt;</span>
-                </div>
+                </Button>
             </div>
 
             <div className="flair-options">
@@ -60,20 +65,18 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, 
                 <div>
                     <span>For mods only</span>
                     <div>
-                        <label className="switch">
-                            <input type="checkbox" checked={modOnly} onChange={()=>setModOnly(!modOnly)}/>
+                        <Checkbox className="switch" isSelected={modOnly} onChange={setModOnly} aria-label="For mods only">
                             <span className="slider"></span>
-                        </label>
+                        </Checkbox>
                     </div>
                 </div>
 
                 <div>
                     <span>Allow users to edit</span>
                     <div>
-                        <label className="switch">
-                            <input type="checkbox" disabled={!modOnly} checked={usersCanEdit} onChange={()=>setUsersCanEdit(!usersCanEdit)}/>
+                        <Checkbox className="switch" isDisabled={!modOnly} isSelected={usersCanEdit} onChange={setUsersCanEdit} aria-label="Allow users to edit flair">
                             <span className="slider"></span>
-                        </label>
+                        </Checkbox>
                     </div>
                 </div>
             </div>

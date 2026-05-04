@@ -1,8 +1,20 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
+import {
+    Button,
+    Checkbox,
+    Dialog,
+    Input,
+    Label,
+    Slider,
+    SliderThumb,
+    SliderTrack,
+    TextField,
+} from 'react-aria-components';
 import { hslToHex } from "../../utils/hslToHex";
 import '../../styles/flairbackgroundmodal.css'
 import { createNewFlair } from "../../services/flairs";
+import { AriaSelect } from "../ui/Select";
 
 export type FlairBackgroundModalProps = {
     flair: string;
@@ -35,22 +47,18 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
         setModalOpen(false);
     }
 
-    const handleHue = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const newHue = parseInt(e.target.value);
+    const handleHue = (newHue: number) => {
         setHue(newHue);
-        // Sync the Hex code based on new Hue + existing Saturation/Lightness
         setHexCode(hslToHex(newHue, saturation, 50)); 
     };
 
-    const handleSat = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const newSat = parseInt(e.target.value);
+    const handleSat = (newSat: number) => {
         setSaturation(newSat);
-        // Sync the Hex code based on existing Hue + new Saturation
         setHexCode(hslToHex(hue, newSat, 50));
     };
 
     return (
-        <dialog className="flair-background-modal">
+        <Dialog className="flair-background-modal" aria-label="Flair background settings">
             <div className="flair-preview">
                 <span className='bolder-text'>Preview</span>
                 <div className="preview-card">
@@ -63,10 +71,9 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
 
             <div className="enable-background-color">
                 <span>Background Color</span>
-                <label className="switch">
-                    <input type="checkbox" checked={backgroundColor} onChange={()=>setBackgroundColor(!backgroundColor)}/>
+                <Checkbox className="switch" isSelected={backgroundColor} onChange={setBackgroundColor} aria-label="Enable background color">
                     <span className="slider"></span>
-                </label>
+                </Checkbox>
             </div>
 
             {backgroundColor && (
@@ -74,38 +81,48 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
                 <div className="preview-box" style={{ backgroundColor: hexCode }}></div>
 
                 {/* Hue Slider */}
-                <div className="setting-row">
-                <label>HUE</label>
-                <input type="range" min="0" max="360" value={hue} onChange={handleHue} />
-                </div>
+                <Slider className="setting-row" minValue={0} maxValue={360} value={hue} onChange={handleHue}>
+                    <Label>HUE</Label>
+                    <SliderTrack className="range-track">
+                        <SliderThumb className="range-thumb" />
+                    </SliderTrack>
+                </Slider>
 
                 {/* Saturation Slider */}
-                <div className="setting-row">
-                <label>SATURATION</label>
-                <input type="range" min="0" max="100" value={saturation} onChange={handleSat} />
-                </div>
+                <Slider className="setting-row" minValue={0} maxValue={100} value={saturation} onChange={handleSat}>
+                    <Label>SATURATION</Label>
+                    <SliderTrack className="range-track">
+                        <SliderThumb className="range-thumb" />
+                    </SliderTrack>
+                </Slider>
 
                 {/* Hex Input */}
-                <div className="hex-input-container">
-                <span>Hex code (optional)</span>
-                <input value={hexCode} onChange={(e) => setHexCode(e.target.value)} />
-                </div>
+                <TextField className="hex-input-container" value={hexCode} onChange={setHexCode}>
+                    <Label>Hex code (optional)</Label>
+                    <Input />
+                </TextField>
 
                 <div className="select-text-color">
                     <span className="bolder-text">Text</span>
-                    <select value={textColor} onChange={(e) => setTextColor(e.target.value)}>
-                        <option value="black">Dark on Light</option>
-                        <option value="white">Light on Dark</option>
-                    </select>
+                    <AriaSelect
+                        ariaLabel="Select flair text color"
+                        selectedKey={textColor}
+                        onSelectionChange={setTextColor}
+                        placeholder="Select text color"
+                        options={[
+                            { id: 'black', label: 'Dark on Light' },
+                            { id: 'white', label: 'Light on Dark' },
+                        ]}
+                    />
                 </div>
             </div>
             )}
 
             <div className="action-buttons">
-                <button className="close-btn" onClick={onClose}>close</button>
-                <button className="save-btn" onClick={onSave}>save</button>
+                <Button className="close-btn" onPress={onClose}>close</Button>
+                <Button className="save-btn" onPress={onSave}>save</Button>
             </div>
-        </dialog>
+        </Dialog>
     )
 }
 

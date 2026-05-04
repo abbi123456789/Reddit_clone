@@ -41,11 +41,17 @@
 }
 
 /* Active State: Background turns Green */
-.switch input:checked + .slider {
+.switch input:checked + .slider,
+.switch[data-selected] .slider {
   background-color: #34c759; /* iOS green */
 }
 
 /* Active State: Knob slides to the right */
-.switch input:checked + .slider:before {
+.switch input:checked + .slider:before,
+.switch[data-selected] .slider:before {
   transform: translateX(22px);
+}
+
+.switch[data-disabled] {
+  opacity: 0.5;
 }

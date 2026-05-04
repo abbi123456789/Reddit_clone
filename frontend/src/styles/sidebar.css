@@ -21,7 +21,8 @@
     border-bottom: 1px solid lightgrey;
 }
 
-.post-options > div, 
+.post-options > div,
+.post-options > button, 
 .moderator-options > div,
 .resources > div,
 .rules > div{
@@ -31,11 +32,20 @@
     cursor: pointer;
 }
 
-.post-options > div:hover, 
+.post-options > div:hover,
+.post-options > button:hover, 
 .moderator-options > div:hover,
 .resources > div:hover,
 .rules > div:hover{
     background-color: rgba(211, 211, 211, 0.911);
     border: none;
     border-radius: 10px;
+}
+
+.post-options > button {
+    align-items: center;
+    background: transparent;
+    border: none;
+    font: inherit;
+    text-align: left;
 }

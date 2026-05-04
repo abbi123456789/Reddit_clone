@@ -7,6 +7,7 @@
  */
 
 import type {JSX} from 'react';
+import { Input, Label } from 'react-aria-components';
 
 import './Input.css';
 
@@ -25,8 +26,9 @@ export default function FileInput({
 }: Props): JSX.Element {
   return (
     <div className="Input__wrapper">
-      <label className="Input__label">{label}</label>
-      <input
+      <Label className="Input__label" htmlFor={dataTestId}>{label}</Label>
+      <Input
+        id={dataTestId}
         type="file"
         accept={accept}
         className="Input__input"

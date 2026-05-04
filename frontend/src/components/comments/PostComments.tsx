@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { getPostComments } from "../../services/comments";
 const CommentCard = React.lazy(()=>import('./CommentCard'))
 import '../../styles/comments.css'
-import {QueryClient, useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { buildCommentTree } from "../../utils/buildCommentTree";
 
 export type PostCommentProps = {

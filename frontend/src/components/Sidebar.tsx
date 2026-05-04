@@ -2,6 +2,7 @@ import '../styles/sidebar.css'
 import { getMyCommunities } from '../services/community'
 import type { Community } from '../services/community'
 import { useEffect, useState } from 'react'
+import { Button } from 'react-aria-components'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
@@ -46,10 +47,10 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
                     <span>Explore</span>
                 </div>
                 {isAuthenticated && 
-                <div className="start-community" onClick={() => handleModalToggle()}>
+                <Button className="start-community" onPress={() => handleModalToggle()}>
                     <i className="bi bi-plus-lg"></i>
                     <span>Start a Community</span>
-                </div>
+                </Button>
                 }
             </div>
             {isAuthenticated &&

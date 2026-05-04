@@ -31,6 +31,13 @@
     cursor: pointer;
 }
 
+.create-new-flair .create-actions .actions .close-flair-button{
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
 .create-new-flair .create-actions .actions .bi-x-lg{
     padding: 5px 8px;
     background: rgb(167, 183, 199);
@@ -87,6 +94,8 @@
 }
 
 .create-new-flair .set-bg-color .set-color{
+    background: transparent;
+    border: none;
     padding: 8px 12px;
     display: flex;
     align-items: center;

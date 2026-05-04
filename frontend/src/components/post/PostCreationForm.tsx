@@ -1,5 +1,7 @@
 import React from 'react'
+import { Button, Input, TextField } from 'react-aria-components'
 import RichTextEditor from "../Editor/RichTextEditor"
+import { AriaSelect } from '../ui/Select'
 import { getMyCommunities } from "../../services/community"
 import { getFlairs } from "../../services/flairs"
 import { createPost, type PostData } from "../../services/posts"
@@ -65,8 +67,7 @@ const PostCreationForm = () => {
         enabled: selectedCommunity.length > 0
     })
 
-    const handleCommunitySelection = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const communityName = event.target.value
+    const handleCommunitySelection = async (communityName: string) => {
         setSelectedCommunity(communityName)
         navigate(`/r/${communityName}/submit`)
     }
@@ -79,29 +80,37 @@ const PostCreationForm = () => {
             </div>
 
             <div className="community-selection">
-                <select name="choose-community" onChange={handleCommunitySelection} value={selectedCommunity}>
-                    <option value=''>Select a community</option>
-                    {communitiesQuery.data?.map((community) => (
-                        <option key={community.id} value={community.name}>
-                            {community.name}
-                        </option>
-                    ))}
-                </select>
+                <AriaSelect
+                    ariaLabel="Choose community"
+                    name="choose-community"
+                    placeholder="Select a community"
+                    selectedKey={selectedCommunity}
+                    onSelectionChange={handleCommunitySelection}
+                    options={communitiesQuery.data?.map((community) => ({
+                        id: community.name,
+                        label: community.name,
+                    })) ?? []}
+                />
             </div>
 
             <div className="post-title">
-                <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                <TextField aria-label="Post title" value={title} onChange={setTitle} isRequired>
+                    <Input type="text" placeholder="Title" />
+                </TextField>
             </div>
 
             <div className="add-flair-and-tag">
-                <select name="flair-tag" value={selectedFlair} onChange={(e) => setSelectedFlair(e.target.value)}>
-                    <option value=''>Select a flair</option>
-                    {flairsQuery.data?.map((flair) => (
-                        <option key={flair.id} value={flair.title}>
-                            {flair.title}
-                        </option>
-                    ))}
-                </select>
+                <AriaSelect
+                    ariaLabel="Choose flair"
+                    name="flair-tag"
+                    placeholder="Select a flair"
+                    selectedKey={selectedFlair}
+                    onSelectionChange={setSelectedFlair}
+                    options={flairsQuery.data?.map((flair) => ({
+                        id: flair.title,
+                        label: flair.title,
+                    })) ?? []}
+                />
             </div>
 
             <div className="post-body">
@@ -109,8 +118,8 @@ const PostCreationForm = () => {
             </div>
 
             <div className="action-buttons">
-                <button>Save Draft</button>
-                <button onClick={handleSubmit}>Post</button>
+                <Button>Save Draft</Button>
+                <Button onPress={handleSubmit}>Post</Button>
             </div>
         </section>
     )

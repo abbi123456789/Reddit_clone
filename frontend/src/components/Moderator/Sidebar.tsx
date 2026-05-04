@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
+import { Input, SearchField } from 'react-aria-components'
 
 import '../../styles/moderatorsidebar.css'
 import { getMyCommunities } from '../../services/community';
+import type { Community } from '../../services/community';
+import { AriaSelect } from '../ui/Select';
 
 const ModeratorSidebar = ()=>{
-    const [myCommunities, setMyCommunities] = useState([])
+    const [myCommunities, setMyCommunities] = useState<Community[]>([])
+    const [selectedCommunity, setSelectedCommunity] = useState('')
     
     useEffect(()=>{
         const fetchCommunities = async () => {
@@ -24,22 +28,22 @@ const ModeratorSidebar = ()=>{
             </div>
 
             <div className='select-community'>
-                <select>
-                    {myCommunities.length > 0 ? (
-                        myCommunities.map((community: any) => (
-                            <option value={`r/${community.name}`} key={community.id}>
-                                {`r/${community.name}`}
-                            </option>
-                        ))
-                    ) : (
-                        <><option value="">Select a community</option>
-                        </>
-                    )}
-                </select>
+                <AriaSelect
+                    ariaLabel="Select moderator community"
+                    placeholder="Select a community"
+                    selectedKey={selectedCommunity}
+                    onSelectionChange={setSelectedCommunity}
+                    options={myCommunities.map((community) => ({
+                        id: `r/${community.name}`,
+                        label: `r/${community.name}`,
+                    }))}
+                />
             </div>
 
             <div className='search-tools'>
-                <input type='text' placeholder='search-tools' />
+                <SearchField aria-label="Search mod tools">
+                    <Input placeholder='search-tools' />
+                </SearchField>
             </div>
 
             <div className='mod-overview'>

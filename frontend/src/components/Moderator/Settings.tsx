@@ -1,3 +1,5 @@
+import { Button, Link } from 'react-aria-components';
+
 type SettingsRowProps = {
     title: string;
     subtitle?: string;
@@ -15,7 +17,7 @@ const SettingsRow = ({ title, subtitle, value, type = "link", disabled = false, 
         <h3 className="row-title">{title}</h3>
         {subtitle && (
           <p className="row-subtitle">
-            {subtitle} {title === "Community achievements" && <a href="#" className="inline-link">Learn more.</a>}
+            {subtitle} {title === "Community achievements" && <Link href="#" className="inline-link">Learn more.</Link>}
           </p>
         )}
       </div>
@@ -48,9 +50,9 @@ const GeneralSettings = () => {
       <h1 className="main-title">Settings</h1>
 
       <div className="tabs-container">
-        <button className="tab active">General</button>
-        <button className="tab">Privacy & Discovery</button>
-        <button className="tab">Notifications</button>
+        <Button className="tab active">General</Button>
+        <Button className="tab">Privacy & Discovery</Button>
+        <Button className="tab">Notifications</Button>
       </div>
 
       <div className="settings-list">

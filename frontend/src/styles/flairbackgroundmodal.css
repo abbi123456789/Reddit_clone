@@ -88,12 +88,30 @@
   gap: 10px;
 }
 
-.color-picker-settings .select-text-color select{
+.color-picker-settings .select-text-color select,
+.color-picker-settings .select-text-color .aria-select-trigger{
   width: 50%;
   padding: 10px 0px;
   border: none;
   border-radius: 20px;
   text-align-last: center;
+}
+
+.color-picker-settings .range-track{
+  background-color: lightgray;
+  border-radius: 999px;
+  height: 6px;
+  position: relative;
+  width: 60%;
+}
+
+.color-picker-settings .range-thumb{
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 50%;
+  height: 18px;
+  top: 50%;
+  width: 18px;
 }
 
 .flair-background-modal .action-buttons{

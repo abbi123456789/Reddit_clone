@@ -1,3 +1,5 @@
+import { Checkbox } from 'react-aria-components';
+
 type SettingsRowProps = {
     title: string;
     subtitle?: string;
@@ -26,12 +28,11 @@ const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }:Se
         )}
 
         {type === "toggle" && (
-          <label className="toggle-switch">
-            <input type="checkbox" defaultChecked={toggleChecked} />
+          <Checkbox className="toggle-switch" defaultSelected={toggleChecked} aria-label={title}>
             <span className="slider">
               {toggleChecked && <span className="check-mark">✓</span>}
             </span>
-          </label>
+          </Checkbox>
         )}
       </div>
     </div>

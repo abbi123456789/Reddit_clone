@@ -1,3 +1,5 @@
+import { Button, Checkbox } from 'react-aria-components';
+
 type SettingsRowProps = {
     title: string;
     subtitle?: string;
@@ -22,10 +24,9 @@ const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }: S
           </div>
         )}
         {type === "toggle" && (
-          <label className="toggle-switch">
-            <input type="checkbox" defaultChecked={toggleChecked} />
+          <Checkbox className="toggle-switch" defaultSelected={toggleChecked} aria-label={title}>
             <span className="slider">{toggleChecked && <span className="check-mark">✓</span>}</span>
-          </label>
+          </Checkbox>
         )}
       </div>
     </div>
@@ -37,9 +38,9 @@ const CommunityGuides = () => {
     <div className="page-wrapper">
       {/* Tabs Navigation */}
       <div className="tabs-container">
-        <button className="tab active">Community Guide</button>
-        <button className="tab">Mod Guide</button>
-        <button className="tab">Training Queue</button>
+        <Button className="tab active">Community Guide</Button>
+        <Button className="tab">Mod Guide</Button>
+        <Button className="tab">Training Queue</Button>
       </div>
 
       <div className="main-content">
@@ -80,7 +81,7 @@ const CommunityGuides = () => {
                 <p>👋 Welcome u/Traditional_Tear_603! We're just getting started - share a post or comment to help shape this community into something great!</p>
               </div>
               <p className="mod-team-label">- r/iojoihihuj Mod Team</p>
-              <button className="got-it-btn">Got It</button>
+              <Button className="got-it-btn">Got It</Button>
               <p className="footer-note">Access the community guide any time in the sidebar</p>
             </div>
           </div>

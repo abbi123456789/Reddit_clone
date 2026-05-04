@@ -29,6 +29,8 @@
 }
 
 .comment-interactions .comment-score .vote-button{
+    background: transparent;
+    border: none;
     padding: 5px 7px;
 }
 
@@ -38,6 +40,9 @@
 }
 
 .comment-interactions .comment-reply{
+    align-items: center;
+    background: transparent;
+    border: none;
     display: flex;
     gap: 8px;
     padding: 5px 5px;

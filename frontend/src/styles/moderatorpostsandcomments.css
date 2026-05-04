@@ -110,11 +110,13 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-input:checked + .slider {
+input:checked + .slider,
+.toggle-switch[data-selected] .slider {
   background-color: var(--accent-blue);
 }
 
-input:checked + .slider:before {
+input:checked + .slider:before,
+.toggle-switch[data-selected] .slider:before {
   transform: translateX(18px);
 }
 

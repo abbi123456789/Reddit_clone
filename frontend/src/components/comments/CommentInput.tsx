@@ -1,6 +1,7 @@
 import CommentEditor from './CommentEditor';
 import '../../styles/commentinput.css'
 import type { EditorState } from 'lexical';
+import { Button } from 'react-aria-components';
 
 export type CommentInputProps = {
     setCommentJSON: (value: string) => void;
@@ -33,9 +34,9 @@ const CommentInput = ({ setCommentJSON, setCommentHTML, onSave, isActive, setIsA
 
 const InactiveCommentInput = ({ setIsActive }: { setIsActive: (value: boolean) => void }) => {
     return (
-        <div className = 'inactive-comment-input' onClick={()=>setIsActive(true)}>
+        <Button className = 'inactive-comment-input' onPress={()=>setIsActive(true)}>
             <span className='placeholder'>Join the conversation</span>
-        </div>
+        </Button>
     )
 }
 
@@ -56,18 +57,18 @@ const ActiveCommentInput = ({ setCommentJSON, setCommentHTML, onSave, setIsActiv
         <div className='active-comment-input'>
             <CommentEditor onChange={handleEditorChange} />
             <div className="comment-actions">
-                <button
+                <Button
                     className = 'cancel-button'
-                    onClick = {()=>handleCancel()}
+                    onPress = {()=>handleCancel()}
                 >
                     Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                     className = 'save-button'
-                    onClick={()=>onSave()}
+                    onPress={()=>onSave()}
                 >
                     Save
-                </button>
+                </Button>
             </div>
         </div>
     )

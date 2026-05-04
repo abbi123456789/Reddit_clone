@@ -11,6 +11,7 @@ import type {JSX} from 'react';
 import './Button.css';
 
 import type {ReactNode} from 'react';
+import { Button as AriaButton } from 'react-aria-components';
 
 import joinClasses from '../utils/joinClasses';
 
@@ -32,19 +33,18 @@ export default function Button({
   title?: string;
 }): JSX.Element {
   return (
-    <button
-      disabled={disabled}
+    <AriaButton
+      isDisabled={disabled}
       className={joinClasses(
         'Button__root',
         disabled && 'Button__disabled',
         small && 'Button__small',
         className,
       )}
-      onClick={onClick}
-      title={title}
+      onPress={onClick}
       aria-label={title}
       {...(dataTestId && {'data-test-id': dataTestId})}>
       {children}
-    </button>
+    </AriaButton>
   );
 }

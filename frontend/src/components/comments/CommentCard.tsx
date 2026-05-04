@@ -7,6 +7,7 @@ import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query'
 import { useParams } from "react-router-dom"
 import { updateScore } from "../../utils/updateScore"
 import CommentReplyInput from "./CommentReplyInput"
+import { Button } from "react-aria-components"
 
 type CommentCardProps = {
     comment: CommentNode
@@ -64,8 +65,9 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
         <div style={{ paddingLeft: depth * 16 }}>
             <div className='comment'>
                 {hasChildren && (
-                    <div
-                        onClick={() => setIsCollapsed(p => !p)}
+                    <Button
+                        aria-label={isCollapsed ? 'Expand replies' : 'Collapse replies'}
+                        onPress={() => setIsCollapsed(p => !p)}
                         style={{
                         width: 2,
                         background: 'black',   // optional: rotate colors per depth
@@ -74,6 +76,8 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
                         flexShrink: 0,
                         minHeight: '100%',
                         alignSelf: 'stretch',
+                        border: 0,
+                        padding: 0,
                         }}
                     />
                 )}
@@ -85,15 +89,19 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
                     <div className='comment-content' dangerouslySetInnerHTML={{ __html: commentData?.content_html }} />
                     <div className='comment-interactions'>
                         <div className='comment-score'>
-                            <i className='bi bi-arrow-up vote-button' onClick={()=>handleVoteClick(commentData?.id, 1)} style={{color: commentData?.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
+                            <Button className='vote-button' aria-label="Upvote comment" onPress={()=>handleVoteClick(commentData?.id, 1)} style={{color: commentData?.vote_status === 'upvoted' ? 'red' : 'black'}}>
+                                <i className='bi bi-arrow-up'></i>
+                            </Button>
                             <span>{commentData?.score}</span>
-                            <i className='bi bi-arrow-down vote-button' onClick={()=>handleVoteClick(commentData?.id, -1)} style={{color: commentData?.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
+                            <Button className='vote-button' aria-label="Downvote comment" onPress={()=>handleVoteClick(commentData?.id, -1)} style={{color: commentData?.vote_status === 'downvoted' ? 'red' : 'black'}}>
+                                <i className='bi bi-arrow-down'></i>
+                            </Button>
                         </div>
 
-                        <div className='comment-reply' onClick={handleReplyClick}>
+                        <Button className='comment-reply' onPress={handleReplyClick}>
                             <i className="bi bi-chat-left-text comment-icon"></i>
                             <span>Reply</span>
-                        </div>
+                        </Button>
 
                         <div className='comment-share'>
                             <i className='bi bi-share share-icon'></i>

@@ -26,8 +26,8 @@ export const createComment = async (data: CommentBody) => {
     return response.data;
 }
 
-export const getPostComments = async (postId: number, communityName:string):Promise<PostComment[]> => {
-    const response = await api.get(`/r/${communityName}/comments/${postId}`)
+export const getPostComments = async (postId: number):Promise<PostComment[]> => {
+    const response = await api.get(`/r/comments/${postId}`)
     return response.data
 }
 

@@ -6,6 +6,7 @@ import type { CommentBody } from '../../services/comments';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
+import { Button } from 'react-aria-components';
 
 export type CommentReplyInputProps = {
     onReply: (commentId: number | null) => void;
@@ -57,18 +58,18 @@ const CommentInput = ({onReply, parentId}: CommentReplyInputProps) => {
                     setCommentReplyHTML={setCommentReplyHTML} 
                 />
                 <div className="comment-actions">
-                    <button
+                    <Button
                         className = 'cancel-button'
-                        onClick = {()=>handleCancel()}
+                        onPress = {()=>handleCancel()}
                     >
                         Cancel
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         className = 'save-button'
-                        onClick={()=>handleSave()}
+                        onPress={()=>handleSave()}
                     >
                         Save
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

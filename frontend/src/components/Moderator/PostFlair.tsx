@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
+import { Button, Checkbox } from 'react-aria-components'
 import '../../styles/postflair.css'
 import '../../styles/slider.css'
 import ShowFlair from './ShowFlair'
@@ -29,7 +30,7 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
                         <span>Post Flair</span>
                     </div>
                     <div>
-                        <button onClick={()=>setShowNewFlair(true)}>New Flair</button>
+                        <Button onPress={()=>setShowNewFlair(true)}>New Flair</Button>
                     </div>
                 </div>
 
@@ -48,10 +49,9 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
                         <p className='action-desc'>Allow flair in your community.</p>
                     </div>
                     <div>
-                        <label className="switch">
-                            <input type="checkbox" checked={enablePostFlair} onChange={toggleEnablePostFlair}/>
+                        <Checkbox className="switch" isSelected={enablePostFlair} onChange={toggleEnablePostFlair} aria-label="Enable post flair">
                             <span className="slider"></span>
-                        </label>
+                        </Checkbox>
                     </div>
                 </div>
 
@@ -61,10 +61,9 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
                         <p className='action-desc'>Required for communities that require post flair.</p>
                     </div>
                     <div>
-                        <label className="switch">
-                            <input type="checkbox" checked={usersCanAssignAndEdit} onChange={toggleUserCanAssignAndEdit}/>
+                        <Checkbox className="switch" isSelected={usersCanAssignAndEdit} onChange={toggleUserCanAssignAndEdit} aria-label="Let users assign and edit post flair">
                             <span className="slider"></span>
-                        </label>
+                        </Checkbox>
                     </div>
                 </div>
 

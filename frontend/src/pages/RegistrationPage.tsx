@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Form, Input, Label, TextField } from 'react-aria-components';
 import { useNavigate } from "react-router-dom";
 import { doRegister } from "../services/account";
 import '../styles/login.css';
@@ -46,60 +47,52 @@ const Registration = () => {
                     <div className="status-card">
                         <h2>Check your email</h2>
                         <p>We sent a verification link to <strong>{successEmail}</strong>.</p>
-                        <button className="btn-primary" onClick={() => navigate('/login')}>
+                        <Button className="btn-primary" onPress={() => navigate('/login')}>
                             Back to login
-                        </button>
+                        </Button>
                     </div>
                 ) : (
                 <>
                 {errorMessage && <div className="auth-message auth-message-error">{errorMessage}</div>}
-                <form className="login-form" action={dispatchAction}>
-                    <div className="form-field">
-                        <label htmlFor="username">Username <span className="required-field">*</span></label>
-                        <input
+                <Form className="login-form" action={dispatchAction}>
+                    <TextField className="form-field" name="username" type="text" isRequired>
+                        <Label>Username <span className="required-field">*</span></Label>
+                        <Input
                             type="text"
                             id="username"
-                            name="username"
-                            required
                         />
-                    </div>
+                    </TextField>
 
-                    <div className="form-field">
-                        <label htmlFor="email">Email <span className="required-field">*</span></label>
-                        <input
+                    <TextField className="form-field" name="email" type="email" isRequired>
+                        <Label>Email <span className="required-field">*</span></Label>
+                        <Input
                             type="email"
                             id="email"
-                            name="email"
-                            required
                         />
-                    </div>
+                    </TextField>
 
-                    <div className="form-field">
-                        <label htmlFor="password">Password <span className="required-filed">*</span></label>
-                        <input
+                    <TextField className="form-field" name="password" type="password" isRequired>
+                        <Label>Password <span className="required-filed">*</span></Label>
+                        <Input
                             type="password"
                             id="password"
-                            name="password"
                             placeholder="********"
-                            required
                         />
-                    </div>
+                    </TextField>
 
-                    <div className="form-field">
-                        <label htmlFor="confrim-password">Password <span className="required-filed">*</span></label>
-                        <input
+                    <TextField className="form-field" name="confirm-password" type="password" isRequired>
+                        <Label>Confirm password <span className="required-filed">*</span></Label>
+                        <Input
                             type="password"
                             id="confirm-password"
-                            name="confirm-password"
                             placeholder="********"
-                            required
                         />
-                    </div>
+                    </TextField>
 
-                    <button disabled={isPending} className="btn-primary">
+                    <Button isDisabled={isPending} className="btn-primary">
                         {isPending ? 'Registering...' : 'Register'}
-                    </button>
-                </form>
+                    </Button>
+                </Form>
                 </>
                 )}
             </div>

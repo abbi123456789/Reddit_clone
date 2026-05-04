@@ -93,6 +93,8 @@
 }
 
 .post-interactions .vote-section .vote-button{
+    background: transparent;
+    border: none;
     cursor: pointer;
     padding: 5px 8px;
 }
@@ -119,4 +121,3 @@
     background-color: rgb(218, 224, 229);
     border-radius: 20px;
 }
-

@@ -12,6 +12,7 @@ import { Suspense } from "react"
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { updateScore } from "../../utils/updateScore"
 import { useAuth } from "../../context/AuthContext"
+import { Button } from "react-aria-components"
 
 const PostBody = ()=>{
     const { communityName, postId, postSlug } = useParams()
@@ -23,7 +24,7 @@ const PostBody = ()=>{
 
     const queryClient = useQueryClient()
 
-    const {data, isError, isPending} = useQuery({
+    const {data} = useQuery({
         queryKey: ['post', postSlug],
         queryFn: async () => await getPostBySlug(postId!, postSlug!),
     })
@@ -44,7 +45,7 @@ const PostBody = ()=>{
             return {previousPost}
         },
 
-        onError: (err, variables, context) => {
+        onError: (_err, _variables, context) => {
             queryClient.setQueryData(['post', postSlug], context!.previousPost)
         },
 
@@ -56,11 +57,17 @@ const PostBody = ()=>{
     //change it to useMutatin
     const commentCreationMutation = useMutation({
         mutationFn: createComment,
-        onError: (err) => {
-            console.error('Error creating comment:', err)
+        onMutate: async (variables) => {
+            const {community_name, content_html, content_json, parent, post} = variables;
+            const previousComments = queryClient.getQueryData(['comments', postId]) as CommentBody[]
+            const newComments = [...previousComments, {content_json, community_name, content_html, parent, post}]
+            queryClient.setQueryData(['comments', postId], newComments)
+            return {previousComments}
+        },
+        onError: (_err, _newComment, context) => {
+            queryClient.setQueryData(['comments', postId], context?.previousComments)
         },
         onSettled: () => {
-            console.log('Invalidating comments query')
             queryClient.invalidateQueries({queryKey: ['comments', postId]})
         }
     })
@@ -121,9 +128,13 @@ const PostBody = ()=>{
 
             <div className='post-interactions'>
                 <div className='vote-section'>
-                    <i className="bi bi-arrow-up vote-button" onClick={()=>handleVoteClick(postId!, 1)} style={{color: data?.vote_status === 'upvoted' ? 'red' : 'black'}}></i>
+                    <Button className="vote-button" aria-label="Upvote post" onPress={()=>handleVoteClick(postId!, 1)} style={{color: data?.vote_status === 'upvoted' ? 'red' : 'black'}}>
+                        <i className="bi bi-arrow-up"></i>
+                    </Button>
                     <span className='vote-count'>{data?.score}</span>
-                    <i className="bi bi-arrow-down vote-button" onClick={()=>handleVoteClick(postId!, -1)} style={{color: data?.vote_status === 'downvoted' ? 'red' : 'black'}}></i>
+                    <Button className="vote-button" aria-label="Downvote post" onPress={()=>handleVoteClick(postId!, -1)} style={{color: data?.vote_status === 'downvoted' ? 'red' : 'black'}}>
+                        <i className="bi bi-arrow-down"></i>
+                    </Button>
                 </div>
 
                 <div className='comment-section'>
@@ -141,7 +152,7 @@ const PostBody = ()=>{
                 <CommentInput onSave={handleSaveComment} setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML} isActive={isActive} setIsActive={setIsActive}/>
             }
             <Suspense fallback={<p>Loading...</p>}>
-                <PostComments postId={parseInt(postId!)} communityName={communityName!}/>
+                <PostComments postId={parseInt(postId!)} />
             </Suspense>
         </section>
     )

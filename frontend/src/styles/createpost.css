@@ -35,7 +35,9 @@
 }
 
 .create-post-section .community-selection select,
-.create-post-section .add-flair-and-tag select{
+.create-post-section .add-flair-and-tag select,
+.create-post-section .community-selection .aria-select-trigger,
+.create-post-section .add-flair-and-tag .aria-select-trigger{
     background-color: lightgrey;
     padding: 10px 25px;
     border: none;

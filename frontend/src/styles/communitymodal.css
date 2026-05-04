@@ -40,6 +40,7 @@
     cursor: pointer;
     border: none;
     border-radius: 16px;
+    font: inherit;
 }
 
 .about-community-step .action-buttons,

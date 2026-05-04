@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Input, SearchField } from 'react-aria-components'
 
 import '../styles/navbar.css'
 import { useAuth } from '../context/AuthContext'
@@ -12,7 +13,9 @@ const Navbar = ()=>{
             </div>
             <div className="search-bar">
                 <i className="bi bi-reddit"></i>
-                <input type="text" placeholder="Find Anything" />
+                <SearchField aria-label="Search Reddit">
+                    <Input placeholder="Find Anything" />
+                </SearchField>
             </div>
             <div className="action-buttons">
                 {isAuthenticated ? (

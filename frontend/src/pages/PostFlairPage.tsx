@@ -35,19 +35,17 @@ const PostFlairPage = ()=>{
                     }
                 </div>
                 {isModalOpen && showNewFlair && (
-                    <div onClick={(e) => e.stopPropagation()}> {/* Prevents closing when clicking inside */}
-                        <FlairBackgroundModal 
-                            backgroundColor={backgroundColor}
-                            setBackgroundColor={setBackgroundColor}
-                            hexCode={hexCode}
-                            setHexCode={setHexCode}
-                            flair={flair}
-                            setModalOpen={setModalOpen}
-                            communityName={communityName}
-                            textColor={textColor}
-                            setTextColor={setTextColor}
-                        />
-                    </div>
+                    <FlairBackgroundModal 
+                        backgroundColor={backgroundColor}
+                        setBackgroundColor={setBackgroundColor}
+                        hexCode={hexCode}
+                        setHexCode={setHexCode}
+                        flair={flair}
+                        setModalOpen={setModalOpen}
+                        communityName={communityName ?? ''}
+                        textColor={textColor}
+                        setTextColor={setTextColor}
+                    />
                 )}
             </div>
         </main>
