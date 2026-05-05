@@ -26,7 +26,7 @@ class CommentController(Controller):
         await comment.save()
         return comment.to_dict()
 
-    @get('r/{community_name:str}/comments/{post_id:int}/')
+    @get('r/comments/{post_id:int}/')
     async def get_post_comments(self, request:Request[User, Any, Any])->list:
         post_id = request.path_params['post_id']
         if request.user:
