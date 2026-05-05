@@ -116,7 +116,7 @@ const Login = () => {
                         />
                     </TextField>
 
-                    <Button isDisabled={isPending} className={primaryButtonClass}>
+                    <Button type='submit' isDisabled={isPending} className={primaryButtonClass}>
                         {isPending ? 'Logging you in' : 'Login'}
                     </Button>
                 </Form>
