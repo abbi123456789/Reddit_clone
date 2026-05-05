@@ -1,10 +1,13 @@
+import json
+
 from litestar import Controller, get, post, Request
+from litestar.exceptions import HTTPException
 from typing import Any
 
 from accounts.tables import User
 from community.tables import Community, CommunityFlair
 from .tables import Post, PostVote
-from .schema import PostCreate, VoteSchema
+from .schema import PostCreate, PostUpdate, VoteSchema
 from utils.slugify import create_timestamped_slug
 
 class PostController(Controller):
@@ -123,8 +126,54 @@ class PostController(Controller):
 
     
     @post('/{post_id:int}/edit')
-    async def edit_post(self, post_id: int)->None:
-        raise NotImplementedError("This endpoint will handle editing a post")
+    async def edit_post(self, request:Request[User, Any, Any], data: PostUpdate, post_id: int)->dict[str, Any]:
+        user_id = request.user.get('id')
+        existing_post = await Post.select(Post.id, Post.author, Post.slug, Post.title).where(Post.id == post_id).first()
+
+        if not existing_post:
+            raise HTTPException(detail="Post not found", status_code=404)
+
+        if existing_post.get('author') != user_id:
+            raise HTTPException(detail="Only the post owner can edit this post", status_code=403)
+
+        community = await Community.select(Community.id).where(Community.name == data.community_name).first()
+        if not community:
+            raise HTTPException(detail="Community not found", status_code=404)
+
+        community_id = community.get('id')
+
+        if data.flair:
+            flair = await CommunityFlair.select(CommunityFlair.id).where(
+                CommunityFlair.title == data.flair,
+                CommunityFlair.community == community_id,
+            ).first()
+            flair_id = flair.get('id') if flair else None
+        else:
+            flair_id = None
+
+        slug = existing_post.get('slug')
+        if existing_post.get('title') != data.title:
+            slug = create_timestamped_slug(data.title)
+
+        sql_statement = '''
+        UPDATE post
+        SET title = {}, slug = {}, content_html = {}, content_json = {}::jsonb, community = {}, flair = {}, is_nsfw = {}, is_spoiler = {}
+        WHERE id = {}
+        RETURNING id, title, slug, content_html, content_json, community, flair, is_nsfw, is_spoiler;
+        '''
+        updated_post = await Post.raw(
+            sql_statement,
+            data.title,
+            slug,
+            data.content_html,
+            json.dumps(data.content_json),
+            community_id,
+            flair_id,
+            data.is_nsfw,
+            data.is_spoiler,
+            post_id,
+        )
+        return updated_post[0] if updated_post else {}
     
     @post('/{post_id:int}/delete')
     async def delete_post(self, post_id: int)->None: 

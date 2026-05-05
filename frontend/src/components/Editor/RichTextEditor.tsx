@@ -122,9 +122,20 @@ const editorConfig = {
 
 export interface RichTextEditorProps {
     onChange?: (editorState: EditorState, html: string) => void;
+    initialEditorState?: object | string;
 }
 
-const RichTextEditor = ({ onChange }: RichTextEditorProps) => {
+const RichTextEditor = ({ onChange, initialEditorState }: RichTextEditorProps) => {
+    const initialConfig = {
+        ...editorConfig,
+        editorState:
+            initialEditorState === undefined
+                ? undefined
+                : typeof initialEditorState === 'string'
+                    ? initialEditorState
+                    : JSON.stringify(initialEditorState),
+    };
+
     const handleChange = (editorState: EditorState, editor: LexicalEditor) => {
         if (!onChange) return;
 
@@ -135,7 +146,7 @@ const RichTextEditor = ({ onChange }: RichTextEditorProps) => {
     };
 
     return (
-        <LexicalComposer initialConfig={editorConfig}>
+        <LexicalComposer initialConfig={initialConfig}>
             <div className="relative mx-auto my-5 rounded-t-[10px] rounded-b-lg border border-gray-300 bg-white text-left leading-5 font-normal text-black">
                 <ToolbarPlugin />
                 <div className="relative bg-white">

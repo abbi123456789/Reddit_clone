@@ -4,8 +4,8 @@ import RichTextEditor from "../Editor/RichTextEditor"
 import { AriaSelect } from '../ui/Select'
 import { getMyCommunities } from "../../services/community"
 import { getFlairs } from "../../services/flairs"
-import { createPost, type PostData } from "../../services/posts"
-import { useNavigate, useParams } from "react-router-dom"
+import { createPost, type PostData, type PostEditorDraft, updatePost } from "../../services/posts"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from '@tanstack/react-query'
 
 export type Community = {
@@ -20,15 +20,41 @@ export type Flair = {
     text_color: string
 }
 
+const EMPTY_EDITOR_STATE = {
+    root: {
+        children: [
+            {
+                children: [],
+                direction: null,
+                format: "",
+                indent: 0,
+                type: "paragraph",
+                version: 1,
+            },
+        ],
+        direction: null,
+        format: "",
+        indent: 0,
+        type: "root",
+        version: 1,
+    },
+}
+
 const PostCreationForm = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const { communityName } = useParams()
-    const [selectedCommunity, setSelectedCommunity] = React.useState(communityName || "")
-    const [title, setTitle] = React.useState("")
-    const [selectedFlair, setSelectedFlair] = React.useState("")
+    const editState = location.state as PostEditorDraft | null
+    const isEditMode = editState?.mode === 'edit'
 
-    const [postContentJson, setPostContentJson] = React.useState("")
-    const [postContentHtml, setPostContentHtml] = React.useState("")
+    const [selectedCommunity, setSelectedCommunity] = React.useState(editState?.community_name || communityName || "")
+    const [title, setTitle] = React.useState(editState?.title || "")
+    const [selectedFlair, setSelectedFlair] = React.useState(editState?.flair_title || "")
+
+    const [postContentJson, setPostContentJson] = React.useState(
+        JSON.stringify(editState?.content_json ?? EMPTY_EDITOR_STATE),
+    )
+    const [postContentHtml, setPostContentHtml] = React.useState(editState?.content_html || "")
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleEditorChange = (editorState: any, html: string) => {
@@ -44,15 +70,22 @@ const PostCreationForm = () => {
             content_json: JSON.parse(postContentJson),
             community_name: selectedCommunity,
             flair: selectedFlair ? selectedFlair : null,
-            is_nsfw: false,
-            is_spoiler: false,
+            is_nsfw: editState?.is_nsfw ?? false,
+            is_spoiler: editState?.is_spoiler ?? false,
         }
         try {
+            if (isEditMode && editState) {
+                const updatedPost = await updatePost(editState.postId, payload)
+                console.log("Post updated successfully:", updatedPost)
+                navigate(`/r/${selectedCommunity}/comments/${updatedPost.id}/${updatedPost.slug}`)
+                return
+            }
+
             const newPost = await createPost(payload)
             console.log("Post created successfully:", newPost)
             navigate(`/r/${selectedCommunity}/comments/${newPost.id}/${newPost.slug}`)
         } catch (error) {
-            console.error("Error creating post:", error)
+            console.error(`Error ${isEditMode ? "updating" : "creating"} post:`, error)
         }
     }
 
@@ -75,7 +108,7 @@ const PostCreationForm = () => {
     return (
         <section className="flex flex-1 flex-col gap-5">
             <div className="flex items-center justify-between font-bold">
-                <h1>Create Post</h1>
+                <h1>{isEditMode ? "Edit Post" : "Create Post"}</h1>
                 <p className="text-[1.8rem]">Drafts</p>
             </div>
 
@@ -116,12 +149,18 @@ const PostCreationForm = () => {
             </div>
 
             <div className="w-full">
-                <RichTextEditor onChange={handleEditorChange} />
+                <RichTextEditor
+                    key={isEditMode && editState ? `edit-${editState.postId}` : "create-post"}
+                    onChange={handleEditorChange}
+                    initialEditorState={editState?.content_json ?? EMPTY_EDITOR_STATE}
+                />
             </div>
 
             <div className="mr-8 flex justify-end gap-8">
                 <Button className="rounded-[20px] border-0 px-4 py-2.5">Save Draft</Button>
-                <Button className="rounded-[20px] border-0 px-4 py-2.5" onPress={handleSubmit}>Post</Button>
+                <Button className="rounded-[20px] border-0 px-4 py-2.5" onPress={handleSubmit}>
+                    {isEditMode ? "Save Changes" : "Post"}
+                </Button>
             </div>
         </section>
     )

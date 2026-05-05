@@ -10,6 +10,19 @@ export type PostData = {
     is_spoiler?: boolean;
 }
 
+export type PostEditorDraft = {
+    mode: 'edit';
+    postId: number;
+    postSlug: string;
+    title: string;
+    content_html: string;
+    content_json: object;
+    community_name: string;
+    flair_title: string | null;
+    is_nsfw?: boolean;
+    is_spoiler?: boolean;
+}
+
 export type Post = {
     id: number;
     title: string;
@@ -35,6 +48,16 @@ export const createPost = async (postData: PostData) => {
         return response.data;
     } catch (error) {
         console.error("Error creating post:", error);
+        throw error;
+    }
+}
+
+export const updatePost = async (postId: number, postData: PostData) => {
+    try{
+        const response = await api.post(`/posts/${postId}/edit`, postData);
+        return response.data;
+    } catch (error) {
+        console.error("Error updating post:", error);
         throw error;
     }
 }

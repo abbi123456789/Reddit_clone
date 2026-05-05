@@ -1,6 +1,6 @@
 import React from "react"
-import { useParams } from "react-router-dom"
-import { getPostBySlug, type Post } from "../../services/posts"
+import { useNavigate, useParams } from "react-router-dom"
+import { getPostBySlug, type Post, type PostEditorDraft } from "../../services/posts"
 import { useState } from "react"
 import CommentInput from "../comments/CommentInput"
 import type {CommentBody} from '../../services/comments'
@@ -14,12 +14,13 @@ import { useAuth } from "../../context/AuthContext"
 import { Button } from "react-aria-components"
 
 const PostBody = ()=>{
+    const navigate = useNavigate()
     const { communityName, postId, postSlug } = useParams()
     const [commentJSON, setCommentJSON] = useState<string>('')
     const [commentHTML, setCommentHTML] = useState<string>('')
     // To check, if the comment input box is active or not, when user clicks on it, it becomes active and shows the comment editor, otherwise it shows the placeholder text
     const [isActive, setIsActive] = useState(false)
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, user } = useAuth()
 
     const queryClient = useQueryClient()
 
@@ -89,8 +90,32 @@ const PostBody = ()=>{
         postScoreMutation.mutate({postId, value})
     }
 
+    const handleEditPost = () => {
+        if (!data) {
+            return
+        }
+
+        const postDraft: PostEditorDraft = {
+            mode: 'edit',
+            postId: data.id,
+            postSlug: data.slug,
+            title: data.title,
+            content_html: data.content_html,
+            content_json: data.content_json,
+            community_name: data.community_name,
+            flair_title: data.flair_title,
+            is_nsfw: false,
+            is_spoiler: false,
+        }
+
+        navigate(`/r/${data.community_name}/submit`, {
+            state: postDraft,
+        })
+    }
+
     const voteButtonClass = "cursor-pointer border-0 bg-transparent px-2 py-1 hover:rounded-[25px] hover:bg-slate-400";
     const interactionClass = "flex items-center gap-1 rounded-[20px] bg-[#dae0e5] px-4 py-2";
+    const isOwner = Boolean(user && data && user.id === data.author_id)
 
     return (
         <section className="flex flex-[5] flex-col gap-5 p-5">
@@ -111,7 +136,16 @@ const PostBody = ()=>{
                         </div>
                     </div>
                 </div>
-                <div className="flex">
+                <div className="flex items-center gap-3">
+                    {isOwner && (
+                        <Button
+                            className="rounded-[25px] bg-[#dae0e5] px-4 py-2"
+                            onPress={handleEditPost}
+                        >
+                            <i className="bi bi-pencil-square mr-2"></i>
+                            Edit
+                        </Button>
+                    )}
                     <i className="bi bi-three-dots cursor-pointer rounded-[30px] bg-slate-400 px-2 py-1.5 text-[1.6rem]"></i>
                 </div>
             </header>
