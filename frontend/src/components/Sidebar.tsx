@@ -8,9 +8,17 @@ import { useAuth } from '../context/AuthContext'
 type SidebarProps = {
     showModal?: boolean
     handleModalToggle: () => void
+    className?: string
+    bordered?: boolean
+    fullWidth?: boolean
 }
 
-const Sidebar = ({handleModalToggle}:SidebarProps)=>{
+const Sidebar = ({
+    handleModalToggle,
+    className = "",
+    bordered = true,
+    fullWidth = false,
+}:SidebarProps)=>{
     const { isAuthenticated } = useAuth()
     const [myCommunities, setMyCommunities] = useState<Community[]>([])
     const menuSectionClass = "flex flex-col gap-4 border-b border-gray-300 pb-4";
@@ -29,7 +37,9 @@ const Sidebar = ({handleModalToggle}:SidebarProps)=>{
     }, [])
 
     return (
-        <aside className="flex h-screen w-[300px] flex-col gap-8 overflow-auto border-r border-gray-300 p-8 text-[2.2rem] [scrollbar-width:none]">
+        <aside
+            className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-full max-w-[300px]"} flex-col gap-8 overflow-auto p-6 text-[2rem] [scrollbar-width:none] md:p-8 md:text-[2.2rem] ${bordered ? "border-r border-gray-300" : ""} ${className}`}
+        >
             <div className={menuSectionClass}>
                 <div className={menuItemClass}>
                     <i className="bi bi-house-door-fill"></i>
