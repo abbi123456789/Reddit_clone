@@ -10,7 +10,7 @@ export default function CommunityPosts(){
         queryFn: async () => await getCommunityPosts(communityName!),
     })
     return(
-        <div className="mb-10 flex flex-col gap-5">
+        <div className="mb-10 flex min-w-0 flex-1 flex-col gap-5">
             {communityPosts?.map((post)=>(
                 <PostCard key={post.id} post={post} />
             ))}

@@ -1,31 +1,12 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import FeedPosts from "../components/FeedPosts"
 import RecentPosts from "../components/post/RecentPosts"
+import MobileSidebarDrawer from "../components/MobileSidebarDrawer"
 
 const HomePage = ()=>{
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
-
-    useEffect(() => {
-        if (!isMobileSidebarOpen) {
-            return
-        }
-
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                setIsMobileSidebarOpen(false)
-            }
-        }
-
-        document.body.style.overflow = "hidden"
-        window.addEventListener("keydown", handleEscape)
-
-        return () => {
-            document.body.style.overflow = ""
-            window.removeEventListener("keydown", handleEscape)
-        }
-    }, [isMobileSidebarOpen])
 
     return (
         <main className="flex h-screen flex-col overflow-hidden">
@@ -41,33 +22,10 @@ const HomePage = ()=>{
                     </div>
                 </div>
             </div>
-            {isMobileSidebarOpen && (
-                <div className="fixed inset-0 z-50 flex lg:hidden">
-                    <button
-                        type="button"
-                        className="absolute inset-0 bg-black/40"
-                        onClick={() => setIsMobileSidebarOpen(false)}
-                        aria-label="Close navigation menu"
-                    />
-                    <div className="relative z-10 h-full w-[280px] max-w-[85vw] bg-white shadow-xl">
-                        <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3">
-                            <p className="text-[1.8rem] font-semibold">Menu</p>
-                            <button
-                                type="button"
-                                className="flex h-10 w-10 items-center justify-center rounded-full text-[2rem] hover:bg-gray-200"
-                                onClick={() => setIsMobileSidebarOpen(false)}
-                                aria-label="Close navigation menu"
-                            >
-                                <i className="bi bi-x-lg"></i>
-                            </button>
-                        </div>
-                        <Sidebar
-                            bordered={false}
-                            fullWidth={true}
-                        />
-                    </div>
-                </div>
-            )}
+            <MobileSidebarDrawer
+                isOpen={isMobileSidebarOpen}
+                onClose={() => setIsMobileSidebarOpen(false)}
+            />
         </main>
     )
 }

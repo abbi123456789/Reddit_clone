@@ -20,7 +20,7 @@ const CommunityRightSideBar = () => {
     }, [communityName])
 
     return (
-        <aside className="flex flex-[2] flex-col gap-5 p-5">
+        <aside className="flex min-w-0 flex-[2] flex-col gap-5 p-5">
             <div className="flex flex-col gap-2.5 border-b border-slate-400">
                 <div className="flex items-center justify-between">
                     <span className="cursor-pointer text-[1.6rem] font-bold">r/{communityData?.name}</span>
@@ -61,7 +61,7 @@ const CommunityRightSideBar = () => {
 
             <div className="flex flex-col gap-2.5 border-b border-slate-400">
                 <span className="text-[1.6rem] font-bold">Filter By Flair</span>
-                <div className="mb-5 flex gap-5">
+                <div className="mb-5 flex flex-wrap gap-3">
                     {communityData?.flairs?.map((flair) => (
                         <div key={flair.id} className="mb-3 inline-block w-fit rounded-[15px] px-2 py-1" style={{backgroundColor: flair.background_color}}>
                             <span style={{color: flair.text_color}}>{flair.title}</span>
