@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
-import CommunityModalForm from "../components/CommunityModal"
 import FeedPosts from "../components/FeedPosts"
 import RecentPosts from "../components/post/RecentPosts"
 
-type HomePageProps = {
-    showModal: boolean
-    handleModalToggle: () => void
-}
-
-const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
+const HomePage = ()=>{
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
 
     useEffect(() => {
@@ -38,10 +32,7 @@ const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
             <Navbar onMenuToggle={() => setIsMobileSidebarOpen(true)} />
             <div className="flex min-h-0 flex-1">
                 <div className="hidden shrink-0 lg:flex">
-                    <Sidebar
-                        handleModalToggle = {handleModalToggle}
-                        showModal = {showModal}
-                    />
+                    <Sidebar />
                 </div>
                 <div className="flex min-h-0 min-w-0 flex-1 px-3 py-4 md:px-5 md:py-5 lg:gap-8">
                     <FeedPosts />
@@ -71,15 +62,12 @@ const HomePage = ({showModal, handleModalToggle} : HomePageProps)=>{
                             </button>
                         </div>
                         <Sidebar
-                            handleModalToggle = {handleModalToggle}
-                            showModal = {showModal}
                             bordered={false}
                             fullWidth={true}
                         />
                     </div>
                 </div>
             )}
-            {showModal && <CommunityModalForm handleModalToggle={handleModalToggle} />}
         </main>
     )
 }

@@ -37,7 +37,7 @@ type CommunityDetailsProps = {
 }
 
 type CommunityModalFormProps = {
-  handleModalToggle: () => void
+  onClose: () => void
 }
 
 const modalStepClass = "absolute left-1/2 top-1/2 flex w-[768px] -translate-x-1/2 -translate-y-1/2 flex-col gap-[50px] rounded-[25px] border-0 bg-[#ecd2d2] p-5 text-[2rem]";
@@ -198,7 +198,7 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
   )
 }
 
-const CommunityModalForm = ({handleModalToggle}:CommunityModalFormProps) => {
+const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
   const [currentTab, setCurrentTab] = useState<"about" | "visibility" | "details">("about")
 
   const [communityAbout, setCommunityAbout] = useState<string>('')
@@ -224,7 +224,7 @@ const CommunityModalForm = ({handleModalToggle}:CommunityModalFormProps) => {
   }
 
   const handleCancel = () => {
-    handleModalToggle()
+    onClose()
   }
 
   const handleSubmit = async () => {
@@ -232,7 +232,7 @@ const CommunityModalForm = ({handleModalToggle}:CommunityModalFormProps) => {
     console.log(requestPayload)
     const data = await createCommunity(requestPayload)
     if(data){
-      handleModalToggle()
+      onClose()
     }
   }
 

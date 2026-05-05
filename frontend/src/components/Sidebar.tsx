@@ -4,22 +4,21 @@ import { useEffect, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useCommunityModal } from '../context/CommunityModalContext'
 
 type SidebarProps = {
-    showModal?: boolean
-    handleModalToggle: () => void
     className?: string
     bordered?: boolean
     fullWidth?: boolean
 }
 
 const Sidebar = ({
-    handleModalToggle,
     className = "",
     bordered = true,
     fullWidth = false,
 }:SidebarProps)=>{
     const { isAuthenticated } = useAuth()
+    const { openCommunityModal } = useCommunityModal()
     const [myCommunities, setMyCommunities] = useState<Community[]>([])
     const menuSectionClass = "flex flex-col gap-4 border-b border-gray-300 pb-4";
     const menuItemClass = "flex cursor-pointer gap-4 rounded-[10px] p-4 hover:bg-gray-300";
@@ -58,7 +57,7 @@ const Sidebar = ({
                     <span>Explore</span>
                 </div>
                 {isAuthenticated && 
-                <Button className={`${menuItemClass} items-center border-0 bg-transparent text-left font-inherit`} onPress={() => handleModalToggle()}>
+                <Button className={`${menuItemClass} items-center border-0 bg-transparent text-left font-inherit`} onPress={openCommunityModal}>
                     <i className="bi bi-plus-lg"></i>
                     <span>Start a Community</span>
                 </Button>
