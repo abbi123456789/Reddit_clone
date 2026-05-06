@@ -57,16 +57,6 @@ const PostBody = ()=>{
     //change it to useMutatin
     const commentCreationMutation = useMutation({
         mutationFn: createComment,
-        onMutate: async (variables) => {
-            const {community_name, content_html, content_json, parent, post} = variables;
-            const previousComments = queryClient.getQueryData(['comments', postId]) as CommentBody[]
-            const newComments = [...previousComments, {content_json, community_name, content_html, parent, post}]
-            queryClient.setQueryData(['comments', postId], newComments)
-            return {previousComments}
-        },
-        onError: (_err, _newComment, context) => {
-            queryClient.setQueryData(['comments', postId], context?.previousComments)
-        },
         onSettled: () => {
             queryClient.invalidateQueries({queryKey: ['comments', postId]})
         }
