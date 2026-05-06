@@ -68,7 +68,7 @@ function parseError(error: unknown): ApiError {
     };
 }
 
-const doLogin = async (data: LoginPaylod): Promise<ServiceResult<AuthResponse>>=>{
+export async function doLogin(data: LoginPaylod): Promise<ServiceResult<AuthResponse>>{
     try{
         const response = await api.post('/accounts/login', data)
         return { data: response.data, error: null }
@@ -119,5 +119,3 @@ export async function completeGoogleLogin(): Promise<ServiceResult<AuthResponse>
 export function beginGoogleLogin() {
     window.location.href = `${API_BASE_URL}/accounts/google/start`
 }
-
-export {doLogin}
