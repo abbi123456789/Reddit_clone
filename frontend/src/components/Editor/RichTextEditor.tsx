@@ -16,8 +16,6 @@ import { TRANSFORMERS } from '@lexical/markdown';
 
 import ToolbarPlugin from './plugins/ToolbarPlugin';
 import RedditAutoLinkPlugin from './plugins/RedditAutoLinkPlugin';
-import ImagePlugin from './plugins/ImagePlugin';
-import { ImageNode } from './nodes/ImageNode';
 
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import type { EditorState, LexicalEditor } from 'lexical';
@@ -44,7 +42,6 @@ const theme = {
         listitemChecked: 'editor-listitem-checked',
         listitemUnchecked: 'editor-listitem-unchecked',
     },
-    image: 'relative inline-block cursor-default select-none [&_img]:max-w-full [&_img.focused]:outline-2 [&_img.focused]:outline-[#3c84f4]',
     link: 'text-[#216fdb] no-underline hover:cursor-pointer hover:underline',
     text: {
         bold: 'font-bold',
@@ -116,7 +113,6 @@ const editorConfig = {
         TableRowNode,
         AutoLinkNode,
         LinkNode,
-        ImageNode,
     ],
 };
 
@@ -160,7 +156,6 @@ const RichTextEditor = ({ onChange, initialEditorState }: RichTextEditorProps) =
                     <ListPlugin />
                     <LinkPlugin />
                     <RedditAutoLinkPlugin />
-                    <ImagePlugin />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
                     <OnChangePlugin onChange={handleChange} />
                 </div>
