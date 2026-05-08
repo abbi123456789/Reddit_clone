@@ -17,6 +17,9 @@ const PostComments = ({postId}:PostCommentProps) => {
 
     const commentTree = React.useMemo(()=>buildCommentTree(comments || []), [comments])
     return (
+        comments?.length === 0 ? (
+            <p className="text-center text-gray-500">No comments yet. Be the first to comment!</p>
+        ) : (
         <div className="flex flex-col gap-5">
             {commentTree.map((comment)=>(
                 <CommentCard 
@@ -28,6 +31,7 @@ const PostComments = ({postId}:PostCommentProps) => {
                 />
             ))}
         </div>
+        )
     )
 }
 
