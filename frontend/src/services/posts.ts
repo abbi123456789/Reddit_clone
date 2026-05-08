@@ -1,13 +1,21 @@
 import api from "./auth";
 
+export type PostType = "text" | "media" | "link"
+
 export type PostData = {
-    title: string;
-    content_html: string;
-    content_json: object;
-    community_name: string;
-    flair?: string | null;
-    is_nsfw?: boolean;
-    is_spoiler?: boolean;
+    title: string
+    community_name: string
+    flair: string | null
+    is_nsfw: boolean
+    is_spoiler: boolean
+
+    post_type: PostType
+
+    content_html?: string | null
+    content_json?: object | null
+
+    media_urls?: string[] | null
+    link_url?: string | null
 }
 
 export type PostEditorDraft = {
