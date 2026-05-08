@@ -47,7 +47,10 @@ export type Post = {
     flair_color: string | null;
     flair_title: string | null;
     flair_text_color: string | null;
-    vote_status: 'upvoted' | 'downvoted' | 'not_voted'
+    vote_status: 'upvoted' | 'downvoted' | 'not_voted';
+    post_type: PostType;
+    media_urls?: string | string[] | null;
+    link_url?: string | null;
 }
 
 export const createPost = async (postData: PostData) => {

@@ -22,13 +22,20 @@ const PostBody = ()=>{
     const [isActive, setIsActive] = useState(false)
     const { isAuthenticated, user } = useAuth()
 
+    const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
+
     const queryClient = useQueryClient()
 
     const {data} = useQuery({
         queryKey: ['post', postSlug],
         queryFn: async () => await getPostBySlug(postId!, postSlug!),
+        select: (data) => {
+            return {
+                ...data,
+                media_urls: data.media_urls ? JSON.parse(data.media_urls as string) : [],}
+        }
     })
-
+    console.log('Post data:', data)
     const postScoreMutation = useMutation({
         mutationFn: votePost,
         onMutate: async (variables) => {
@@ -145,11 +152,104 @@ const PostBody = ()=>{
             </div>
 
             <div className="flex min-w-0 flex-col">
-                <div className="mb-3 inline-block w-fit rounded-[15px] px-2 py-1" style={{backgroundColor: `${data?.flair_color}`}}>
-                    <span>{data?.flair_title}</span>
-                </div>
+                {data?.flair_title && (
+                    <div
+                        className="mb-3 inline-block w-fit rounded-[15px] px-2 py-1"
+                        style={{ backgroundColor: `${data?.flair_color}` }}
+                    >
+                        <span>{data?.flair_title}</span>
+                    </div>
+                )}
 
-                <div className="min-w-0 overflow-x-auto break-words" dangerouslySetInnerHTML={{ __html: data?.content_html ?? "" }} />
+            {/* MEDIA POST */}
+            {data?.post_type === "media" &&
+                Array.isArray(data?.media_urls) &&
+                data.media_urls.length > 0 && (
+                    <div className="relative overflow-hidden rounded-[20px] bg-black">
+                        {(() => {
+                            const mediaUrl = data.media_urls[currentMediaIndex]
+
+                            const isVideo =
+                                mediaUrl.endsWith(".mp4") ||
+                                mediaUrl.endsWith(".webm") ||
+                                mediaUrl.endsWith(".mov")
+
+                            return isVideo ? (
+                                <video
+                                    src={mediaUrl}
+                                    controls
+                                    className="max-h-[700px] w-full object-contain"
+                                />
+                            ) : (
+                                <img
+                                    src={mediaUrl}
+                                    alt={`Post media ${currentMediaIndex + 1}`}
+                                    className="max-h-[700px] w-full object-contain"
+                                />
+                            )
+                        })()}
+
+                        {data.media_urls.length > 1 && (
+                            <>
+                                <Button
+                                    aria-label="Previous media"
+                                    className="absolute top-1/2 left-4 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-white/80 text-black hover:bg-white"
+                                    onPress={() =>
+                                        setCurrentMediaIndex((prev) =>
+                                            prev === 0 ? data.media_urls.length - 1 : prev - 1
+                                        )
+                                    }
+                                >
+                                    <i className="bi bi-chevron-left"></i>
+                                </Button>
+
+                                <Button
+                                    aria-label="Next media"
+                                    className="absolute top-1/2 right-4 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-white/80 text-black hover:bg-white"
+                                    onPress={() =>
+                                        setCurrentMediaIndex((prev) =>
+                                            prev === data.media_urls.length - 1 ? 0 : prev + 1
+                                        )
+                                    }
+                                >
+                                    <i className="bi bi-chevron-right"></i>
+                                </Button>
+
+                                <div className="absolute bottom-4 left-1/2 rounded-full bg-black/60 px-3 py-1 text-sm text-white -translate-x-1/2">
+                                    {currentMediaIndex + 1} / {data.media_urls.length}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                )}
+
+                {/* LINK POST */}
+                {data?.post_type === "link" && data?.link_url && (
+                    <a
+                        href={data.link_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-[20px] border border-slate-300 p-4 transition hover:bg-slate-100"
+                    >
+                        <div className="flex items-center gap-3">
+                            <i className="bi bi-link-45deg text-[2rem]"></i>
+
+                            <div className="min-w-0">
+                                <p className="truncate font-semibold">
+                                    {data.link_url}
+                                </p>
+
+                                <p className="text-sm text-slate-500">
+                                    Open external link
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                )}
+                <div
+                    className="min-w-0 overflow-x-auto break-words"
+                    dangerouslySetInnerHTML={{ __html: data?.content_html ?? "" }}
+                />
             </div>
 
             <div className="flex flex-wrap items-center gap-3 md:gap-5">
