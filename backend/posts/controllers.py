@@ -13,32 +13,89 @@ from utils.slugify import create_timestamped_slug
 class PostController(Controller):
     path = '/posts'
 
-    @post('/create')
-    async def create_post(self, request:Request[User, Any, Any] ,data: PostCreate)->dict[str, Any]:
-        user_id = request.user.get('id')
-        community_id = await Community.select(Community.id).where(Community.name == data.community_name).first()
-        community_id = community_id.get('id') if community_id else None
+    @post("/create")
+    async def create_post(
+        self,
+        request: Request[User, Any, Any],
+        data: PostCreate,
+    ) -> dict[str, Any]:
+        user_id = request.user.get("id")
+
+        community = await Community.select(Community.id).where(
+            Community.name == data.community_name
+        ).first()
+
+        community_id = community.get("id") if community else None
+
+        if community_id is None:
+            raise HTTPException(status_code=404, detail="Community not found")
+
         if data.flair:
-            flair_id = await CommunityFlair.select(CommunityFlair.id).where(CommunityFlair.title == data.flair, CommunityFlair.community == community_id).first()
-            flair_id = flair_id.get('id') if flair_id else None
+            flair = await CommunityFlair.select(CommunityFlair.id).where(
+                CommunityFlair.title == data.flair,
+                CommunityFlair.community == community_id,
+            ).first()
+
+            flair_id = flair.get("id") if flair else None
         else:
             flair_id = None
+
+        if data.post_type not in ["text", "media", "link"]:
+            raise HTTPException(status_code=400, detail="Invalid post type")
+
+        content_html = None
+        content_json = None
+        media_urls = None
+        link_url = None
+
+        if data.post_type == "text":
+            content_html = data.content_html
+            content_json = data.content_json
+
+        elif data.post_type == "media":
+            media_urls = data.media_urls or []
+
+            if len(media_urls) == 0:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Media post must contain at least one image or video",
+                )
+
+        elif data.post_type == "link":
+            link_url = data.link_url
+
+            if not link_url:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Link post must contain a URL",
+                )
+
         slug = create_timestamped_slug(data.title)
+
         post = Post(
             title=data.title,
             slug=slug,
-            content_html=data.content_html,
-            content_json=data.content_json,
+
+            post_type=data.post_type,
+
+            content_html=content_html,
+            content_json=content_json,
+
+            media_urls=media_urls,
+            link_url=link_url,
+
             community=community_id,
             author=user_id,
             flair=flair_id,
+
             is_nsfw=data.is_nsfw,
-            is_spoiler=data.is_spoiler
+            is_spoiler=data.is_spoiler,
         )
+
         await post.save()
-        print(post)
+
         return post.to_dict()
-    
+
     @get('/{post_id:int}/{post_slug:str}')
     async def get_post(self, request:Request[User, Any, Any], post_id:int)->dict[str, Any]:
         if request.user:
