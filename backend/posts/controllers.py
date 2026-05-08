@@ -103,6 +103,7 @@ class PostController(Controller):
             sql_statement = '''
             SELECT 
                 p.id, p.title, p.slug, p.content_html, p.content_json, p.updated_at, p.score, p.comment_count, p.score,
+                p.post_type, p.media_urls, p.link_url,
                 u.username AS author_username, u.id AS author_id,
                 c.name AS community_name, c.id AS community_id,
                 f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color,
@@ -122,6 +123,7 @@ class PostController(Controller):
             sql_statement = '''
             SELECT 
                 p.id, p.title, p.slug, p.content_html, p.content_json, p.updated_at, p.score, p.comment_count, p.score,
+                p.post_type, p.media_urls, p.link_url,
                 u.username AS author_username, u.id AS author_id,
                 c.name AS community_name, c.id AS community_id,
                 f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color
