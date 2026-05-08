@@ -148,7 +148,7 @@ const PostCreationForm = () => {
     }
 
     return (
-        <section className="flex h-full min-h-0 flex-1 flex-col gap-5 overflow-y-auto pr-3">
+        <section className="flex min-w-0 flex-1 flex-col gap-5 lg:pr-3">
             <div className="flex items-center justify-between font-bold">
                 <h1>{isEditMode ? "Edit Post" : "Create Post"}</h1>
                 <p className="text-[1.8rem]">Drafts</p>
