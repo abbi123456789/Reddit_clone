@@ -4,11 +4,13 @@ import PostCreationForm from "../components/post/PostCreationForm"
 
 const CreatePost = ()=>{
     return (
-        <main className="flex w-full flex-col">
+        <main className="flex h-screen w-full flex-col overflow-hidden">
             <Navbar />
-            <div className="flex">
-                <Sidebar />
-                <div className="m-5 flex h-screen w-full overflow-auto">
+            <div className="flex min-h-0 flex-1">
+                <div className="min-h-0 w-[300px] shrink-0 overflow-hidden">
+                    <Sidebar />
+                </div>
+                <div className="flex min-h-0 min-w-0 flex-1 p-5">
                     <PostCreationForm  />
                     <div className="post-rules">
 
