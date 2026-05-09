@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   Button,
   Checkbox,
@@ -208,6 +209,7 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
 }
 
 const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
+  const navigate = useNavigate()
   const [currentTab, setCurrentTab] = useState<"about" | "visibility" | "details">("about")
 
   const [communityAbout, setCommunityAbout] = useState<string>('')
@@ -242,6 +244,7 @@ const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
     const data = await createCommunity(requestPayload)
     if(data){
       onClose()
+      navigate(`/r/${encodeURIComponent(data.name || name)}`)
     }
   }
 

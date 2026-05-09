@@ -21,7 +21,7 @@ export type Community = {
     flairs?: Flair[]
 }
 
-export const createCommunity = async ({name, description, visibility, nsfw, category}: CommunityCreation) => {
+export const createCommunity = async ({name, description, visibility, nsfw, category}: CommunityCreation): Promise<Community | null> => {
     try{
         const response = await api.post(
             '/r/create',
