@@ -13,6 +13,7 @@ import { createCommunity } from "../services/community"
 
 
 type AboutCommunityProps = {
+  communityAbout: string
   setCommunityAbout: React.Dispatch<React.SetStateAction<string>>
   handleNext: () => void
   handleCancel: () => void
@@ -40,17 +41,20 @@ type CommunityModalFormProps = {
   onClose: () => void
 }
 
-const modalStepClass = "absolute left-1/2 top-1/2 flex w-[768px] -translate-x-1/2 -translate-y-1/2 flex-col gap-[50px] rounded-[25px] border-0 bg-[#ecd2d2] p-5 text-[2rem]";
-const headingClass = "[&_span]:text-[2.2rem] [&_span]:font-bold [&_p]:text-black/20";
-const actionRowClass = "mr-10 flex justify-end gap-5";
-const cancelButtonClass = "h-[30px] border-0 bg-red-600 px-2 text-white";
-const nextButtonClass = "h-[30px] border-0 bg-orange-600 px-2 text-white";
+const modalStepClass = "absolute top-1/2 left-1/2 flex max-h-[calc(100vh-32px)] w-[min(768px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 flex-col gap-8 overflow-y-auto rounded-[18px] border-0 bg-white p-6 text-[1.6rem] shadow-[0_20px_60px_rgba(15,23,42,0.25)]";
+const headingClass = "flex flex-col gap-2 [&_span]:text-[2.2rem] [&_span]:font-bold [&_p]:text-[1.5rem] [&_p]:leading-6 [&_p]:text-slate-600";
+const actionRowClass = "flex justify-end gap-3 border-t border-slate-200 pt-5";
+const cancelButtonClass = "h-10 rounded-full border border-slate-300 bg-white px-5 font-semibold text-slate-700 hover:bg-slate-100";
+const nextButtonClass = "h-10 rounded-full border-0 bg-orange-600 px-5 font-semibold text-white hover:bg-orange-700 data-[disabled]:cursor-not-allowed data-[disabled]:bg-slate-300 data-[disabled]:text-slate-500";
 const visibilityRowClass = "flex justify-between px-5 [&>div]:flex [&>div]:items-center [&>div]:gap-5";
 const radioClass = "h-6 w-6 rounded-full border-2 border-slate-600 data-[selected]:border-[6px] data-[selected]:border-orange-600";
 const checkboxClass = "h-6 w-6 rounded border-2 border-slate-600 data-[selected]:bg-orange-600";
+const categoryButtonBaseClass = "min-h-12 rounded-full border px-4 py-2 text-left text-[1.4rem] font-semibold transition-colors outline-none data-[focus-visible]:ring-2 data-[focus-visible]:ring-orange-500 data-[focus-visible]:ring-offset-2";
+const categoryButtonIdleClass = "border-slate-200 bg-slate-100 text-slate-700 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700";
+const categoryButtonSelectedClass = "border-orange-600 bg-orange-600 text-white shadow-[0_6px_16px_rgba(234,88,12,0.28)] hover:bg-orange-700";
 
 
-const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCommunityProps) => {
+const AboutCommunity = ({communityAbout, setCommunityAbout, handleNext,  handleCancel,}: AboutCommunityProps) => {
   const handleSelect = (category: string) => {
     setCommunityAbout(category)
   }
@@ -62,9 +66,14 @@ const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCo
         <p>Choose a topic to help redditors discover your community</p>
       </div>
 
-      <div className="flex flex-wrap gap-2.5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
         {communityCategories.map((category: string) => (
-          <Button className="rounded-2xl border-0 bg-gray-300 p-2.5 text-[1.6rem] [font:inherit]" key={category} onPress={() => handleSelect(category)}>
+          <Button
+            className={`${categoryButtonBaseClass} ${communityAbout === category ? categoryButtonSelectedClass : categoryButtonIdleClass}`}
+            key={category}
+            onPress={() => handleSelect(category)}
+            aria-pressed={communityAbout === category}
+          >
             {category}
           </Button>
         ))}
@@ -74,7 +83,7 @@ const AboutCommunity = ({setCommunityAbout, handleNext,  handleCancel,}: AboutCo
         <Button className={cancelButtonClass} onPress={handleCancel}>
           Cancel
         </Button>
-        <Button className={nextButtonClass} onPress={handleNext}>
+        <Button className={nextButtonClass} onPress={handleNext} isDisabled={communityAbout.length === 0}>
           Next
         </Button>
       </div>
@@ -240,6 +249,7 @@ const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
     <>
       {currentTab === "about" && (
         <AboutCommunity
+          communityAbout={communityAbout}
           setCommunityAbout={setCommunityAbout}
           handleNext={handleNext}
           handleCancel={handleCancel}
