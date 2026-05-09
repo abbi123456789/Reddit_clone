@@ -1,5 +1,5 @@
 import React from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { getPostBySlug, type Post, type PostEditorDraft } from "../../services/posts"
 import { useState } from "react"
 import CommentInput from "../comments/CommentInput"
@@ -35,7 +35,7 @@ const PostBody = ()=>{
                 media_urls: data.media_urls ? JSON.parse(data.media_urls as string) : [],}
         }
     })
-    console.log('Post data:', data)
+
     const postScoreMutation = useMutation({
         mutationFn: votePost,
         onMutate: async (variables) => {
@@ -125,11 +125,19 @@ const PostBody = ()=>{
                         <img src='/images/communityIcon.jpg' alt='Community Icon' className="h-8 w-8 rounded-full border border-black" />
                         <div className="flex min-w-0 flex-col">
                             <div className="flex min-w-0 flex-wrap gap-1">
-                                <span className="cursor-pointer truncate font-bold">r/{data?.community_name}</span>
+                                <span className="cursor-pointer truncate font-bold">
+                                    <Link to={`/r/${data?.community_name}`} className="text-inherit">
+                                        r/{data?.community_name}
+                                    </Link>
+                                </span>
                                 <span>.</span>
                                 <span>2hr ago</span>
                             </div>
-                            <span className="truncate text-slate-600">{data?.author_username}</span>
+                            <span className="truncate text-slate-600">
+                                <Link to={`/u/${data?.author_username}`} className="text-inherit">
+                                    {data?.author_username}
+                                </Link>
+                            </span>
                         </div>
                     </div>
                 </div>

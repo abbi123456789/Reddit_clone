@@ -40,10 +40,12 @@ const Sidebar = ({
             className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-full max-w-[300px]"} flex-col gap-8 overflow-auto p-6 text-[2rem] [scrollbar-width:none] md:p-8 md:text-[2.2rem] ${bordered ? "border-r border-gray-300" : ""} ${className}`}
         >
             <div className={menuSectionClass}>
-                <div className={menuItemClass}>
-                    <i className="bi bi-house-door-fill"></i>
-                    <span>Home</span>
-                </div>
+                <Link to="/" className="text-inherit">
+                    <div className={menuItemClass}>
+                        <i className="bi bi-house-door-fill"></i>
+                        <span>Home</span>
+                    </div>
+                </Link>
                 <div className={menuItemClass}>
                     <i className="bi bi-graph-up-arrow"></i>
                     <span>Popular</span>
