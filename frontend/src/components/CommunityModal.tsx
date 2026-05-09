@@ -256,13 +256,12 @@ const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
     if (name.trim().length === 0 || description.trim().length === 0) {
       return
     }
-
     const requestPayload = {category:communityAbout, visibility, nsfw, name, description}
     console.log(requestPayload)
     const data = await createCommunity(requestPayload)
     if(data){
       onClose()
-      navigate(`/r/${encodeURIComponent(data.name || name)}`)
+      navigate(`/r/mod/${encodeURIComponent(data.name || name)}/general-settings`)
     }
   }
 
