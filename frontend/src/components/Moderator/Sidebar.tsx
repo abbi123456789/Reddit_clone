@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Input, SearchField } from 'react-aria-components'
-
+import { Link, useParams } from 'react-router-dom';
 import { getMyCommunities } from '../../services/community';
 import type { Community } from '../../services/community';
 import { AriaSelect } from '../ui/Select';
 
 const ModeratorSidebar = ()=>{
+    const { communityName } = useParams();
     const [myCommunities, setMyCommunities] = useState<Community[]>([])
-    const [selectedCommunity, setSelectedCommunity] = useState('')
+    const [selectedCommunity, setSelectedCommunity] = useState(communityName || "")
     
     useEffect(()=>{
         const fetchCommunities = async () => {
@@ -38,7 +39,7 @@ const ModeratorSidebar = ()=>{
                     selectedKey={selectedCommunity}
                     onSelectionChange={setSelectedCommunity}
                     options={myCommunities.map((community) => ({
-                        id: `r/${community.name}`,
+                        id: `${community.name}`,
                         label: `r/${community.name}`,
                     }))}
                 />
@@ -143,18 +144,24 @@ const ModeratorSidebar = ()=>{
                 </div>
 
                 <div className={actionGroupClass}>
-                    <div className={actionClass}>
-                        <span>General settings</span>
-                    </div>
+                    <Link to={`/r/mod/${encodeURIComponent(selectedCommunity)}/general-settings`} className={actionClass}>
+                        <div className={actionClass}>
+                            <span>General settings</span>
+                        </div>
+                    </Link>
                     <div className={actionClass}>
                         <span>Posts & Comments</span>
                     </div>
-                    <div className={actionClass}>
-                        <span>Look and Feel</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Community Guide</span>
-                    </div>
+                    <Link to={`/r/mod/${encodeURIComponent(selectedCommunity)}/look-and-feel`} className={actionClass}>
+                        <div className={actionClass}>
+                            <span>Look and Feel</span>
+                        </div>
+                    </Link>
+                    <Link to={`/r/mod/${encodeURIComponent(selectedCommunity)}/guides`} className={actionClass}>
+                        <div className={actionClass}>
+                            <span>Community Guide</span>
+                        </div>
+                    </Link>
                     <div className={actionClass}>
                         <span>Notifications</span>
                     </div>

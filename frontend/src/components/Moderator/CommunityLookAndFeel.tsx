@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 const LookAndFeel = ()=>{
+    const { communityName } = useParams();
     const actionClass = "mr-[50px] flex cursor-pointer items-center justify-between px-2.5 py-1.5 hover:rounded-[10px] hover:bg-[#f7f5f5]";
     const labelClass = "flex flex-col [&_p]:text-[1.2rem] [&_p]:text-[#5a5757] [&_span]:text-[2rem] [&_span]:font-bold";
 
@@ -20,11 +21,13 @@ const LookAndFeel = ()=>{
 
                 <Link to='/community/post-flair' className="text-inherit">
                     <div className={actionClass}>
-                        <div className={labelClass}>
-                            <span>Post flair</span>
-                            <p>Visual tags members of your community can add to their posts.</p>
-                        </div>
-                        <span>&gt;</span>
+                        <Link to={`/r/mod/${encodeURIComponent(communityName!)}/post-flair`}>
+                            <div className={labelClass}>
+                                <span>Post flair</span>
+                                <p>Visual tags members of your community can add to their posts.</p>
+                            </div>
+                            <span>&gt;</span>
+                        </Link>
                     </div>
                 </Link>
 
