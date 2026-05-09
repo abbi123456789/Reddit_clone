@@ -35,10 +35,11 @@ const App = () => {
               <Route path="/verify-email" element={<VerifyEmailPage />} />
               <Route path="/auth/callback" element={<OAuthCallbackPage />} />
               <Route path="/r/:communityName/look-feel" element={<ProtectedRoute><LookAndFeelPage /></ProtectedRoute>} />
-              <Route path="/r/:communityName/post-flair" element={<ProtectedRoute><PostFlairPage /></ProtectedRoute>} />
-              <Route path="/r/:communityName/posts-and-comments" element={<ProtectedRoute><ModeratorPostsAndComments /></ProtectedRoute>} />
-              <Route path='/r/:communityName/guides' element={<ProtectedRoute><ModeratorGuides /></ProtectedRoute>} />
-              <Route path='/r/:communityName/general-settings' element={<ProtectedRoute><ModeratorSettings /></ProtectedRoute>} />
+              <Route path="/r/mod/:communityName/post-flair" element={<ProtectedRoute><PostFlairPage /></ProtectedRoute>} />
+              <Route path="/r/mod/:communityName/posts-and-comments" element={<ProtectedRoute><ModeratorPostsAndComments /></ProtectedRoute>} />
+              <Route path='/r/mod/:communityName/look-and-feel' element={<ProtectedRoute><LookAndFeelPage /></ProtectedRoute>} />
+              <Route path='/r/mod/:communityName/guides' element={<ProtectedRoute><ModeratorGuides /></ProtectedRoute>} />
+              <Route path='/r/mod/:communityName/general-settings' element={<ProtectedRoute><ModeratorSettings /></ProtectedRoute>} />
               <Route path='/u/:username' element={<UserProfilePage />} />
             </Routes>
           </React.Suspense>
