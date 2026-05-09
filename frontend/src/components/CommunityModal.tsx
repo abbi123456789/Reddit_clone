@@ -163,25 +163,25 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
         <p>A name and description helps people understand what your community is all about.</p>
       </div>
 
-      <div className="flex justify-between">
-        <div className="flex w-3/5 flex-col gap-8">
+      <div className="flex min-w-0 gap-8">
+        <div className="flex min-w-0 flex-[3] flex-col gap-8">
             <TextField aria-label="Community name" value={name} onChange={setName} isRequired>
-              <Input className="h-[50px] rounded-[20px] border-0 bg-[#ede8e8] px-5" type="text" placeholder="Community name" />
+              <Input className="h-[50px] w-full rounded-[20px] border-0 bg-[#ede8e8] px-5" type="text" placeholder="Community name" />
             </TextField>
             <TextField aria-label="Community description" value={description} onChange={setDescription} isRequired>
-              <TextArea className="h-[100px] rounded-[30px] border-0 bg-[#ede8e8] pl-5" placeholder="Description" />
+              <TextArea className="h-[100px] w-full rounded-[30px] border-0 bg-[#ede8e8] pl-5" placeholder="Description" />
             </TextField>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex min-w-0 flex-[2] flex-col overflow-hidden rounded-[20px] bg-[#ede8e8]">
           <div className="h-[50px] rounded-t-[20px] bg-gray-500"></div>
-          <div className="flex flex-col gap-5">
-            <div className="flex gap-2.5 pt-5 text-[2.5rem]">
-              <i className="bi bi-reddit"></i>
-              <p>r/{name.length > 0 ? name : 'communityname'}</p>
+          <div className="flex min-w-0 flex-col gap-5 p-5">
+            <div className="flex min-w-0 gap-2.5 text-[2.5rem]">
+              <i className="bi bi-reddit shrink-0"></i>
+              <p className="min-w-0 break-all">r/{name.length > 0 ? name : 'communityname'}</p>
             </div>
-            <div>
-              <p>{description.length > 0 ? description : 'Your community description'}</p>
+            <div className="min-w-0">
+              <p className="break-words">{description.length > 0 ? description : 'Your community description'}</p>
             </div>
           </div>
         </div>
