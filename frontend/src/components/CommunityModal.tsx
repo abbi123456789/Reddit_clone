@@ -25,6 +25,7 @@ type CommunityVisibilityProps = {
   visibility: 'public' | 'private' | 'restricted'
   setVisibility: React.Dispatch<React.SetStateAction<'public' | 'private' | 'restricted'>>
   setNsfw: React.Dispatch<React.SetStateAction<boolean>>
+  handleCancel: () => void
   handlePrevious: () => void
   handleNext: () => void
 }
@@ -34,6 +35,7 @@ type CommunityDetailsProps = {
   description: string
   setName: React.Dispatch<React.SetStateAction<string>>
   setDescription: React.Dispatch<React.SetStateAction<string>>
+  handleCancel: () => void
   handlePrevious: () => void
   handleSubmit: () => void
 }
@@ -53,6 +55,13 @@ const checkboxClass = "h-6 w-6 rounded border-2 border-slate-600 data-[selected]
 const categoryButtonBaseClass = "min-h-12 rounded-full border px-4 py-2 text-left text-[1.4rem] font-semibold transition-colors outline-none data-[focus-visible]:ring-2 data-[focus-visible]:ring-orange-500 data-[focus-visible]:ring-offset-2";
 const categoryButtonIdleClass = "border-slate-200 bg-slate-100 text-slate-700 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700";
 const categoryButtonSelectedClass = "border-orange-600 bg-orange-600 text-white shadow-[0_6px_16px_rgba(234,88,12,0.28)] hover:bg-orange-700";
+const closeButtonClass = "absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full border-0 bg-slate-100 text-[1.8rem] text-slate-700 hover:bg-slate-200";
+
+const CloseModalButton = ({onClose}: {onClose: () => void}) => (
+  <Button className={closeButtonClass} onPress={onClose} aria-label="Close create community modal">
+    <i className="bi bi-x-lg"></i>
+  </Button>
+)
 
 
 const AboutCommunity = ({communityAbout, setCommunityAbout, handleNext,  handleCancel,}: AboutCommunityProps) => {
@@ -62,7 +71,8 @@ const AboutCommunity = ({communityAbout, setCommunityAbout, handleNext,  handleC
 
   return (
     <section className={modalStepClass}>
-      <div className={headingClass}>
+      <CloseModalButton onClose={handleCancel} />
+      <div className={`${headingClass} pr-12`}>
         <span>What will be your community about</span>
         <p>Choose a topic to help redditors discover your community</p>
       </div>
@@ -92,10 +102,11 @@ const AboutCommunity = ({communityAbout, setCommunityAbout, handleNext,  handleC
   )
 }
 
-const CommunityVisibility = ({nsfw, visibility, setVisibility, setNsfw, handlePrevious, handleNext}: CommunityVisibilityProps)=>{
+const CommunityVisibility = ({nsfw, visibility, setVisibility, setNsfw, handleCancel, handlePrevious, handleNext}: CommunityVisibilityProps)=>{
   return (
     <section className={modalStepClass}>
-      <div className={headingClass}>
+      <CloseModalButton onClose={handleCancel} />
+      <div className={`${headingClass} pr-12`}>
         <span>What kind of a community is this ?</span>
         <p>Decide who can you view and contribute in your community. Only public communities show up in search.
           <b>Important:</b> Once set you need to submit a request to change the community type.
@@ -165,10 +176,13 @@ const CommunityVisibility = ({nsfw, visibility, setVisibility, setNsfw, handlePr
   )
 }
 
-const CommunityDetails = ({name, description, setName, setDescription, handlePrevious, handleSubmit}: CommunityDetailsProps)=>{
+const CommunityDetails = ({name, description, setName, setDescription, handleCancel, handlePrevious, handleSubmit}: CommunityDetailsProps)=>{
+  const isSubmitDisabled = name.trim().length === 0 || description.trim().length === 0
+
   return (
     <section className={modalStepClass}>
-      <div className={headingClass}>
+      <CloseModalButton onClose={handleCancel} />
+      <div className={`${headingClass} pr-12`}>
         <span>Tell us about your community</span>
         <p>A name and description helps people understand what your community is all about.</p>
       </div>
@@ -200,7 +214,7 @@ const CommunityDetails = ({name, description, setName, setDescription, handlePre
         <Button className={cancelButtonClass} onPress={handlePrevious}>
           Previous
         </Button>
-        <Button className={nextButtonClass} onPress={handleSubmit}>
+        <Button className={nextButtonClass} onPress={handleSubmit} isDisabled={isSubmitDisabled}>
           Submit
         </Button>
       </div>
@@ -239,6 +253,10 @@ const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
   }
 
   const handleSubmit = async () => {
+    if (name.trim().length === 0 || description.trim().length === 0) {
+      return
+    }
+
     const requestPayload = {category:communityAbout, visibility, nsfw, name, description}
     console.log(requestPayload)
     const data = await createCommunity(requestPayload)
@@ -265,6 +283,7 @@ const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
           visibility={visibility}
           setVisibility={setVisibility}
           setNsfw={setNsfw}
+          handleCancel={handleCancel}
           handleNext={handleNext}
           handlePrevious={handlePrevious}
         />
@@ -276,6 +295,7 @@ const CommunityModalForm = ({onClose}:CommunityModalFormProps) => {
           setName={setName}
           description={description}
           setDescription={setDescription}
+          handleCancel={handleCancel}
           handlePrevious={handlePrevious}
           handleSubmit={handleSubmit}
         />
