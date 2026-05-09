@@ -9,7 +9,7 @@ export default function FeedPosts(){
     })
     console.log(feedPosts)
     return(
-        <div className="flex-3 mb-10 flex flex-col gap-5">
+        <div className="flex min-w-0 flex-[5] flex-col gap-5">
             {feedPosts?.map((post)=>(
                 <PostCard key={post.id} post={post} />
             ))}

@@ -15,9 +15,9 @@ const HomePage = ()=>{
                 <div className="hidden shrink-0 lg:flex">
                     <Sidebar />
                 </div>
-                <div className="flex min-h-0 min-w-0 flex-1 overflow-y-auto px-3 py-4 md:px-5 md:py-5 lg:gap-8">
+                <div className="flex min-h-0 min-w-0 flex-1 overflow-y-auto px-3 pt-4 pb-10 mb-12 md:px-5 md:pt-5 lg:gap-8">
                     <FeedPosts />
-                    <div className="hidden lg:block">
+                    <div className="hidden min-w-[280px] max-w-[360px] flex-[2] lg:block">
                         <RecentPosts />
                     </div>
                 </div>

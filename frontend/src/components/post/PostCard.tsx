@@ -9,7 +9,7 @@ export default function PostCard({post}: PostCardProps){
     const voteButtonClass = "cursor-pointer px-2 py-1 hover:rounded-[25px] hover:bg-slate-400";
 
     return (
-        <Link to={`/r/${post.community_name}/comments/${post.id}/${post.slug}`}>
+        <Link to={`/r/${post.community_name}/comments/${post.id}/${post.slug}`} className="block text-inherit">
         <div className="flex flex-col gap-2.5 rounded-[10px] border border-slate-500 p-2">
             <div className="flex items-center gap-1">
                 <div>
