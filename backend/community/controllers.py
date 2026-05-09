@@ -159,9 +159,9 @@ class CommunityController(Controller):
                 ELSE 'not_voted'
             END AS vote_status
             FROM communities c
-            LEFT JOIN post p ON p.community = c.id
-            LEFT JOIN users u ON p.author = u.id
-            LEFT JOIN community_flairs f ON p.flair = f.id
+            INNER JOIN post p ON p.community = c.id
+            INNER JOIN users u ON p.author = u.id
+            INNER JOIN community_flairs f ON p.flair = f.id
             WHERE c.id = {};
             '''
             results = await Community.raw(sql_statement, user_id, community_id)
@@ -172,9 +172,9 @@ class CommunityController(Controller):
             c.name AS community_name, c.id AS community_id,
             f.title AS flair_title, f.id AS flair_id, f.background_color AS flair_color, f.text_color AS flair_text_color
             FROM communities c
-            LEFT JOIN post p ON p.community = c.id
-            LEFT JOIN users u ON p.author = u.id
-            LEFT JOIN community_flairs f ON p.flair = f.id
+            INNER JOIN post p ON p.community = c.id
+            INNER JOIN users u ON p.author = u.id
+            INNER JOIN community_flairs f ON p.flair = f.id
             WHERE c.id = {};
             '''
             results = await Community.raw(sql_statement, community_id)
