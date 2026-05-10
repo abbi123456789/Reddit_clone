@@ -16,6 +16,7 @@ from .schema import RegisterSchema, LoginSchema, ResendVerificationSchema, UserS
 from utils.pwd_hash import hash_password, verify_password
 from utils.secret import generate_secret
 from settings import (
+    COOKIE_SAME_SITE,
     COOKIE_SECURE,
     FRONTEND_URL,
     GOOGLE_CLIENT_ID,
@@ -99,7 +100,7 @@ def set_refresh_cookie(response: Response, user_id: str) -> None:
         refresh_token,
         max_age=REFRESH_TOKEN_TTL,
         httponly=True,
-        samesite="lax",
+        samesite=COOKIE_SAME_SITE,
         secure=COOKIE_SECURE,
     )
 
@@ -253,7 +254,7 @@ class UserController(Controller):
             oauth_state,
             max_age=600,
             httponly=True,
-            samesite='lax',
+            samesite=COOKIE_SAME_SITE,
             secure=COOKIE_SECURE,
         )
         return response

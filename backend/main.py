@@ -9,8 +9,10 @@ from posts.controllers import PostController
 from comments.controllers import CommentController, CommentVoteController
 from core.controllers import HomeController
 
+from settings import DEBUG, FRONTEND_URL
+
 cors_config = CORSConfig(
-    allow_origins=['http://localhost:5173'],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
 )
 
@@ -25,5 +27,5 @@ app = Litestar(
     on_app_init=[jwt_auth.on_app_init],
     openapi_config=openapi_config,
     cors_config = cors_config,
-    debug = True
+    debug = DEBUG
 )
