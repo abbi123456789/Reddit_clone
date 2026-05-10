@@ -131,8 +131,10 @@ class UserController(Controller):
 
     @post('/register')
     async def register(self, data:RegisterSchema)->Response:
+        print(f'Got the data: {data}')
         email = data.email.lower()
         already_exists = await User.exists().where((User.email == email) | (User.username == data.username))
+        print(f'Already exists: {already_exists}')
         if already_exists:
             raise build_error('A user with this email/username already exists', 'user_exists', 400)
 
