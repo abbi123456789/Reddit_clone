@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
-import { Input, SearchField } from 'react-aria-components'
+import { Button, Input, SearchField } from 'react-aria-components'
 
 import { useAuth } from '../context/AuthContext'
+import { iconButtonClass, primaryButtonClass, secondaryButtonClass } from '../styles/theme'
 
 type NavbarProps = {
     onMenuToggle?: () => void
@@ -9,23 +10,20 @@ type NavbarProps = {
 
 const Navbar = ({ onMenuToggle }: NavbarProps)=>{
     const { isAuthenticated } = useAuth()
-    const iconButtonClass = "cursor-pointer rounded-[20px] px-3 py-2 hover:bg-gray-300";
-    const authLinkClass = "rounded-[20px] px-3 py-2 font-bold text-white";
-
+    const navIconClass = `${iconButtonClass} h-auto w-auto px-3 py-2`;
     return (
-        <nav className="border-b border-gray-300 px-3 py-2 text-[1.6rem] md:px-4 md:py-4 md:text-[1.8rem]">
+        <nav className="border-b border-slate-200 bg-white px-3 py-2 text-[1.6rem] shadow-[0_1px_0_rgba(15,23,42,0.03)] md:px-4 md:py-4 md:text-[1.8rem]">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                         {onMenuToggle && (
-                            <button
-                                type="button"
-                                className="flex h-11 w-11 items-center justify-center rounded-full text-[2.4rem] hover:bg-gray-300 lg:hidden"
-                                onClick={onMenuToggle}
+                            <Button
+                                className={`${iconButtonClass} h-11 w-11 text-[2.4rem] lg:hidden`}
+                                onPress={onMenuToggle}
                                 aria-label="Open navigation menu"
                             >
                                 <i className="bi bi-list"></i>
-                            </button>
+                            </Button>
                         )}
                         <div className="font-['Gill_Sans','Gill_Sans_MT',Calibri,'Trebuchet_MS',sans-serif] text-[3.2rem] font-bold text-orange-600 md:text-[4rem]">
                             <p>reddit</p>
@@ -34,79 +32,79 @@ const Navbar = ({ onMenuToggle }: NavbarProps)=>{
                     <div className="flex items-center gap-2 md:hidden [&_.bi]:text-[2rem]">
                         {isAuthenticated ? (
                         <>
-                            <div className={iconButtonClass}>
+                            <div className={navIconClass}>
                                 <i className="bi bi-badge-ad"></i>
                             </div>
-                            <div className={iconButtonClass}>
+                            <div className={navIconClass}>
                                 <i className="bi bi-chat-dots"></i>
                             </div>
-                            <div className={iconButtonClass}>
-                                <Link to='/submit' className="flex items-center gap-2 text-black">
+                            <div className={navIconClass}>
+                                <Link to='/submit' className="flex items-center gap-2 text-slate-900">
                                     <i className="bi bi-plus-square"></i>
                                 </Link>
                             </div>
-                            <div className={iconButtonClass}>
+                            <div className={navIconClass}>
                                 <i className="bi bi-bell"></i>
                             </div>
-                            <div className={iconButtonClass}>
+                            <div className={navIconClass}>
                                 <i className="bi bi-person"></i>
                             </div>
                         </>
                         ) : (
                         <>
-                            <div className={`${authLinkClass} bg-slate-500 text-[1.4rem]`}>
+                            <div>
                                 <Link to='/register' replace>
-                                    <span>Sign Up</span>
+                                    <span className={`${secondaryButtonClass} block text-[1.4rem]`}>Sign Up</span>
                                 </Link>
                             </div>
-                            <div className={`${authLinkClass} bg-orange-600 text-[1.4rem]`}>
+                            <div>
                                 <Link to='/login' replace>
-                                    <span>Log In</span>
+                                    <span className={`${primaryButtonClass} block text-[1.4rem]`}>Log In</span>
                                 </Link>
                             </div>
                         </>
                         )}
                     </div>
                 </div>
-                <div className="flex w-full rounded-[30px] border-2 border-orange-600 p-1 text-[2.4rem] md:max-w-[700px] md:flex-1 md:text-[3rem]">
+                <div className="flex w-full rounded-[30px] border border-orange-200 bg-orange-50/60 p-1 text-[2.4rem] focus-within:border-orange-500 focus-within:ring-2 focus-within:ring-orange-100 md:max-w-[700px] md:flex-1 md:text-[3rem]">
                     <i className="bi bi-reddit"></i>
                     <SearchField aria-label="Search Reddit" className="flex grow">
-                        <Input className="grow border-0 outline-none" placeholder="Find Anything" />
+                        <Input className="grow border-0 bg-transparent px-2 text-slate-900 outline-none placeholder:text-slate-500" placeholder="Find Anything" />
                     </SearchField>
                 </div>
                 <div className="ml-auto hidden items-center gap-4 md:flex md:[&_.bi]:text-[2.2rem]">
                     {isAuthenticated ? (
                     <>
-                        <div className={iconButtonClass}>
+                        <div className={navIconClass}>
                             <i className="bi bi-badge-ad"></i>
                         </div>
-                        <div className={iconButtonClass}>
+                        <div className={navIconClass}>
                             <i className="bi bi-chat-dots"></i>
                         </div>
-                        <div className={iconButtonClass}>
-                            <Link to='/submit' className="flex items-center gap-2 text-black">
+                        <div className={navIconClass}>
+                            <Link to='/submit' className="flex items-center gap-2 text-slate-900">
                                 <i className="bi bi-plus-square"></i>
                                 <p>create</p>
                             </Link>
                         </div>
-                        <div className={iconButtonClass}>
+                        <div className={navIconClass}>
                             <i className="bi bi-bell"></i>
                         </div>
-                        <div className={iconButtonClass}>
+                        <div className={navIconClass}>
                             <i className="bi bi-person"></i>
                         </div>
                     </>
                     ) : (
                     <>
-                    <div className={`${authLinkClass} bg-slate-500 text-[1.6rem]`}>
+                    <div>
                         <Link to='/register' replace>
-                            <span>Sign Up</span>
+                            <span className={`${secondaryButtonClass} block text-[1.6rem]`}>Sign Up</span>
                         </Link>
                     </div>
 
-                    <div className={`${authLinkClass} bg-orange-600 text-[1.6rem]`}>
+                    <div>
                         <Link to='/login' replace>
-                            <span>Log In</span>
+                            <span className={`${primaryButtonClass} block text-[1.6rem]`}>Log In</span>
                         </Link>
                     </div>
                     </>

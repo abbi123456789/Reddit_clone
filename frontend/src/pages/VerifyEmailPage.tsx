@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { verifyEmailToken } from '../services/account'
-
-const authWrapperClass = "flex min-h-screen items-center justify-center bg-[#f8efe8] bg-[radial-gradient(circle_at_top_left,rgba(255,111,60,0.18),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(255,177,66,0.2),transparent_30%)] p-6";
-const authPageClass = "m-auto w-[90%] max-w-[560px] rounded-xl border border-black/15 bg-[#faebd7] p-6 text-[1.1rem] shadow-[0_18px_50px_rgba(92,47,19,0.15)]";
+import { authPageClass, authWrapperClass, primaryButtonClass } from '../styles/theme'
 
 const VerifyEmailPage = () => {
     const [searchParams] = useSearchParams()
@@ -51,7 +49,7 @@ const VerifyEmailPage = () => {
                     <div className={`mb-4 rounded-[10px] px-3.5 py-3 ${status === 'success' ? 'bg-[#dff6df] text-[#205b2d]' : status === 'error' ? 'bg-[#ffe1db] text-[#84291a]' : ''}`}>
                         {message}
                     </div>
-                    <Link className="ml-auto w-fit rounded-full border-0 bg-orange-600 px-4 py-2.5 text-center text-[1rem] text-white" to={status === 'success' ? '/login?verified=true' : '/login'}>
+                    <Link className={`${primaryButtonClass} ml-auto w-fit text-center text-[1rem]`} to={status === 'success' ? '/login?verified=true' : '/login'}>
                         Go to login
                     </Link>
                 </div>

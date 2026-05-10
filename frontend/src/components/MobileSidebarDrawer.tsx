@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { Button } from "react-aria-components"
 
 import Sidebar from "./Sidebar"
+import { iconButtonClass } from "../styles/theme"
 
 type MobileSidebarDrawerProps = {
     isOpen: boolean
@@ -41,10 +42,10 @@ const MobileSidebarDrawer = ({ isOpen, onClose }: MobileSidebarDrawerProps) => {
                 aria-label="Close navigation menu"
             />
             <div className="relative z-10 h-full w-[280px] max-w-[85vw] bg-white shadow-xl">
-                <div className="flex items-center justify-between border-b border-gray-300 px-4 py-3">
+                <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
                     <p className="text-[1.8rem] font-semibold">Menu</p>
                     <Button
-                        className="flex h-10 w-10 items-center justify-center rounded-full border-0 bg-transparent text-[2rem] hover:bg-gray-200"
+                        className={`${iconButtonClass} text-[2rem]`}
                         onPress={onClose}
                         aria-label="Close navigation menu"
                     >

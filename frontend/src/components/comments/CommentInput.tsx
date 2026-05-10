@@ -1,6 +1,7 @@
 import CommentEditor from './CommentEditor';
 import type { EditorState } from 'lexical';
 import { Button } from 'react-aria-components';
+import { primaryButtonClass, secondaryButtonClass } from '../../styles/theme';
 
 export type CommentInputProps = {
     setCommentJSON: (value: string) => void;
@@ -20,7 +21,7 @@ export type ActiveCommentInputProps = {
 
 const CommentInput = ({ setCommentJSON, setCommentHTML, onSave, isActive, setIsActive }: CommentInputProps) => {
     return (
-        <div className="w-full rounded-[20px] border border-gray-300 text-[1.4rem]">
+        <div className="w-full rounded-[20px] border border-slate-200 bg-white text-[1.4rem]">
             {isActive ? 
                 <ActiveCommentInput setCommentJSON={setCommentJSON} setCommentHTML={setCommentHTML} onSave={onSave} setIsActive={setIsActive} /> 
                 : 
@@ -57,13 +58,13 @@ const ActiveCommentInput = ({ setCommentJSON, setCommentHTML, onSave, setIsActiv
             <CommentEditor onChange={handleEditorChange} />
             <div className="mt-3 flex justify-end gap-2">
                 <Button
-                    className="rounded-[15px] border-0 bg-[#f5f5f5] px-4 py-1.5 font-bold"
+                    className={`${secondaryButtonClass} px-4 py-1.5`}
                     onPress = {()=>handleCancel()}
                 >
                     Cancel
                 </Button>
                 <Button
-                    className="rounded-[15px] border-0 bg-[#0079d3] px-4 py-1.5 font-bold text-white"
+                    className={`${primaryButtonClass} px-4 py-1.5`}
                     onPress={()=>onSave()}
                 >
                     Save

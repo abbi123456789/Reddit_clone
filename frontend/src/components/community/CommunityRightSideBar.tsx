@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useEffect , useState } from 'react'
 import { getCommunity } from '../../services/community'
 import type { Community } from '../../services/community'
+import { panelClass, primaryButtonClass, secondaryButtonClass } from '../../styles/theme'
     
 const CommunityRightSideBar = () => {
     const { communityName } = useParams()
@@ -20,11 +21,11 @@ const CommunityRightSideBar = () => {
     }, [communityName])
 
     return (
-        <aside className="flex min-w-0 flex-[2] flex-col gap-5 p-5">
-            <div className="flex flex-col gap-2.5 border-b border-slate-400">
+        <aside className={`${panelClass} flex min-w-0 flex-[2] flex-col gap-5`}>
+            <div className="flex flex-col gap-2.5 border-b border-slate-200 pb-5">
                 <div className="flex items-center justify-between">
                     <span className="cursor-pointer text-[1.6rem] font-bold">r/{communityData?.name}</span>
-                    <span className="cursor-pointer rounded-[30px] bg-slate-400 px-3 py-1.5">Joined</span>
+                    <span className={`${secondaryButtonClass} cursor-pointer px-3 py-1.5 text-[1.2rem]`}>Joined</span>
                 </div>
                 <div className="flex flex-col">
                     <span className="text-[1.2rem] font-bold">
@@ -44,7 +45,7 @@ const CommunityRightSideBar = () => {
                         <span>{communityData?.visibility || 'Public'}</span>
                     </div>
                 </div>
-                <div className="mx-5 flex cursor-pointer justify-center rounded-[15px] bg-slate-400 p-2 text-[1.2rem] font-bold">
+                <div className={`${primaryButtonClass} mx-5 flex cursor-pointer justify-center p-2 text-[1.2rem]`}>
                     <span>Community Guide</span>
                 </div>
                 <div className="mb-5 flex items-center justify-between">
@@ -59,7 +60,7 @@ const CommunityRightSideBar = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-2.5 border-b border-slate-400">
+            <div className="flex flex-col gap-2.5 border-b border-slate-200 pb-5">
                 <span className="text-[1.6rem] font-bold">Filter By Flair</span>
                 <div className="mb-5 flex flex-wrap gap-3">
                     {communityData?.flairs?.map((flair) => (

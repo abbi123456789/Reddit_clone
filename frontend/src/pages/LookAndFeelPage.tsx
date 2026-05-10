@@ -3,18 +3,19 @@ import Navbar from "../components/Navbar"
 import MobileModeratorSidebarDrawer from "../components/Moderator/MobileModeratorSidebarDrawer"
 import ModeratorSidebar from "../components/Moderator/Sidebar"
 import LookAndFeel from "../components/Moderator/CommunityLookAndFeel"
+import { appShellClass, scrollContentClass } from "../styles/theme"
 
 const LookAndFeelPage = ()=>{
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
 
     return(
-        <main className="flex h-screen flex-col overflow-hidden">
+        <main className={appShellClass}>
             <Navbar onMenuToggle={() => setIsMobileSidebarOpen(true)} />
-            <div className="flex min-h-0 min-w-0 flex-1 text-[1.6rem] lg:gap-5">
+            <div className="flex min-h-0 min-w-0 flex-1 bg-slate-50 text-[1.6rem] lg:gap-5">
                 <div className="hidden shrink-0 lg:flex">
                     <ModeratorSidebar/>
                 </div>
-                <div className="flex min-h-0 min-w-0 flex-1 overflow-y-auto px-4 py-5 md:px-5">
+                <div className={scrollContentClass}>
                     <LookAndFeel />
                 </div>
             </div>

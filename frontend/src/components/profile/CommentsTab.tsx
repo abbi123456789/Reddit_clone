@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUserComments } from "../../services/profile";
 import type { UserComments } from "../../services/profile";
+import { actionPillClass, cardClass, votePillClass } from "../../styles/theme";
 
 export default function CommentsTab() {
     const {data: userComments} = useSuspenseQuery({
@@ -18,10 +19,8 @@ export default function CommentsTab() {
 }
 
 function CommentCard({comment} : {comment : UserComments}) {
-    const interactionClass = "flex items-center gap-1 rounded-[15px] bg-[#c4cfc5] px-2 py-1";
-
     return (
-        <div className="mb-1 flex flex-col gap-2 rounded-lg border border-black p-2.5 text-[1.4rem]">
+        <div className={`${cardClass} mb-1 flex flex-col gap-2 p-2.5 text-[1.4rem]`}>
             <div className="flex items-center gap-2.5 font-bold">
                 <span>r/{comment.community_name}</span>
                 <span>.</span>
@@ -37,18 +36,18 @@ function CommentCard({comment} : {comment : UserComments}) {
                 <span dangerouslySetInnerHTML={{__html: comment.left}} />
             </div>
             <div className="flex items-center gap-8">
-                <div className="flex items-center gap-1 rounded-[15px] bg-[#f56f42] px-1 py-1">
+                <div className={votePillClass}>
                     <i className='bi bi-arrow-up' style={{color: comment.status === 'upvoted' ? 'red' : 'black'}}></i>
                     <span>{comment.score}</span>
                     <i className='bi bi-arrow-down' style={{color: comment.status === 'downvoted' ? 'red' : 'black'}}></i>
                 </div>
 
-                <div className={interactionClass}>
+                <div className={actionPillClass}>
                     <i className="bi bi-chat-left-text"></i>
                     <span>Reply</span>
                 </div>
 
-                <div className={interactionClass}>
+                <div className={actionPillClass}>
                     <i className='bi bi-share'></i>
                     <span>share</span>
                 </div>

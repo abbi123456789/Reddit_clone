@@ -5,6 +5,7 @@ import { Button } from 'react-aria-components'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCommunityModal } from '../context/CommunityModalContext'
+import { subtleButtonClass } from '../styles/theme'
 
 type SidebarProps = {
     className?: string
@@ -20,8 +21,8 @@ const Sidebar = ({
     const { isAuthenticated } = useAuth()
     const { openCommunityModal } = useCommunityModal()
     const [myCommunities, setMyCommunities] = useState<Community[]>([])
-    const menuSectionClass = "flex flex-col gap-4 border-b border-gray-300 pb-4";
-    const menuItemClass = "flex cursor-pointer gap-4 rounded-[10px] p-4 hover:bg-gray-300";
+    const menuSectionClass = "flex flex-col gap-3 border-b border-slate-200 pb-4";
+    const menuItemClass = "flex cursor-pointer gap-4 rounded-[12px] p-4 text-slate-700 transition-colors hover:bg-orange-50 hover:text-orange-700";
 
     useEffect(()=>{
         const fetchCommunities = async () => {
@@ -37,7 +38,7 @@ const Sidebar = ({
 
     return (
         <aside
-            className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-full max-w-[300px]"} flex-col gap-8 overflow-auto p-6 text-[2rem] [scrollbar-width:none] md:p-8 md:text-[2.2rem] ${bordered ? "border-r border-gray-300" : ""} ${className}`}
+            className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-full max-w-[300px]"} flex-col gap-8 overflow-auto bg-white p-6 text-[2rem] [scrollbar-width:none] md:p-8 md:text-[2.2rem] ${bordered ? "border-r border-slate-200" : ""} ${className}`}
         >
             <div className={menuSectionClass}>
                 <Link to="/" className="text-inherit">
@@ -88,7 +89,7 @@ const Sidebar = ({
                 <div>
                     {myCommunities.map((community: any) => (
                         <Link to={`/r/${community.name}`} className="text-inherit" key={community.id}>
-                            <div key={community.id}>
+                            <div className={`${subtleButtonClass} justify-start rounded-[12px] text-left`} key={community.id}>
                                 <span>{community.name}</span>
                             </div>
                         </Link>

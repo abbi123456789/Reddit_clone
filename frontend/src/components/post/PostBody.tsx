@@ -12,6 +12,7 @@ import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { updateScore } from "../../utils/updateScore"
 import { useAuth } from "../../context/AuthContext"
 import { Button } from "react-aria-components"
+import { actionPillClass, iconButtonClass, subtleButtonClass, voteButtonClass, votePillClass } from "../../styles/theme"
 
 const PostBody = ()=>{
     const navigate = useNavigate()
@@ -110,8 +111,6 @@ const PostBody = ()=>{
         })
     }
 
-    const voteButtonClass = "cursor-pointer border-0 bg-transparent px-2 py-1 hover:rounded-[25px] hover:bg-slate-400";
-    const interactionClass = "flex items-center gap-1 rounded-[20px] bg-[#dae0e5] px-4 py-2";
     const isOwner = Boolean(user && data && user.id === data.author_id)
 
     return (
@@ -119,7 +118,7 @@ const PostBody = ()=>{
             <header className="flex flex-col gap-3 sm:flex-row sm:justify-between">
                 <div className="flex min-w-0 items-center gap-2.5">
                     <div>
-                        <i className="bi bi-arrow-left cursor-pointer rounded-[30px] bg-slate-400 px-2 py-1.5 text-[1.6rem]"></i>
+                        <i className={`${iconButtonClass} bi bi-arrow-left cursor-pointer text-[1.6rem]`}></i>
                     </div>
                     <div className="flex min-w-0 items-center gap-2.5">
                         <img src='/images/communityIcon.jpg' alt='Community Icon' className="h-8 w-8 rounded-full border border-black" />
@@ -144,14 +143,14 @@ const PostBody = ()=>{
                 <div className="flex items-center justify-end gap-3">
                     {isOwner && (
                         <Button
-                            className="rounded-[25px] border-0 bg-[#dae0e5] px-4 py-2"
+                            className={subtleButtonClass}
                             onPress={handleEditPost}
                         >
                             <i className="bi bi-pencil-square mr-2"></i>
                             Edit
                         </Button>
                     )}
-                    <i className="bi bi-three-dots cursor-pointer rounded-[30px] bg-slate-400 px-2 py-1.5 text-[1.6rem]"></i>
+                    <i className={`${iconButtonClass} bi bi-three-dots cursor-pointer text-[1.6rem]`}></i>
                 </div>
             </header>
 
@@ -261,7 +260,7 @@ const PostBody = ()=>{
             </div>
 
             <div className="flex flex-wrap items-center gap-3 md:gap-5">
-                <div className="flex items-center gap-0.5 rounded-[20px] bg-[#dae0e5] px-2 py-2">
+                <div className={votePillClass}>
                     <Button className={voteButtonClass} aria-label="Upvote post" onPress={()=>handleVoteClick(postId!, 1)} style={{color: data?.vote_status === 'upvoted' ? 'red' : 'black'}}>
                         <i className="bi bi-arrow-up"></i>
                     </Button>
@@ -271,12 +270,12 @@ const PostBody = ()=>{
                     </Button>
                 </div>
 
-                <div className={interactionClass}>
+                <div className={actionPillClass}>
                     <i className="bi bi-chat-left-text"></i>
                     <span>{data?.comment_count}</span>
                 </div>
 
-                <div className={interactionClass}>
+                <div className={actionPillClass}>
                     <i className="bi bi-share"></i>
                     <span>Share</span>
                 </div>

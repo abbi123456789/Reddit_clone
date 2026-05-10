@@ -7,6 +7,7 @@ import { getFlairs } from "../../services/flairs"
 import { createPost, type PostData, type PostEditorDraft, updatePost } from "../../services/posts"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
+import { cardClass, inputClass, primaryButtonClass, secondaryButtonClass, selectTriggerClass } from "../../styles/theme"
 
 type PostType = "text" | "media" | "link"
 
@@ -155,7 +156,7 @@ const PostCreationForm = () => {
             </div>
 
             <AriaSelect
-                className="[&_.aria-select-trigger]:rounded-[25px] [&_.aria-select-trigger]:border-0 [&_.aria-select-trigger]:bg-gray-300 [&_.aria-select-trigger]:px-6 [&_.aria-select-trigger]:py-2.5"
+                className={selectTriggerClass}
                 ariaLabel="Choose community"
                 name="choose-community"
                 placeholder="Select a community"
@@ -169,13 +170,13 @@ const PostCreationForm = () => {
                 }
             />
 
-            <div className="flex rounded-[24px] border border-gray-300 bg-white p-1">
+            <div className="flex rounded-[24px] border border-slate-200 bg-white p-1">
                 {POST_TABS.map((tab) => (
                     <Button
                         key={tab.id}
                         onPress={() => setPostType(tab.id)}
                         className={`flex-1 rounded-[20px] px-4 py-3 font-semibold ${
-                            postType === tab.id ? "bg-gray-900 text-white" : "bg-transparent text-gray-600"
+                            postType === tab.id ? "bg-orange-600 text-white" : "bg-transparent text-slate-600 hover:bg-orange-50 hover:text-orange-700"
                         }`}
                     >
                         {tab.label}
@@ -185,14 +186,14 @@ const PostCreationForm = () => {
 
             <TextField aria-label="Post title" value={title} onChange={setTitle} isRequired>
                 <Input
-                    className="block h-[60px] w-full rounded-[30px] border border-gray-500 px-5"
+                    className={`${inputClass} block h-[60px] rounded-[30px]`}
                     type="text"
                     placeholder="Title"
                 />
             </TextField>
 
             <AriaSelect
-                className="[&_.aria-select-trigger]:rounded-[25px] [&_.aria-select-trigger]:border-0 [&_.aria-select-trigger]:bg-gray-300 [&_.aria-select-trigger]:px-6 [&_.aria-select-trigger]:py-2.5"
+                className={selectTriggerClass}
                 ariaLabel="Choose flair"
                 name="flair-tag"
                 placeholder="Select a flair"
@@ -207,7 +208,7 @@ const PostCreationForm = () => {
             />
 
             {postType === "media" && (
-                <div className="rounded-[24px] border-2 border-dashed border-gray-400 p-6">
+                <div className="rounded-[24px] border-2 border-dashed border-orange-200 bg-orange-50/40 p-6">
                     <Input
                         aria-label="Upload images or videos"
                         type="file"
@@ -219,7 +220,7 @@ const PostCreationForm = () => {
                     {mediaFiles.length > 0 && (
                         <div className="mt-5 flex gap-4 overflow-x-auto">
                             {mediaFiles.map((file, index) => (
-                                <div key={`${file.name}-${index}`} className="min-w-[180px] rounded-xl border p-3">
+                                <div key={`${file.name}-${index}`} className={`${cardClass} min-w-[180px] p-3`}>
                                     <p className="truncate text-sm font-semibold">{file.name}</p>
 
                                     {file.type.startsWith("image/") && (
@@ -239,7 +240,7 @@ const PostCreationForm = () => {
                                     )}
 
                                     <Button
-                                        className="mt-3 rounded-full bg-red-100 px-3 py-1 text-sm text-red-700"
+                                        className="mt-3 rounded-full border-0 bg-red-50 px-3 py-1 text-sm font-semibold text-red-700 hover:bg-red-100"
                                         onPress={() => removeMediaFile(index)}
                                     >
                                         Remove
@@ -254,7 +255,7 @@ const PostCreationForm = () => {
             {postType === "link" && (
                 <TextField aria-label="Post link" value={linkUrl} onChange={setLinkUrl}>
                     <Input
-                        className="block h-[55px] w-full rounded-[24px] border border-gray-500 px-5"
+                        className={`${inputClass} block h-[55px] rounded-[24px]`}
                         type="url"
                         placeholder="https://example.com"
                     />
@@ -268,8 +269,8 @@ const PostCreationForm = () => {
                 />
             </div>
             <div className="mr-8 flex justify-end gap-8">
-                <Button className="rounded-[20px] border-0 px-4 py-2.5">Save Draft</Button>
-                <Button className="rounded-[20px] border-0 px-4 py-2.5" onPress={handleSubmit}>
+                <Button className={secondaryButtonClass}>Save Draft</Button>
+                <Button className={primaryButtonClass} onPress={handleSubmit}>
                     {isEditMode ? "Save Changes" : "Post"}
                 </Button>
             </div>

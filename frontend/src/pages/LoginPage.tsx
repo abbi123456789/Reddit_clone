@@ -3,12 +3,7 @@ import { Button, Form, Input, Label, TextField } from 'react-aria-components';
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { beginGoogleLogin, doLogin, resendVerificationEmail } from "../services/account";
-
-const authWrapperClass = "flex min-h-screen items-center justify-center bg-[#f8efe8] bg-[radial-gradient(circle_at_top_left,rgba(255,111,60,0.18),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(255,177,66,0.2),transparent_30%)] p-6";
-const authPageClass = "m-auto w-[90%] max-w-[560px] rounded-xl border border-black/15 bg-[#faebd7] p-6 text-[1.1rem] shadow-[0_18px_50px_rgba(92,47,19,0.15)]";
-const fieldClass = "flex flex-col gap-1.5 [&_input]:rounded-lg [&_input]:border [&_input]:border-black/20 [&_input]:px-3 [&_input]:py-2.5 [&_input]:text-[1rem]";
-const primaryButtonClass = "ml-auto w-fit rounded-full border-0 bg-orange-600 px-4 py-2.5 text-[1rem] text-white disabled:cursor-progress disabled:opacity-75";
-const secondaryButtonClass = "rounded-full border-0 bg-slate-500 px-4 py-2.5 text-[1rem] text-white disabled:cursor-progress disabled:opacity-75";
+import { authFieldClass, authPageClass, authWrapperClass, primaryButtonClass, secondaryButtonClass } from "../styles/theme";
 
 const Login = () => {
     const { login } = useAuth();
@@ -88,7 +83,7 @@ const Login = () => {
             <div className={authPageClass}>
                 <div className="mb-5">
                     <h1 className="mb-2">Welcome back</h1>
-                    <p className="m-0 text-[#5a463a]">Sign in with your password or use Google.</p>
+                    <p className="m-0 text-slate-600">Sign in with your password or use Google.</p>
                 </div>
 
                 {errorMessage && (
@@ -98,7 +93,7 @@ const Login = () => {
                 )}
 
                 <Form className="flex flex-col gap-4" action={dispatchAction}>
-                    <TextField className={fieldClass} name="identifier" type="text" isRequired>
+                    <TextField className={authFieldClass} name="identifier" type="text" isRequired>
                         <Label>Username/Email <span className="text-red-600">*</span></Label>
                         <Input
                             type="text"
@@ -107,7 +102,7 @@ const Login = () => {
                         />
                     </TextField>
 
-                    <TextField className={fieldClass} name="password" type="password" isRequired>
+                    <TextField className={authFieldClass} name="password" type="password" isRequired>
                         <Label>Password <span className="text-red-600">*</span></Label>
                         <Input
                             type="password"
@@ -116,23 +111,23 @@ const Login = () => {
                         />
                     </TextField>
 
-                    <Button type='submit' isDisabled={isPending} className={primaryButtonClass}>
+                    <Button type='submit' isDisabled={isPending} className={`${primaryButtonClass} ml-auto w-fit text-[1rem] disabled:cursor-progress disabled:opacity-75`}>
                         {isPending ? 'Logging you in' : 'Login'}
                     </Button>
                 </Form>
 
-                <div className="my-[18px] flex items-center gap-3 text-[#8a7361] before:h-px before:flex-1 before:bg-black/15 before:content-[''] after:h-px after:flex-1 after:bg-black/15 after:content-['']">
+                <div className="my-[18px] flex items-center gap-3 text-slate-500 before:h-px before:flex-1 before:bg-slate-200 before:content-[''] after:h-px after:flex-1 after:bg-slate-200 after:content-['']">
                     <span>or</span>
                 </div>
 
-                <Button type="button" className="w-full rounded-full border border-black/20 bg-white px-4 py-2.5 text-[1rem] text-[#1f1f1f] disabled:cursor-progress disabled:opacity-75" onPress={beginGoogleLogin}>
+                <Button type="button" className={`${secondaryButtonClass} w-full text-[1rem] disabled:cursor-progress disabled:opacity-75`} onPress={beginGoogleLogin}>
                     Continue with Google
                 </Button>
 
                 {errorCode === 'email_unverified' && (
                     <Form className="mt-[18px] flex flex-col gap-3" onSubmit={handleResendVerification}>
                         <TextField
-                            className={fieldClass}
+                            className={authFieldClass}
                             name="resend-email"
                             type="email"
                             value={resendEmail}
@@ -146,10 +141,10 @@ const Login = () => {
                             placeholder="tony@example.com"
                         />
                         </TextField>
-                        <Button type="submit" className={secondaryButtonClass} isDisabled={isResending}>
+                        <Button type="submit" className={`${secondaryButtonClass} text-[1rem] disabled:cursor-progress disabled:opacity-75`} isDisabled={isResending}>
                             {isResending ? 'Sending...' : 'Resend verification'}
                         </Button>
-                        {resendMessage && <p className="m-0 text-[#5a463a]">{resendMessage}</p>}
+                        {resendMessage && <p className="m-0 text-slate-600">{resendMessage}</p>}
                     </Form>
                 )}
             </div>

@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { Button } from 'react-aria-components';
+import { primaryButtonClass, secondaryButtonClass } from '../../styles/theme';
 
 export type CommentReplyInputProps = {
     onReply: (commentId: number | null) => void;
@@ -50,7 +51,7 @@ const CommentInput = ({onReply, parentId}: CommentReplyInputProps) => {
     }
 
     return (
-        <div className="w-full rounded-[20px] border border-gray-300 text-[1.4rem]">
+        <div className="w-full rounded-[20px] border border-slate-200 bg-white text-[1.4rem]">
             <div className="p-2.5">
                 <CommentReplyEditor 
                     setCommentReplyJSON={setCommentReplyJSON} 
@@ -58,13 +59,13 @@ const CommentInput = ({onReply, parentId}: CommentReplyInputProps) => {
                 />
                 <div className="mt-3 flex justify-end gap-2">
                     <Button
-                        className="rounded-[15px] border-0 bg-[#f5f5f5] px-4 py-1.5 font-bold"
+                        className={`${secondaryButtonClass} px-4 py-1.5`}
                         onPress = {()=>handleCancel()}
                     >
                         Cancel
                     </Button>
                     <Button
-                        className="rounded-[15px] border-0 bg-[#0079d3] px-4 py-1.5 font-bold text-white"
+                        className={`${primaryButtonClass} px-4 py-1.5`}
                         onPress={()=>handleSave()}
                     >
                         Save

@@ -11,6 +11,7 @@ import {
 } from 'react-aria-components'
 import { communityCategories } from "../services/communityCategories"
 import { createCommunity } from "../services/community"
+import { inputClass } from "../styles/theme"
 
 
 type AboutCommunityProps = {
@@ -115,7 +116,7 @@ const CommunityVisibility = ({nsfw, visibility, setVisibility, setNsfw, handleCa
 
       <RadioGroup
         aria-label="Community visibility"
-        className="flex flex-col gap-5 border-b border-gray-500"
+        className="flex flex-col gap-5 border-b border-slate-200"
         value={visibility}
         onChange={(value) => setVisibility(value as 'public' | 'private' | 'restricted')}
       >
@@ -190,15 +191,15 @@ const CommunityDetails = ({name, description, setName, setDescription, handleCan
       <div className="flex min-w-0 gap-8">
         <div className="flex min-w-0 flex-[3] flex-col gap-8">
             <TextField aria-label="Community name" value={name} onChange={setName} isRequired>
-              <Input className="h-[50px] w-full rounded-[20px] border-0 bg-[#ede8e8] px-5" type="text" placeholder="Community name" />
+              <Input className={`${inputClass} h-[50px]`} type="text" placeholder="Community name" />
             </TextField>
             <TextField aria-label="Community description" value={description} onChange={setDescription} isRequired>
-              <TextArea className="h-[100px] w-full rounded-[30px] border-0 bg-[#ede8e8] pl-5" placeholder="Description" />
+              <TextArea className={`${inputClass} h-[100px] rounded-[24px] pt-3`} placeholder="Description" />
             </TextField>
         </div>
 
-        <div className="flex min-w-0 flex-[2] flex-col overflow-hidden rounded-[20px] bg-[#ede8e8]">
-          <div className="h-[50px] rounded-t-[20px] bg-gray-500"></div>
+        <div className="flex min-w-0 flex-[2] flex-col overflow-hidden rounded-[20px] border border-slate-200 bg-slate-50">
+          <div className="h-[50px] rounded-t-[20px] bg-orange-600"></div>
           <div className="flex min-w-0 flex-col gap-5 p-5">
             <div className="flex min-w-0 gap-2.5 text-[2.5rem]">
               <i className="bi bi-reddit shrink-0"></i>

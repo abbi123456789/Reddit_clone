@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom"
 import { updateScore } from "../../utils/updateScore"
 import CommentReplyInput from "./CommentReplyInput"
 import { Button } from "react-aria-components"
+import { voteButtonClass } from "../../styles/theme"
 
 type CommentCardProps = {
     comment: CommentNode
@@ -69,7 +70,7 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
                         onPress={() => setIsCollapsed(p => !p)}
                         style={{
                         width: 2,
-                        background: 'black',   // optional: rotate colors per depth
+                        background: '#ea580c',
                         borderRadius: 2,
                         cursor: 'pointer',
                         flexShrink: 0,
@@ -88,21 +89,21 @@ const CommentCard = ({comment, depth=0, activeReplyCommentId, onReply}:CommentCa
                     <div dangerouslySetInnerHTML={{ __html: commentData?.content_html }} />
                     <div className="flex items-center gap-5">
                         <div className="flex cursor-pointer items-center gap-0.5">
-                            <Button className="border-0 bg-transparent px-2 py-1 hover:rounded-[20px] hover:bg-slate-300" aria-label="Upvote comment" onPress={()=>handleVoteClick(commentData?.id, 1)} style={{color: commentData?.vote_status === 'upvoted' ? 'red' : 'black'}}>
+                            <Button className={voteButtonClass} aria-label="Upvote comment" onPress={()=>handleVoteClick(commentData?.id, 1)} style={{color: commentData?.vote_status === 'upvoted' ? 'red' : 'black'}}>
                                 <i className='bi bi-arrow-up'></i>
                             </Button>
                             <span>{commentData?.score}</span>
-                            <Button className="border-0 bg-transparent px-2 py-1 hover:rounded-[20px] hover:bg-slate-300" aria-label="Downvote comment" onPress={()=>handleVoteClick(commentData?.id, -1)} style={{color: commentData?.vote_status === 'downvoted' ? 'red' : 'black'}}>
+                            <Button className={voteButtonClass} aria-label="Downvote comment" onPress={()=>handleVoteClick(commentData?.id, -1)} style={{color: commentData?.vote_status === 'downvoted' ? 'red' : 'black'}}>
                                 <i className='bi bi-arrow-down'></i>
                             </Button>
                         </div>
 
-                        <Button className="flex cursor-pointer items-center gap-2 border-0 bg-transparent p-1 hover:rounded-[20px] hover:bg-slate-300" onPress={handleReplyClick}>
+                        <Button className="flex cursor-pointer items-center gap-2 rounded-full border-0 bg-transparent p-1 transition-colors hover:bg-orange-50 hover:text-orange-700" onPress={handleReplyClick}>
                             <i className="bi bi-chat-left-text"></i>
                             <span>Reply</span>
                         </Button>
 
-                        <div className="flex cursor-pointer gap-2 p-1 hover:rounded-[20px] hover:bg-slate-300">
+                        <div className="flex cursor-pointer gap-2 rounded-full p-1 transition-colors hover:bg-orange-50 hover:text-orange-700">
                             <i className='bi bi-share'></i>
                             <span>share</span>
                         </div>

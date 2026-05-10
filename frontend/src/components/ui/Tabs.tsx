@@ -22,7 +22,7 @@ export function TabList<T extends object>(props: TabListProps<T>) {
   return (
     <RACTabList
       {...props}
-      className={`flex max-w-full overflow-x-auto overflow-y-clip border-b border-gray-300 [scrollbar-width:none] ${props.className ?? ''}`}
+      className={`flex max-w-full overflow-x-auto overflow-y-clip border-b border-slate-200 [scrollbar-width:none] ${props.className ?? ''}`}
     />
   );
 }
@@ -31,7 +31,7 @@ export function Tab(props: TabProps) {
   return (
     <RACTab
       {...props}
-      className={`relative cursor-default p-2.5 outline-none transition-colors data-[focus-visible]:rounded-xl data-[focus-visible]:outline-2 data-[focus-visible]:outline-blue-600 data-[hovered]:text-slate-700 data-[selected]:text-slate-900 ${props.className ?? ''}`}
+      className={`relative cursor-default p-2.5 text-slate-500 outline-none transition-colors data-[focus-visible]:rounded-xl data-[focus-visible]:outline-2 data-[focus-visible]:outline-orange-500 data-[hovered]:text-orange-700 data-[selected]:text-slate-900 ${props.className ?? ''}`}
     >
       {composeRenderProps(props.children, children => (<>
         {children}
@@ -46,5 +46,5 @@ export function TabPanels<T extends object>(props: TabPanelsProps<T>) {
 }
 
 export function TabPanel(props: TabPanelProps) {
-  return <RACTabPanel {...props} className={`box-border rounded-lg p-3 outline-none transition-opacity data-[focus-visible]:outline-2 data-[focus-visible]:outline-blue-600 ${props.className ?? ''}`} />;
+  return <RACTabPanel {...props} className={`box-border rounded-lg p-3 outline-none transition-opacity data-[focus-visible]:outline-2 data-[focus-visible]:outline-orange-500 ${props.className ?? ''}`} />;
 }

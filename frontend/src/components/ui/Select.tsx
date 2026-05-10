@@ -44,14 +44,14 @@ export function AriaSelect({
         }
       }}
     >
-      <Button className="inline-flex min-w-[180px] items-center justify-between gap-3 rounded-[25px] border-0 bg-gray-300 px-[18px] py-2.5 data-[focus-visible]:outline-2 data-[focus-visible]:outline-offset-2 data-[focus-visible]:outline-blue-700">
+      <Button className="aria-select-trigger inline-flex min-w-[180px] items-center justify-between gap-3 rounded-full border border-slate-300 bg-white px-[18px] py-2.5 text-slate-800 transition-colors hover:bg-orange-50 data-[focus-visible]:outline-2 data-[focus-visible]:outline-offset-2 data-[focus-visible]:outline-orange-500">
         <SelectValue>{({ selectedText }) => selectedText || placeholder}</SelectValue>
         <span aria-hidden="true" className="text-[1.1rem] leading-none">▾</span>
       </Button>
-      <Popover className="z-[10000] min-w-(--trigger-width) rounded-lg border border-gray-300 bg-white p-1 shadow-[0_8px_24px_rgba(0,0,0,0.14)]">
+      <Popover className="z-[10000] min-w-(--trigger-width) rounded-lg border border-slate-200 bg-white p-1 shadow-[0_8px_24px_rgba(15,23,42,0.14)]">
         <ListBox className="flex max-h-[260px] flex-col gap-0.5 overflow-auto outline-none">
           {options.map((option) => (
-            <ListBoxItem className="cursor-default rounded-md px-3 py-2 data-[focused]:bg-[#e8f0fe] data-[selected]:bg-[#e8f0fe]" id={option.id} key={option.id} textValue={option.label}>
+            <ListBoxItem className="cursor-default rounded-md px-3 py-2 data-[focused]:bg-orange-50 data-[selected]:bg-orange-50 data-[selected]:text-orange-700" id={option.id} key={option.id} textValue={option.label}>
               {option.label}
             </ListBoxItem>
           ))}

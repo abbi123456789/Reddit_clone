@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { getMyCommunities } from '../../services/community';
 import type { Community } from '../../services/community';
 import { AriaSelect } from '../ui/Select';
+import { inputClass } from '../../styles/theme';
 
 type SidebarItem = {
     label: string;
@@ -111,9 +112,9 @@ const ModeratorSidebar = ({
     ];
 
     const sectionClass = "flex flex-col gap-2";
-    const headingClass = "px-3 text-[1.2rem] font-bold uppercase tracking-wide text-gray-500";
+    const headingClass = "px-3 text-[1.2rem] font-bold uppercase tracking-wide text-slate-500";
     const actionGroupClass = "flex flex-col gap-0.5";
-    const actionClass = "flex min-h-9 w-full cursor-pointer items-center rounded-md px-3 py-2 text-left text-inherit no-underline transition-colors hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700";
+    const actionClass = "flex min-h-9 w-full cursor-pointer items-center rounded-md px-3 py-2 text-left text-inherit no-underline transition-colors hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500";
 
     const renderAction = (item: SidebarItem) => {
         const content = <span className="min-w-0 break-words leading-tight">{item.label}</span>;
@@ -134,7 +135,7 @@ const ModeratorSidebar = ({
     };
 
     return (
-        <aside className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-[300px]"} shrink-0 flex-col gap-5 overflow-auto px-2.5 py-3 text-[1.6rem] text-gray-900 [scrollbar-width:none] ${bordered ? "border-r border-gray-300" : ""} ${className}`}>
+        <aside className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-[300px]"} shrink-0 flex-col gap-5 overflow-auto bg-white px-2.5 py-3 text-[1.6rem] text-slate-900 [scrollbar-width:none] ${bordered ? "border-r border-slate-200" : ""} ${className}`}>
             <div className="flex items-center gap-2 px-3">
                 <i className="bi bi-arrow-left"></i>
                 <span>Exit mod tools</span>
@@ -155,7 +156,7 @@ const ModeratorSidebar = ({
 
             <div className="px-3">
                 <SearchField className="flex" aria-label="Search mod tools">
-                    <Input className="w-full rounded border border-gray-300 p-1" placeholder='search-tools' />
+                    <Input className={`${inputClass} rounded p-1`} placeholder='search-tools' />
                 </SearchField>
             </div>
 

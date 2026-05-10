@@ -6,6 +6,8 @@ import CreateNewFlair from "../components/Moderator/CreateNewFlair"
 import FlairBackgroundModal from "../components/Moderator/FlairBackgroundModal"
 import { useParams } from "react-router-dom"
 import { useState } from "react"
+import { Button, Dialog } from "react-aria-components"
+import { appShellClass, scrollContentClass } from "../styles/theme"
 
 const PostFlairPage = ()=>{
     const { communityName } = useParams()
@@ -17,28 +19,49 @@ const PostFlairPage = ()=>{
     const [hexCode, setHexCode] = useState("#DADADA")
     const [flair, setFlair] = useState<string>('')
 
+    const renderCreateNewFlairForm = () => (
+        <CreateNewFlair 
+            setShowNewFlair={setShowNewFlair} 
+            setModalOpen={setModalOpen}
+            backgroundColor = {backgroundColor}
+            setBackgroundColor = {setBackgroundColor}
+            flair = {flair}
+            setFlair = {setFlair}
+        />
+    )
+
     return(
-        <main className="relative flex h-screen flex-col overflow-hidden">
+        <main className={`${appShellClass} relative`}>
             <Navbar onMenuToggle={() => setIsMobileSidebarOpen(true)} />
-            <div className="flex min-h-0 min-w-0 flex-1 text-[1.6rem] lg:gap-5">
+            <div className="flex min-h-0 min-w-0 flex-1 bg-slate-50 text-[1.6rem] lg:gap-5">
                 <div className="hidden shrink-0 lg:flex">
                     <ModeratorSidebar/>
                 </div>
-                <div className="flex min-h-0 min-w-0 flex-1 overflow-y-auto px-4 py-5 md:px-5 [scrollbar-width:none]">
+                <div className={`${scrollContentClass} [scrollbar-width:none]`}>
                     <div className="flex min-w-0 flex-1 flex-col gap-6 xl:flex-row">
                         <PostFlair setShowNewFlair={setShowNewFlair}/>
-                        {showNewFlair && 
-                            <CreateNewFlair 
-                                setShowNewFlair={setShowNewFlair} 
-                                setModalOpen={setModalOpen}
-                                backgroundColor = {backgroundColor}
-                                setBackgroundColor = {setBackgroundColor}
-                                flair = {flair}
-                                setFlair = {setFlair}
-                            />
-                        }
+                        {showNewFlair && (
+                            <div className="hidden xl:block">
+                                {renderCreateNewFlairForm()}
+                            </div>
+                        )}
                     </div>
                 </div>
+                {showNewFlair && (
+                    <div className="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 xl:hidden">
+                        <Button
+                            className="absolute inset-0 border-0 bg-black/40"
+                            onPress={() => setShowNewFlair(false)}
+                            aria-label="Close create flair modal"
+                        />
+                        <Dialog
+                            className="relative z-10 max-h-[85dvh] w-full max-w-[460px] overflow-y-auto rounded-[18px] border border-slate-200 bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.25)] outline-none"
+                            aria-label="Create flair"
+                        >
+                            {renderCreateNewFlairForm()}
+                        </Dialog>
+                    </div>
+                )}
                 {isModalOpen && showNewFlair && (
                     <FlairBackgroundModal 
                         backgroundColor={backgroundColor}

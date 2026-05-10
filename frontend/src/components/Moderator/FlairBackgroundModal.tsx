@@ -14,6 +14,7 @@ import {
 import { hslToHex } from "../../utils/hslToHex";
 import { createNewFlair } from "../../services/flairs";
 import { AriaSelect } from "../ui/Select";
+import { inputClass, primaryButtonClass, secondaryButtonClass, selectTriggerClass, switchClass, switchSliderClass } from "../../styles/theme";
 
 export type FlairBackgroundModalProps = {
     flair: string;
@@ -55,27 +56,25 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
         setSaturation(newSat);
         setHexCode(hslToHex(hue, newSat, 50));
     };
-    const switchClass = "group relative inline-block h-7 w-[50px] data-[disabled]:opacity-50";
-    const sliderClass = "absolute inset-0 cursor-pointer rounded-[34px] bg-[#e9e9ea] transition before:absolute before:bottom-0.5 before:left-0.5 before:h-6 before:w-6 before:rounded-full before:bg-white before:shadow-sm before:transition group-data-[selected]:bg-[#34c759] group-data-[selected]:before:translate-x-[22px]";
-    const rangeTrackClass = "relative h-1.5 w-3/5 rounded-full bg-gray-300";
-    const rangeThumbClass = "top-1/2 h-[18px] w-[18px] rounded-full border border-gray-500 bg-white";
+    const rangeTrackClass = "relative h-1.5 w-3/5 rounded-full bg-slate-200";
+    const rangeThumbClass = "top-1/2 h-[18px] w-[18px] rounded-full border border-orange-500 bg-white";
 
     return (
-        <Dialog className="fixed top-1/2 left-1/2 z-[1000] m-0 flex w-[90%] max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col gap-2.5 rounded-lg border-0 bg-white p-5 text-[1.6rem] shadow-[0_4px_12px_rgba(0,0,0,0.15)]" aria-label="Flair background settings">
+        <Dialog className="fixed top-1/2 left-1/2 z-[1000] m-0 flex w-[90%] max-w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col gap-2.5 rounded-[18px] border-0 bg-white p-5 text-[1.6rem] shadow-[0_20px_60px_rgba(15,23,42,0.25)]" aria-label="Flair background settings">
             <div className="flex flex-col gap-2.5">
                 <span className="font-bold">Preview</span>
-                <div className="flex flex-col gap-2.5 rounded-[15px] border border-slate-400 px-2.5 py-1">
+                <div className="flex flex-col gap-2.5 rounded-[15px] border border-slate-200 bg-slate-50 px-2.5 py-1">
                     <p className="font-bold">r/community_name</p>
                     <span className="font-bold">Post title</span>
                     <span style={{ backgroundColor: hexCode, color: textColor , padding: '0px 8px', borderRadius: '20px' , width: 'fit-content'}}>{flair}</span>
-                    <span>This is the post body. I am going to fuck you...</span>
+                    <span>This is the post body preview for your flair.</span>
                 </div>
             </div>
 
             <div className="flex items-center justify-between">
                 <span>Background Color</span>
                 <Checkbox className={switchClass} isSelected={backgroundColor} onChange={setBackgroundColor} aria-label="Enable background color">
-                    <span className={sliderClass}></span>
+                    <span className={switchSliderClass}></span>
                 </Checkbox>
             </div>
 
@@ -102,13 +101,13 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
                 {/* Hex Input */}
                 <TextField className="flex items-center justify-between" value={hexCode} onChange={setHexCode}>
                     <Label>Hex code (optional)</Label>
-                    <Input className="rounded border border-gray-300 p-1" />
+                    <Input className={`${inputClass} max-w-[160px] rounded`} />
                 </TextField>
 
                 <div className="flex flex-col gap-2.5">
                     <span className="font-bold">Text</span>
                     <AriaSelect
-                        className="[&_button]:w-1/2 [&_button]:rounded-[20px] [&_button]:border-0 [&_button]:py-2.5 [&_button]:text-center"
+                        className={`${selectTriggerClass} [&_button]:w-1/2 [&_button]:text-center`}
                         ariaLabel="Select flair text color"
                         selectedKey={textColor}
                         onSelectionChange={setTextColor}
@@ -123,8 +122,8 @@ const FlairBackgroundModal = ({flair, backgroundColor, setBackgroundColor, hexCo
             )}
 
             <div className="flex justify-end gap-5">
-                <Button className="rounded-[15px] border-0 bg-red-700 px-2.5 py-1 text-white" onPress={onClose}>close</Button>
-                <Button className="rounded-[15px] border-0 bg-blue-800 px-2.5 py-1 text-white" onPress={onSave}>save</Button>
+                <Button className={`${secondaryButtonClass} px-3 py-1`} onPress={onClose}>close</Button>
+                <Button className={`${primaryButtonClass} px-3 py-1`} onPress={onSave}>save</Button>
             </div>
         </Dialog>
     )

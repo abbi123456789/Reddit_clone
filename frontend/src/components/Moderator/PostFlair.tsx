@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Button, Checkbox } from 'react-aria-components'
 import ShowFlair from './ShowFlair'
+import { iconButtonClass, primaryButtonClass, switchClass, switchSliderClass } from '../../styles/theme'
 
 type CreateNewFlairProps = {
     setShowNewFlair : Dispatch<SetStateAction<boolean>>
@@ -19,19 +20,16 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
         setUsersCanAssignAndEdit(!usersCanAssignAndEdit)
     }
 
-    const switchClass = "group relative inline-block h-7 w-[50px] data-[disabled]:opacity-50";
-    const sliderClass = "absolute inset-0 cursor-pointer rounded-[34px] bg-[#e9e9ea] transition before:absolute before:bottom-0.5 before:left-0.5 before:h-6 before:w-6 before:rounded-full before:bg-white before:shadow-sm before:transition group-data-[selected]:bg-[#34c759] group-data-[selected]:before:translate-x-[22px]";
-
     return(
         <main className="flex min-w-0 flex-1 flex-col gap-8 text-[1.6rem] md:gap-[50px] xl:mr-[50px]">
             <div className="flex flex-col gap-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex min-w-0 items-center gap-2">
-                        <i className="bi bi-arrow-left rounded-[50px] bg-gray-300 px-2.5 py-1 text-[2rem]"></i>
+                        <i className={`${iconButtonClass} bi bi-arrow-left text-[2rem]`}></i>
                         <span className="text-[2.6rem] font-bold md:text-[3rem]">Post Flair</span>
                     </div>
                     <div>
-                        <Button className="rounded-[20px] border-0 bg-[#0a449b] px-3 py-2 font-bold text-white" onPress={()=>setShowNewFlair(true)}>New Flair</Button>
+                        <Button className={primaryButtonClass} onPress={()=>setShowNewFlair(true)}>New Flair</Button>
                     </div>
                 </div>
 
@@ -51,7 +49,7 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
                     </div>
                     <div className="shrink-0">
                         <Checkbox className={switchClass} isSelected={enablePostFlair} onChange={toggleEnablePostFlair} aria-label="Enable post flair">
-                            <span className={sliderClass}></span>
+                            <span className={switchSliderClass}></span>
                         </Checkbox>
                     </div>
                 </div>
@@ -63,7 +61,7 @@ const PostFlair = ({setShowNewFlair}:CreateNewFlairProps)=>{
                     </div>
                     <div className="shrink-0">
                         <Checkbox className={switchClass} isSelected={usersCanAssignAndEdit} onChange={toggleUserCanAssignAndEdit} aria-label="Let users assign and edit post flair">
-                            <span className={sliderClass}></span>
+                            <span className={switchSliderClass}></span>
                         </Checkbox>
                     </div>
                 </div>
