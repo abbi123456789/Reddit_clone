@@ -20,7 +20,7 @@ const Navbar = ({ onMenuToggle }: NavbarProps)=>{
                         {onMenuToggle && (
                             <button
                                 type="button"
-                                className="flex h-11 w-11 items-center justify-center rounded-full text-[2.4rem] hover:bg-gray-300 md:hidden"
+                                className="flex h-11 w-11 items-center justify-center rounded-full text-[2.4rem] hover:bg-gray-300 lg:hidden"
                                 onClick={onMenuToggle}
                                 aria-label="Open navigation menu"
                             >

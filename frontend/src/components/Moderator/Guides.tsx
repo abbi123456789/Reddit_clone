@@ -11,12 +11,12 @@ type SettingsRowProps = {
 // Reusing your SettingsRow component with minor tweaks for icon size
 const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }: SettingsRowProps) => {
   return (
-    <div className="flex min-h-12 items-center justify-between py-4">
-      <div className="flex-1">
+    <div className="flex min-h-12 flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0 flex-1">
         <h3 className="m-0 text-[16px] font-normal text-[#1c1c1c]">{title}</h3>
         {subtitle && <p className="mt-1 mb-0 text-[12px] text-[#7c7c7c]">{subtitle}</p>}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex shrink-0 items-center gap-3 sm:justify-end">
         {value && <span className="text-[14px] text-[#7c7c7c]">{value}</span>}
         {type === "link" && (
           <div>
@@ -36,20 +36,20 @@ const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }: S
 };
 
 const CommunityGuides = () => {
-  const tabClass = "relative border-0 bg-transparent py-3 text-[14px] font-semibold text-[#7c7c7c]";
+  const tabClass = "relative shrink-0 border-0 bg-transparent py-3 text-[14px] font-semibold text-[#7c7c7c]";
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* Tabs Navigation */}
-      <div className="mb-5 flex gap-[30px] border-b border-[#edeff1]">
+      <div className="mb-5 flex gap-5 overflow-x-auto border-b border-[#edeff1] [scrollbar-width:none] md:gap-[30px]">
         <Button className={`${tabClass} text-[#1c1c1c] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[#1c1c1c] after:content-['']`}>Community Guide</Button>
         <Button className={tabClass}>Mod Guide</Button>
         <Button className={tabClass}>Training Queue</Button>
       </div>
 
-      <div className="mt-[30px] flex gap-[60px]">
+      <div className="mt-[30px] flex flex-col gap-8 xl:flex-row xl:gap-[60px]">
         {/* Left Column: Settings */}
-        <div className="flex-[1.2]">
+        <div className="min-w-0 flex-[1.2]">
           <SettingsRow 
             title="Enable community guide" 
             subtitle="Appears in the sidebar on desktop and About in the Reddit app."
@@ -69,7 +69,7 @@ const CommunityGuides = () => {
         </div>
 
         {/* Right Column: Preview Card */}
-        <div className="flex-[0.8]">
+        <div className="w-full max-w-[420px] flex-[0.8] self-center xl:self-start">
           <div className="overflow-hidden rounded-3xl border border-[#edeff1] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
             <div className="relative h-[140px] overflow-hidden bg-[#f6f7f8]">
               {/* Abstract shapes representing the background art */}

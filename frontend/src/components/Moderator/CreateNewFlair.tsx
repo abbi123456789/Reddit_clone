@@ -18,7 +18,7 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, 
     const sliderClass = "absolute inset-0 cursor-pointer rounded-[34px] bg-[#e9e9ea] transition before:absolute before:bottom-0.5 before:left-0.5 before:h-6 before:w-6 before:rounded-full before:bg-white before:shadow-sm before:transition group-data-[selected]:bg-[#34c759] group-data-[selected]:before:translate-x-[22px]";
 
     return(
-        <aside className="flex w-[300px] flex-col gap-5 text-[1.6rem]">
+        <aside className="flex w-full shrink-0 flex-col gap-5 text-[1.6rem] xl:w-[300px]">
             <header className="flex items-center justify-between">
                 <div className="font-bold">
                     <p>Create flair</p>
@@ -48,7 +48,7 @@ const CreateNewFlair = ({setShowNewFlair, setModalOpen, backgroundColor, flair, 
 
                 <div>
                     <TextField aria-label="Flair text" value={flair} onChange={setFlair}>
-                        <Input className="h-10 w-[300px] rounded-[20px] border-0 px-5 focus:outline focus:outline-1 focus:outline-slate-600" type="text" placeholder="general" />
+                        <Input className="h-10 w-full rounded-[20px] border-0 px-5 focus:outline focus:outline-1 focus:outline-slate-600" type="text" placeholder="general" />
                     </TextField>
                 </div>
             </div>

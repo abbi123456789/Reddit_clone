@@ -26,9 +26,9 @@ const ShowFlair = ()=>{
         fetchFlairs();
     }, [communityName])
     return(
-        <div className="flex flex-col gap-2.5">
+        <div className="flex min-w-0 flex-col gap-2.5">
             <div className="flex items-center justify-between">  
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-5 text-[1.4rem] sm:text-[1.6rem]">
                     <span>flair preview</span>
                     <span>settings</span>
                 </div>
@@ -36,9 +36,9 @@ const ShowFlair = ()=>{
             </div>
             {flairs.map((flair)=>{
             return(
-            <div key={flair.id} className="flex items-center justify-between">
-                <div className="flex items-center gap-[60px]">
-                    <div className="rounded-[20px] px-2" style={{backgroundColor: flair.background_color, color: flair.text_color}}>
+            <div key={flair.id} className="flex flex-col gap-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-[60px]">
+                    <div className="max-w-full break-words rounded-[20px] px-2" style={{backgroundColor: flair.background_color, color: flair.text_color}}>
                         {flair.title}
                     </div>
                     <div>

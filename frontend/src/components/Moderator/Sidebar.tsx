@@ -15,7 +15,19 @@ type SidebarSection = {
     items: SidebarItem[];
 };
 
-const ModeratorSidebar = ()=>{
+type ModeratorSidebarProps = {
+    bordered?: boolean;
+    className?: string;
+    fullWidth?: boolean;
+    onNavigate?: () => void;
+};
+
+const ModeratorSidebar = ({
+    bordered = true,
+    className = "",
+    fullWidth = false,
+    onNavigate,
+}: ModeratorSidebarProps)=>{
     const { communityName } = useParams();
     const [myCommunities, setMyCommunities] = useState<Community[]>([])
     const [selectedCommunity, setSelectedCommunity] = useState(communityName || "")
@@ -108,7 +120,7 @@ const ModeratorSidebar = ()=>{
 
         if (item.to) {
             return (
-                <Link key={item.label} to={item.to} className={actionClass}>
+                <Link key={item.label} to={item.to} className={actionClass} onClick={onNavigate}>
                     {content}
                 </Link>
             );
@@ -122,7 +134,7 @@ const ModeratorSidebar = ()=>{
     };
 
     return (
-        <aside className="flex h-screen w-[300px] shrink-0 flex-col gap-5 overflow-auto border-r border-gray-300 px-2.5 py-3 text-[1.6rem] text-gray-900 [scrollbar-width:none]">
+        <aside className={`flex h-full ${fullWidth ? "w-full max-w-none" : "w-[300px]"} shrink-0 flex-col gap-5 overflow-auto px-2.5 py-3 text-[1.6rem] text-gray-900 [scrollbar-width:none] ${bordered ? "border-r border-gray-300" : ""} ${className}`}>
             <div className="flex items-center gap-2 px-3">
                 <i className="bi bi-arrow-left"></i>
                 <span>Exit mod tools</span>

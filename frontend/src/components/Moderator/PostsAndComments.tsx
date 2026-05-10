@@ -10,13 +10,13 @@ type SettingsRowProps = {
 
 const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }:SettingsRowProps) => {
   return (
-    <div className="flex min-h-12 items-center justify-between py-4">
-      <div className="flex-1">
+    <div className="flex min-h-12 flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0 flex-1">
         <h3 className="m-0 text-[16px] font-normal text-[#1c1c1c]">{title}</h3>
         {subtitle && <p className="mt-1 mb-0 text-[12px] text-[#7c7c7c]">{subtitle}</p>}
       </div>
       
-      <div className="flex items-center gap-3">
+      <div className="flex shrink-0 items-center gap-3 sm:justify-end">
         {value && <span className="text-[14px] text-[#7c7c7c]">{value}</span>}
         
         {type === "link" && (
@@ -41,8 +41,8 @@ const SettingsRow = ({ title, subtitle, value, type = "link", toggleChecked }:Se
 
 export default function PostsAndComments() {
   return (
-    <div className='font-sans'>
-      <h1 className="mb-8 text-[28px] font-bold text-[#1c1c1c]">Posts & Comments</h1>
+    <div className='w-full min-w-0 font-sans'>
+      <h1 className="mb-8 text-[24px] font-bold text-[#1c1c1c] md:text-[28px]">Posts & Comments</h1>
 
       <SettingsRow 
         title="Post guidelines" 
