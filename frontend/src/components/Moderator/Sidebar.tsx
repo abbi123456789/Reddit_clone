@@ -5,6 +5,16 @@ import { getMyCommunities } from '../../services/community';
 import type { Community } from '../../services/community';
 import { AriaSelect } from '../ui/Select';
 
+type SidebarItem = {
+    label: string;
+    to?: string;
+};
+
+type SidebarSection = {
+    title: string;
+    items: SidebarItem[];
+};
+
 const ModeratorSidebar = ()=>{
     const { communityName } = useParams();
     const [myCommunities, setMyCommunities] = useState<Community[]>([])
@@ -20,19 +30,105 @@ const ModeratorSidebar = ()=>{
         fetchCommunities()
     }, [])
 
+    useEffect(() => {
+        setSelectedCommunity(communityName || "");
+    }, [communityName]);
+
+    const getModeratorRoute = (path: string) =>
+        `/r/mod/${encodeURIComponent(selectedCommunity)}/${path}`;
+
+    const sections: SidebarSection[] = [
+        {
+            title: "Overview",
+            items: [
+                { label: "Queues" },
+                { label: "Mod Mail" },
+                { label: "Scheduled Posts and Events" },
+                { label: "Restricted Users" },
+                { label: "Mods & Members" },
+                { label: "Insights" },
+            ],
+        },
+        {
+            title: "Moderation",
+            items: [
+                { label: "Rules" },
+                { label: "Saved Responses" },
+                { label: "Mod Log" },
+                { label: "Automod" },
+                { label: "Safety Filters" },
+                { label: "Automations" },
+            ],
+        },
+        {
+            title: "Wiki",
+            items: [
+                { label: "Wiki Activity" },
+                { label: "Wiki Settings" },
+                { label: "Launch Wiki" },
+            ],
+        },
+        {
+            title: "Community Apps",
+            items: [
+                { label: "Installed Apps" },
+                { label: "Browse Apps" },
+            ],
+        },
+        {
+            title: "Settings",
+            items: [
+                { label: "General settings", to: getModeratorRoute("general-settings") },
+                { label: "Posts & Comments", to: getModeratorRoute("posts-and-comments") },
+                { label: "Look and Feel", to: getModeratorRoute("look-and-feel") },
+                { label: "Community Guide", to: getModeratorRoute("guides") },
+                { label: "Notifications" },
+            ],
+        },
+        {
+            title: "Rules",
+            items: [
+                { label: "Reddit for Community" },
+                { label: "Mod Help Center" },
+                { label: "Mod Code of Conduct" },
+                { label: "Mod Support" },
+                { label: "Mod Help" },
+                { label: "Contact Reddit" },
+            ],
+        },
+    ];
+
     const sectionClass = "flex flex-col gap-2";
-    const headingClass = "font-bold uppercase";
-    const actionGroupClass = "flex flex-col gap-1";
-    const actionClass = "flex w-fit cursor-pointer rounded-lg px-2.5 py-1 hover:bg-gray-300";
+    const headingClass = "px-3 text-[1.2rem] font-bold uppercase tracking-wide text-gray-500";
+    const actionGroupClass = "flex flex-col gap-0.5";
+    const actionClass = "flex min-h-9 w-full cursor-pointer items-center rounded-md px-3 py-2 text-left text-inherit no-underline transition-colors hover:bg-gray-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700";
+
+    const renderAction = (item: SidebarItem) => {
+        const content = <span className="min-w-0 break-words leading-tight">{item.label}</span>;
+
+        if (item.to) {
+            return (
+                <Link key={item.label} to={item.to} className={actionClass}>
+                    {content}
+                </Link>
+            );
+        }
+
+        return (
+            <div key={item.label} className={actionClass}>
+                {content}
+            </div>
+        );
+    };
 
     return (
-        <aside className="flex h-screen w-[300px] flex-col gap-5 overflow-auto border-r border-gray-300 pt-2.5 pl-2.5 text-[1.6rem] [scrollbar-width:none]">
-            <div className="flex items-center gap-2">
+        <aside className="flex h-screen w-[300px] shrink-0 flex-col gap-5 overflow-auto border-r border-gray-300 px-2.5 py-3 text-[1.6rem] text-gray-900 [scrollbar-width:none]">
+            <div className="flex items-center gap-2 px-3">
                 <i className="bi bi-arrow-left"></i>
                 <span>Exit mod tools</span>
             </div>
 
-            <div>
+            <div className="px-3">
                 <AriaSelect
                     ariaLabel="Select moderator community"
                     placeholder="Select a community"
@@ -45,155 +141,23 @@ const ModeratorSidebar = ()=>{
                 />
             </div>
 
-            <div>
+            <div className="px-3">
                 <SearchField className="flex" aria-label="Search mod tools">
-                    <Input className="rounded border border-gray-300 p-1" placeholder='search-tools' />
+                    <Input className="w-full rounded border border-gray-300 p-1" placeholder='search-tools' />
                 </SearchField>
             </div>
 
-            <div className={sectionClass}>
-                <div className={headingClass}>
-                    <span>Overview</span>
-                </div>
+            {sections.map((section) => (
+                <div key={section.title} className={sectionClass}>
+                    <div className={headingClass}>
+                        <span>{section.title}</span>
+                    </div>
 
-                <div className={actionGroupClass}>
-                    <div className={actionClass}>
-                        <span>Queues</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mod Mail</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Scheduled Posts and Events</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Restricted Users</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mods & Members</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Insights</span>
+                    <div className={actionGroupClass}>
+                        {section.items.map(renderAction)}
                     </div>
                 </div>
-            </div>
-
-            <div className={sectionClass}>
-                <div className={headingClass}>
-                    <span>Moderation</span>
-                </div>
-
-                <div className={actionGroupClass}>
-                    <div className={actionClass}>
-                        <span>Rules</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Saved Responses</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mod Log</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Automod</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Safety Filters</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Automations</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className={sectionClass}>
-                <div className={headingClass}>
-                    <span>Wiki</span>
-                </div>
-
-                <div className={actionGroupClass}>
-                    <div className={actionClass}>
-                        <span>Wiki Activity</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Wiki Settings</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Launch Wiki</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className={sectionClass}>
-                <div className={headingClass}>
-                    <span>Community Apps</span>
-                </div>
-
-                <div className={actionGroupClass}>
-                    <div className={actionClass}>
-                        <span>Installed Apps</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Browse Apps</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className={sectionClass}>
-                <div className={headingClass}>
-                    <span>Settings</span>
-                </div>
-
-                <div className={actionGroupClass}>
-                    <Link to={`/r/mod/${encodeURIComponent(selectedCommunity)}/general-settings`} className={actionClass}>
-                        <div className={actionClass}>
-                            <span>General settings</span>
-                        </div>
-                    </Link>
-                    <div className={actionClass}>
-                        <span>Posts & Comments</span>
-                    </div>
-                    <Link to={`/r/mod/${encodeURIComponent(selectedCommunity)}/look-and-feel`} className={actionClass}>
-                        <div className={actionClass}>
-                            <span>Look and Feel</span>
-                        </div>
-                    </Link>
-                    <Link to={`/r/mod/${encodeURIComponent(selectedCommunity)}/guides`} className={actionClass}>
-                        <div className={actionClass}>
-                            <span>Community Guide</span>
-                        </div>
-                    </Link>
-                    <div className={actionClass}>
-                        <span>Notifications</span>
-                    </div>
-                </div>
-            </div>
-
-            <div className={sectionClass}>
-                <div className={headingClass}>
-                    <span>Rules</span>
-                </div>
-
-                <div className={actionGroupClass}>
-                    <div className={actionClass}>
-                        <span>Reddit for Community</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mod Help Center</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mod Code of Conduct</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mod Support</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Mod Help</span>
-                    </div>
-                    <div className={actionClass}>
-                        <span>Contact Reddit</span>
-                    </div>
-                </div>
-            </div>
+            ))}
         </aside>
     )
 }
