@@ -93,7 +93,7 @@ const Registration = () => {
                         />
                     </TextField>
 
-                    <Button isDisabled={isPending} className={primaryButtonClass}>
+                    <Button type='submit' isDisabled={isPending} className={primaryButtonClass}>
                         {isPending ? 'Registering...' : 'Register'}
                     </Button>
                 </Form>
