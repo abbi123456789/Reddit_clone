@@ -2,6 +2,7 @@ from litestar import Controller, get, Request
 from typing import Any, List
 
 from accounts.tables import User
+from community.tables import Community
 
 class HomeController(Controller):
 
@@ -37,4 +38,16 @@ class HomeController(Controller):
             LEFT JOIN community_flairs f ON p.flair = f.id
             '''
             results = await User.raw(sql_statement)
+        return results
+    
+    @get('/user/joined-communities')
+    async def get_joined_communities(self, request:Request[User, Any, Any])->List[dict[str, Any]]:
+        user_id = request.user.get('id')
+        sql_statement = '''
+        SELECT c.id, c.name
+        FROM communities c
+        INNER JOIN joined_members jm ON jm.community_id = c.id
+        WHERE jm.user_id = {};
+        '''
+        results = await Community.raw(sql_statement, user_id)
         return results
