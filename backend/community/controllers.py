@@ -137,8 +137,35 @@ class CommunityController(Controller):
         '''
         results = await Community.raw(sql_statement, user_id, community_id)
         results = results[0]
-        return results.get('is_member')
+        return results
 
+    @post('/{community_name:str}/join')
+    async def toggle_join_community(self, request:Request[User, Any, Any])->dict[str, bool]:
+        user_id = request.user.get('id')
+        community_name = request.path_params['community_name']
+        query_result = await Community.select('id').where(Community.name == community_name)
+        if query_result:
+            community = query_result[0]
+            community_id = community.get('id')
+        else:
+            raise HTTPException(detail="Community not found", status_code=404)
+        sql_statement = '''
+        WITH deleted AS (
+            DELETE FROM joined_members
+            WHERE user_id = {} AND community_id = {}
+            RETURNING id
+        ),
+        inserted AS (
+            INSERT INTO joined_members (user_id, community_id)
+            SELECT {}, {}
+            WHERE NOT EXISTS (SELECT 1 FROM deleted)
+            RETURNING id
+        )
+        SELECT EXISTS (SELECT 1 FROM inserted) AS is_member;
+        '''
+        results = await JoinedCommunityMembers.raw(sql_statement, user_id, community_id, user_id, community_id)
+        return results[0] if results else {'is_member': False}
+        
     @get('/{community_name:str}/posts')
     async def get_community_posts(self, request:Request[User, Any, Any])->List[dict[str, Any]]:
         community_name = request.path_params['community_name']

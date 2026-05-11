@@ -6,9 +6,21 @@ import CommunityRightSideBar from "../components/community/CommunityRightSideBar
 import CommunityPosts from "../components/community/CommunityPosts"
 import MobileSidebarDrawer from "../components/MobileSidebarDrawer"
 import { appContentClass, appShellClass, scrollContentClass } from "../styles/theme"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { joinCommunity } from "../services/community"
 
 const CommunityPage = ()=>{
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
+    const queryClient = useQueryClient();
+    
+    // const joinCommunityMutation = useMutation({
+    //     mutationFn: async (communityName: string) => {
+    //         await joinCommunity(communityName)
+    //     },
+    //     onSettled: () => {
+    //         queryClient.invalidateQueries({queryKey: ['community', 'joined']})
+    //     }
+    // })
 
     return (
         <main className={appShellClass}>

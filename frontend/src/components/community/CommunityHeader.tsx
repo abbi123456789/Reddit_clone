@@ -1,18 +1,29 @@
 import { useParams, Link } from 'react-router-dom'
-import { userJoinedCommunity } from '../../services/community';
+import { didUserJoinedCommunity, joinCommunity } from '../../services/community';
 import { useAuth } from '../../context/AuthContext';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { iconButtonClass, primaryButtonClass, secondaryButtonClass } from '../../styles/theme';
 
 const CommunityHeader = ()=>{
     const {communityName} = useParams();
     const {isAuthenticated} = useAuth();
-
+    const queryClient = useQueryClient();
     const {data: joinStatus} = useQuery({
         queryKey: ['community', 'join', 'status', communityName],
-        queryFn: async () => await userJoinedCommunity(communityName!),
+        queryFn: async () => await didUserJoinedCommunity(communityName!),
     })
-    console.log(joinStatus)
+
+    const toggleCommunityJoin = useMutation({
+        mutationFn: joinCommunity,
+        onSettled: () => {
+            // Invalidate the query to refetch the join status after toggling
+            queryClient.invalidateQueries({ queryKey: ['community', 'join', 'status', communityName] });
+        },
+    })
+
+    const handleJoinToggle = () => {
+        toggleCommunityJoin.mutate(communityName!);
+    }
     
     return (
         <header className="w-full min-w-0 text-[1.4rem] md:text-[1.6rem]">
@@ -41,8 +52,11 @@ const CommunityHeader = ()=>{
                             <i className="bi bi-bell"></i>
                         </div>
                         {isAuthenticated && 
-                        <div className={`${secondaryButtonClass} cursor-pointer p-2.5 font-bold`}>
-                            {joinStatus ? <p>Joined</p> : <p>Join</p>}
+                        <div 
+                        className={`${secondaryButtonClass} cursor-pointer p-2.5 font-bold`}
+                        onClick={handleJoinToggle}
+                        >
+                            {joinStatus?.is_member ? <p>Joined</p> : <p>Join</p>}
                         </div>
                         }
                         <div className={`${iconButtonClass} border border-slate-300 bg-white p-2.5 font-bold`}>
