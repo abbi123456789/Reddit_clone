@@ -11,8 +11,9 @@ import { Suspense } from "react"
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query'
 import { updateScore } from "../../utils/updateScore"
 import { useAuth } from "../../context/AuthContext"
-import { Button } from "react-aria-components"
-import { actionPillClass, iconButtonClass, subtleButtonClass, voteButtonClass, votePillClass } from "../../styles/theme"
+import type { Key } from "react-aria-components"
+import { Button, Menu, MenuItem, MenuTrigger, Popover } from "react-aria-components"
+import { actionPillClass, iconButtonClass, voteButtonClass, votePillClass } from "../../styles/theme"
 
 const PostBody = ()=>{
     const navigate = useNavigate()
@@ -111,51 +112,76 @@ const PostBody = ()=>{
         })
     }
 
+    const handleCopyPostLink = async () => {
+        if (!window.navigator.clipboard) {
+            return
+        }
+
+        await window.navigator.clipboard.writeText(window.location.href)
+    }
+
+    const handlePostAction = (key: Key) => {
+        if (key === 'edit') {
+            handleEditPost()
+            return
+        }
+
+        if (key === 'copy-link') {
+            void handleCopyPostLink()
+        }
+    }
+
     const isOwner = Boolean(user && data && user.id === data.author_id)
 
     return (
-        <section className="flex min-w-0 flex-[5] flex-col gap-5 text-[1.4rem] md:text-[1.6rem]">
-            <header className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+        <section className="flex min-w-0 flex-[5] flex-col gap-5 text-[12px] md:text-[1.6rem]">
+            <header className="flex flex-row items-start justify-between gap-2">
                 <div className="flex min-w-0 items-center gap-2.5">
-                    <div>
+                    <div className="hidden md:block">
                         <i className={`${iconButtonClass} bi bi-arrow-left cursor-pointer text-[1.6rem]`}></i>
                     </div>
                     <div className="flex min-w-0 items-center gap-2.5">
                         <img src='/images/communityIcon.jpg' alt='Community Icon' className="h-8 w-8 rounded-full border border-black" />
-                        <div className="flex min-w-0 flex-col">
-                            <div className="flex min-w-0 flex-wrap gap-1">
-                                <span className="cursor-pointer truncate font-bold">
-                                    <Link to={`/r/${data?.community_name}`} className="text-inherit">
-                                        r/{data?.community_name}
-                                    </Link>
-                                </span>
-                                <span>.</span>
-                                <span>2hr ago</span>
-                            </div>
-                            <span className="truncate text-slate-600">
+                        <div className="flex min-w-0 flex-row flex-wrap items-center gap-1 text-slate-600">
+                            <span className="cursor-pointer truncate font-bold text-slate-900">
+                                <Link to={`/r/${data?.community_name}`} className="text-inherit">
+                                    r/{data?.community_name}
+                                </Link>
+                            </span>
+                            <span>.</span>
+                            <span className="truncate">
                                 <Link to={`/u/${data?.author_username}`} className="text-inherit">
                                     {data?.author_username}
                                 </Link>
                             </span>
+                            <span>.</span>
+                            <span>2hr ago</span>
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center justify-end gap-3">
-                    {isOwner && (
-                        <Button
-                            className={subtleButtonClass}
-                            onPress={handleEditPost}
-                        >
-                            <i className="bi bi-pencil-square mr-2"></i>
-                            Edit
-                        </Button>
-                    )}
-                    <i className={`${iconButtonClass} bi bi-three-dots cursor-pointer text-[1.6rem]`}></i>
-                </div>
+                <MenuTrigger>
+                    <Button className={`${iconButtonClass} shrink-0 text-[1.6rem]`} aria-label="Post options">
+                        <i className="bi bi-three-dots"></i>
+                    </Button>
+                    <Popover className="z-[10000] min-w-44 rounded-lg border border-slate-200 bg-white p-1 text-[12px] shadow-[0_8px_24px_rgba(15,23,42,0.14)] md:text-[1.4rem]" placement="bottom end">
+                        <Menu className="flex flex-col gap-0.5 outline-none" onAction={handlePostAction}>
+                            {isOwner && (
+                                <MenuItem className="flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-slate-800 data-[focused]:bg-orange-50 data-[focused]:text-orange-700" id="edit" textValue="Edit post">
+                                    <i className="bi bi-pencil-square"></i>
+                                    <span>Edit</span>
+                                </MenuItem>
+                            )}
+                            <MenuItem className="flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-slate-800 data-[focused]:bg-orange-50 data-[focused]:text-orange-700" id="copy-link" textValue="Copy link">
+                                <i className="bi bi-link-45deg"></i>
+                                <span>Copy link</span>
+                            </MenuItem>
+                        </Menu>
+                    </Popover>
+                </MenuTrigger>
             </header>
 
             <div>
-                <h1 className="break-words text-[2rem] font-bold md:text-[2.4rem]">{data?.title}</h1>
+                <h1 className="break-words text-[12px] font-bold md:text-[2.4rem]">{data?.title}</h1>
             </div>
 
             <div className="flex min-w-0 flex-col">
