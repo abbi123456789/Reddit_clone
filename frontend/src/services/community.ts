@@ -21,6 +21,10 @@ export type Community = {
     flairs?: Flair[]
 }
 
+export type CommunityJoinStatus = {
+    is_member: boolean
+}
+
 export const createCommunity = async ({name, description, visibility, nsfw, category}: CommunityCreation): Promise<Community | null> => {
     try{
         const response = await api.post(
@@ -55,7 +59,7 @@ export const getCommunity = async (communityName: string): Promise<Community | n
     }
 }
 
-export async function userJoinedCommunity(communityName: string) : Promise<boolean | null>{ 
+export async function didUserJoinedCommunity(communityName: string) : Promise<CommunityJoinStatus | null>{ 
     try{
         const response = await api.get(`/r/${communityName}/join/status`)
         return response.data
@@ -68,6 +72,27 @@ export async function userJoinedCommunity(communityName: string) : Promise<boole
 export async function getCommunityPosts(communityName: string) : Promise<Post[] | null>{
     try{
         const response = await api.get(`/r/${communityName}/posts`)
+        return response.data;
+    }catch(error){
+        console.log(error)
+        return null;
+    }
+}
+
+export async function getUserJoinedCommunities() : Promise<Pick<Community, 'id' | 'name'>[] | null>{
+    try{
+        const response = await api.get('/user/joined-communities')
+        console.log(response.data)
+        return response.data;
+    }catch(error){
+        console.log(error)
+        return null;
+    }
+}
+
+export async function joinCommunity(communityName: string) : Promise<CommunityJoinStatus | null>{
+    try{
+        const response =await api.post(`/r/${communityName}/join`)
         return response.data;
     }catch(error){
         console.log(error)

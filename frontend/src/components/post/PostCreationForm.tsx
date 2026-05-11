@@ -2,7 +2,7 @@ import React from "react"
 import { Button, Input, TextField } from "react-aria-components"
 import RichTextEditor from "../Editor/RichTextEditor"
 import { AriaSelect } from "../ui/Select"
-import { getMyCommunities } from "../../services/community"
+import { getUserJoinedCommunities } from "../../services/community"
 import { getFlairs } from "../../services/flairs"
 import { createPost, type PostData, type PostEditorDraft, updatePost } from "../../services/posts"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
@@ -134,7 +134,7 @@ const PostCreationForm = () => {
 
     const communitiesQuery = useQuery({
         queryKey: ["my-communities"],
-        queryFn: getMyCommunities,
+        queryFn: getUserJoinedCommunities,
     })
 
     const flairsQuery = useQuery({
